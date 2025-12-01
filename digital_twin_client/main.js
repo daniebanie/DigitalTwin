@@ -1,9 +1,12 @@
+
 window.onload = setup;
 
 var measure;
 var viewer;
 
 function setup() {
+    connect()
+
     const west = 5.798212900532118;
     const south = 53.19304584690279;
     const east = 5.798212900532118;
@@ -201,6 +204,8 @@ function setupInputActions() {
     }
     handler.setInputAction(function (event) {
         terminateShape();
+        //TODO: this should update server and database
+        sendMessage("test", "test");
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 }
 
@@ -365,4 +370,51 @@ function create3DObject(basePolygon, height) {
 
     //Deze extrudedHeight komt heel goed van pas
     basePolygon.polygon.extrudedHeight *= 1.5;
+}
+
+
+
+
+
+
+//Websocket setup
+
+const stompClient = new StompJs.Client({
+    brokerURL: 'ws://localhost:8080/websocket'
+})
+
+stompClient.onConnect = (frame) => {
+    console.log('Connected: ' + frame)
+    stompClient.subscribe('/topic/messages', (message) => {
+        console.log(JSON.stringify(JSON.parse(message.body), null, 2))
+    })
+}
+
+stompClient.webSocketError = (error) => {
+    console.error("websocket error", error)
+};
+
+stompClient.stompError = (frame) => {
+    console.error('Broker error: ' + frame.headers['message'])
+    console.error('details: ' + frame.body)
+};
+
+function connect(){
+    stompClient.activate()
+}
+
+function disconnect(){
+    stompClient.deactivate()
+    console.log('Disconnected')
+}
+
+function sendMessage(title, content){
+    console.log('broadcasting message')
+    stompClient.publish({
+        destination: '/messages/broadcast',
+        body: JSON.stringify({
+            'title': title,
+            'content': content
+        })
+    })
 }

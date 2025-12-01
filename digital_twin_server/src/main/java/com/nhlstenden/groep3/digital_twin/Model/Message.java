@@ -1,4 +1,4 @@
-package com.nhlstenden.groep3.digital_twin;
+package com.nhlstenden.groep3.digital_twin.Model;
 
 public class Message {
     String title;
