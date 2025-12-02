@@ -1,3 +1,4 @@
+/*
 package com.nhlstenden.groep3.digital_twin.Repository;
 
 import com.nhlstenden.groep3.digital_twin.Model.Message;
@@ -31,3 +32,4 @@ public class ClientRepository {
         template.convertAndSend("/topic/messages", message);
     }
 }
+*/

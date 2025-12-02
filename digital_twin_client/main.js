@@ -5,7 +5,8 @@ var measure;
 var viewer;
 
 function setup() {
-    connect()
+    //TODO: Remove if websocket isn't needed
+    //connect()
 
     const west = 5.798212900532118;
     const south = 53.19304584690279;
@@ -204,8 +205,19 @@ function setupInputActions() {
     }
     handler.setInputAction(function (event) {
         terminateShape();
+
+/*
+        var xhr = new XMLHttpRequest();
+
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.open("POST", "http://localhost:8080/map/create");
+        xhttp.send({"title": "test", "content": "test"});
+*/
+
+
         //TODO: this should update server and database
-        sendMessage("test", "test");
+        //sendMessage("test", "test");
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 }
 
@@ -373,12 +385,30 @@ function create3DObject(basePolygon, height) {
 }
 
 
+function post (url, data) {
+    fetch(url, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+}
 
 
+function createMap(){
+    post("http://localhost:8080/map/create", {title: "test", content: "Test"})
+}
 
+function saveMap(){
+    post("http://localhost:8080/map/save", {title: "save", content: "map"})
+}
+
+function loadMap(){
+    post("http://localhost:8080/map/load", {title: "load", content: "map"})
+}
 
 //Websocket setup
 
+/*
 const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/websocket'
 })
@@ -417,4 +447,4 @@ function sendMessage(title, content){
             'content': content
         })
     })
-}
+}*/

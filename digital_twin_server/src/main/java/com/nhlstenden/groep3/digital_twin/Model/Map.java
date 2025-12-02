@@ -1,12 +1,18 @@
 package com.nhlstenden.groep3.digital_twin.Model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class Map {
     String name;
     List<Block> blocks;
     Goals mapGoals;
     AgentVerdict verdict;
+
+    public Map() {}
 
     public Map(String name, List<Block> blocks, Goals mapGoals, AgentVerdict verdict) {
         this.name = name;
