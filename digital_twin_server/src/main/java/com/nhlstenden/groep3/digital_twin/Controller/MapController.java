@@ -42,9 +42,8 @@ public class MapController {
 
     }
 
-    @PostMapping("/load")
-    public void loadMap(@RequestBody Message message) {
-        System.out.println("Loading Map");
-
+    @GetMapping("/load")
+    public Message loadMap() {
+        return new Message("test", "test");
     }
 }

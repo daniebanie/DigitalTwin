@@ -386,11 +386,32 @@ function create3DObject(basePolygon, height) {
 
 
 function post (url, data) {
-    fetch(url, {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    })
+    try {
+        const response = fetch(url, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        if (!response.ok){
+            throw new Error('Response status: ${response.status}');
+        }
+    }catch(error){
+        console.error(error.message)
+    }
+}
+
+async function get (url){
+    try {
+        const response = await fetch(url);
+        if (!response.ok){
+            throw new Error('Response status: ${response.status}');
+        }
+        const content = await response.json();
+        console.log(content.toString());
+    } catch(error){
+        console.error(error.message)
+    }
+
 }
 
 
@@ -398,12 +419,14 @@ function createMap(){
     let name = prompt("Please enter a name for your map");
     post("http://localhost:8080/map/create", {title: name, content: "Test"})
 }
+
 function saveMap(){
     post("http://localhost:8080/map/save", {title: "save", content: "map"})
 }
 
 function loadMap(){
-    post("http://localhost:8080/map/load", {title: "load", content: "map"})
+    get("http://localhost:8080/map/load")
+        .then(data => console.log(data))
 }
 
 //Websocket setup
