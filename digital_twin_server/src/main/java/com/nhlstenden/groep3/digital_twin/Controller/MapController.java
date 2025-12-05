@@ -33,6 +33,7 @@ public class MapController {
         currentMap.setBlocks(null);
         //currentMap.setMapGoals(InformationController.getCurrentGoals());
         currentMap.setVerdict(null);
+        System.out.println(currentMap.getName());
     }
 
     @PostMapping("/save")

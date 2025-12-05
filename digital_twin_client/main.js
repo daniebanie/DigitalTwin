@@ -395,9 +395,9 @@ function post (url, data) {
 
 
 function createMap(){
-    post("http://localhost:8080/map/create", {title: "test", content: "Test"})
+    let name = prompt("Please enter a name for your map");
+    post("http://localhost:8080/map/create", {title: name, content: "Test"})
 }
-
 function saveMap(){
     post("http://localhost:8080/map/save", {title: "save", content: "map"})
 }
