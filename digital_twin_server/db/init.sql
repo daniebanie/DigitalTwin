@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS statistieken (
     id INT PRIMARY KEY AUTO_INCREMENT,
     kosten INT NOT NULL,
     opbrengst INT NOT NULL,
-    bewoners INT NOT NULL,
+    bewoners INT UNSIGNED NOT NULL,
     score INT NOT NULL,
-    capaciteit INT NOT NULL
+    capaciteit INT UNSIGNED NOT NULL
 );
