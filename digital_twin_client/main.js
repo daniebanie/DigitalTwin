@@ -1,3 +1,309 @@
+const buildingBlocks = {
+    A: {
+        name: "Vrijstaand huis",
+        unit: "per m³",
+        costPerUnit: 500,
+        yieldPercentage: 12,
+        residentsPerUnit: 0.005,
+        sustainabilityScore: 4,
+        color: Cesium.Color.SANDYBROWN,
+        colorHex: "#F4A460",
+        isVolumetric: true,
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`
+    },
+    B: {
+        name: "Rijtjeswoning",
+        unit: "per m³",
+        costPerUnit: 400,
+        yieldPercentage: 8,
+        residentsPerUnit: 0.01,
+        sustainabilityScore: 6,
+        color: Cesium.Color.CORAL,
+        colorHex: "#FF7F50",
+        isVolumetric: true,
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3zm0 2.84L18 11v8h-2v-6h-8v6H6v-8l6-5.16z"/></svg>`
+    },
+    C: {
+        name: "Appartement",
+        unit: "per m³",
+        costPerUnit: 300,
+        yieldPercentage: 12,
+        residentsPerUnit: 0.006,
+        sustainabilityScore: 5,
+        color: Cesium.Color.LIGHTBLUE,
+        colorHex: "#ADD8E6",
+        isVolumetric: true,
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z"/></svg>`
+    },
+    D: {
+        name: "Bedrijfsgebouw",
+        unit: "per m³",
+        costPerUnit: 200,
+        yieldPercentage: 15,
+        residentsPerUnit: 0.018,
+        sustainabilityScore: 2,
+        color: Cesium.Color.DARKGRAY,
+        colorHex: "#A9A9A9",
+        isVolumetric: true,
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>`
+    },
+    E: {
+        name: "Park/groen",
+        unit: "per m²",
+        costPerUnit: 150,
+        yieldPercentage: 0,
+        residentsPerUnit: 0,
+        sustainabilityScore: 10,
+        color: Cesium.Color.LIMEGREEN,
+        colorHex: "#32CD32",
+        isVolumetric: false,
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 -960 960 960" fill="currentColor"><path d="M180-520q-26 0-43-17t-17-43q0-26 17-43t43-17q26 0 43 17t17 43q0 26-17 43t-43 17ZM120-80v-200h-40v-160q0-17 11.5-28.5T120-480h120q17 0 28.5 11.5T280-440v160h-40v120h320v-200h-70q-71 0-120.5-49.5T320-530q0-53 28.5-94.5T422-686q11-65 60.5-109.5T600-840q68 0 117.5 44.5T778-686q45 20 73.5 61.5T880-530q0 71-49.5 120.5T710-360h-70v200h200v80H120Zm370-360h220q38 0 64-26t26-64q0-27-14.5-49T746-612l-42-18-6-44q-6-37-33.5-61.5T600-760q-37 0-64.5 24.5T502-674l-6 44-42 18q-25 11-39.5 33T400-530q0 38 26 64t64 26Zm110-160Z"/></svg>`
+    },
+    F: {
+        name: "Wegen",
+        unit: "per m²",
+        costPerUnit: 100,
+        yieldPercentage: 5,
+        residentsPerUnit: 0,
+        sustainabilityScore: 8,
+        color: Cesium.Color.DIMGRAY,
+        colorHex: "#696969",
+        isVolumetric: false,
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M720-40v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm0-400v-360h80v360h-80ZM160-160v-640h80v640h-80Zm280-480v-160h80v160h-80Zm0 240v-160h80v160h-80Zm0 240v-160h80v160h-80Z"/></svg>`
+    },
+    G: {
+        name: "Parkeerplaatsen",
+        unit: "per m²",
+        costPerUnit: 100,
+        yieldPercentage: 10,
+        residentsPerUnit: 0,
+        sustainabilityScore: 6,
+        color: Cesium.Color.LIGHTGRAY,
+        colorHex: "#D3D3D3",
+        isVolumetric: false,
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3H6v18h4v-6h3c3.31 0 6-2.69 6-6s-2.69-6-6-6zm.2 8H10V7h3.2c1.1 0 2 .9 2 2s-.9 2-2 2z"/></svg>`
+    },
+    H: {
+        name: "Parkeerplaatsen overdekt",
+        unit: "per m²",
+        costPerUnit: 1500,
+        yieldPercentage: 15,
+        residentsPerUnit: 0,
+        sustainabilityScore: 10,
+        color: Cesium.Color.SLATEGRAY,
+        colorHex: "#708090",
+        isVolumetric: false,
+        icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M160-80q-33 0-56.5-23.5T80-160v-640q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v640q0 33-23.5 56.5T800-80H160Zm0-80h640v-640H160v640Zm200-240q-17 0-28.5-11.5T320-440q0-17 11.5-28.5T360-480q17 0 28.5 11.5T400-440q0 17-11.5 28.5T360-400Zm240 0q-17 0-28.5-11.5T560-440q0-17 11.5-28.5T600-480q17 0 28.5 11.5T640-440q0 17-11.5 28.5T600-400ZM200-516v264q0 14 9 23t23 9h16q14 0 23-9t9-23v-48h400v48q0 14 9 23t23 9h16q14 0 23-9t9-23v-264l-66-192q-5-14-16.5-23t-25.5-9H308q-14 0-25.5 9T266-708l-66 192Zm106-64 28-80h292l28 80H306ZM160-800v640-640Zm120 420v-120h400v120H280Z"/></svg>`
+    }
+};
+
+let currentBuildingBlock = null;
+let placedBuildings = [];
+
+// UI SETUP
+function createBuildingUI() {
+    const container = createUIContainer();
+    document.body.appendChild(container);
+}
+
+function createUIContainer() {
+    const container = document.createElement('div');
+    container.id = 'building-ui-container';
+    container.className = 'd-flex flex-column gap-3';
+
+    // Bouwblokken Panel
+    container.appendChild(createBuildingPanel());
+
+    // Info Panel
+    container.appendChild(createInfoPanel());
+
+    // Stats Panel
+    container.appendChild(createStatsPanel());
+
+    return container;
+}
+
+function createBuildingPanel() {
+    const panel = document.createElement('div');
+    panel.className = 'ui-panel card shadow-sm';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body p-3';
+
+    const header = document.createElement('h3');
+    header.className = 'panel-header h5 mb-3 fw-bold';
+    header.textContent = 'Bouwblokken';
+
+    const grid = document.createElement('div');
+    grid.className = 'row g-2';
+
+    Object.keys(buildingBlocks).forEach(key => {
+        const block = buildingBlocks[key];
+        const col = document.createElement('div');
+        col.className = 'col-6';
+
+        const button = document.createElement('button');
+        button.className = 'building-btn btn w-100 d-flex flex-column align-items-center gap-2 p-3 rounded-3';
+        button.id = `block-${key}`;
+        button.onclick = () => selectBuildingBlock(key);
+
+        button.innerHTML = `
+            <div class="btn-icon">${block.icon}</div>
+            <span class="btn-code badge rounded-pill px-2">${key}</span>
+            <div class="btn-label text-center lh-sm">${block.name}</div>
+            <div class="color-indicator" style="background-color: ${block.colorHex};"></div>
+        `;
+
+        col.appendChild(button);
+        grid.appendChild(col);
+    });
+
+    cardBody.appendChild(header);
+    cardBody.appendChild(grid);
+    panel.appendChild(cardBody);
+
+    return panel;
+}
+
+function createInfoPanel() {
+    const panel = document.createElement('div');
+    panel.id = 'info-panel';
+    panel.className = 'ui-panel card shadow-sm info-panel';
+    panel.style.display = 'none';
+
+    return panel;
+}
+
+function createStatsPanel() {
+    const panel = document.createElement('div');
+    panel.className = 'ui-panel card shadow-sm';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body p-3';
+
+    const header = document.createElement('h3');
+    header.className = 'panel-header h5 mb-3 fw-bold';
+    header.textContent = 'Statistieken';
+
+    const statsGrid = document.createElement('div');
+    statsGrid.className = 'd-flex flex-column gap-2';
+
+    const stats = [
+        {
+            id: 'total-cost',
+            label: 'Kosten',
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M600-120q-118 0-210-67T260-360H120v-80h122q-3-24-2.5-44.5T242-520H120v-80h140q38-106 130-173t210-67q69 0 130.5 24.5T840-748l-57 56q-37-32-83.5-50T600-760q-85 0-152 44.5T347-600h253v80H323q-4 27-3 47.5t3 32.5h277v80H347q34 71 101 115.5T600-200q53 0 99.5-18t83.5-50l57 56q-48 43-109.5 67.5T600-120Z"/></svg>`
+        },
+        {
+            id: 'total-yield',
+            label: 'Opbrengst',
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M336-120q-91 0-153.5-62.5T120-336q0-38 13-74t37-65l142-171-97-194h530l-97 194 142 171q24 29 37 65t13 74q0 91-63 153.5T624-120H336Zm144-200q-33 0-56.5-23.5T400-400q0-33 23.5-56.5T480-480q33 0 56.5 23.5T560-400q0 33-23.5 56.5T480-320Zm-95-360h190l40-80H345l40 80Zm-49 480h288q57 0 96.5-39.5T760-336q0-24-8.5-46.5T728-423L581-600H380L232-424q-15 18-23.5 41t-8.5 47q0 57 39.5 96.5T336-200Z"/></svg>`
+        },
+        {
+            id: 'total-residents',
+            label: 'Bewoners',
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M360-80v-529q-91-24-145.5-100.5T160-880h80q0 83 53.5 141.5T430-680h100q30 0 56 11t47 32l181 181-56 56-158-158v478h-80v-240h-80v240h-80Zm120-640q-33 0-56.5-23.5T400-800q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 33-23.5 56.5T480-720Z"/></svg>`
+        },
+        {
+            id: 'total-livability',
+            label: 'Leefbaarheid score',
+            icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>`
+        }
+    ];
+
+    stats.forEach(stat => {
+        const statItem = document.createElement('div');
+        statItem.className = 'stat-item d-flex justify-content-between align-items-center p-3 rounded-3';
+
+        statItem.innerHTML = `
+            <div class="d-flex align-items-center gap-2">
+                <span class="stat-icon">${stat.icon}</span>
+                <span class="stat-label text-secondary fw-medium small">${stat.label}</span>
+            </div>
+            <div class="stat-value h5 mb-0 fw-bold" id="${stat.id}">&euro;0</div>
+        `;
+
+        statsGrid.appendChild(statItem);
+    });
+
+    cardBody.appendChild(header);
+    cardBody.appendChild(statsGrid);
+    panel.appendChild(cardBody);
+
+    return panel;
+}
+
+// BOUWBLOK SELECTIE
+function selectBuildingBlock(blockType) {
+    // Reset alle knoppen
+    document.querySelectorAll('.building-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+
+    // Selecteer nieuwe knop
+    const selectedButton = document.getElementById(`block-${blockType}`);
+    selectedButton.classList.add('selected');
+    currentBuildingBlock = blockType;
+
+    // Update info panel
+    updateInfoPanel(blockType);
+
+    console.log(`Bouwblok ${blockType} geselecteerd: ${buildingBlocks[blockType].name}`);
+}
+
+function updateInfoPanel(blockType) {
+    const block = buildingBlocks[blockType];
+    const infoPanel = document.getElementById('info-panel');
+    infoPanel.style.display = 'block';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body p-3';
+
+    cardBody.innerHTML = `
+        <div class="info-title h6 mb-3 d-flex align-items-center gap-2">
+            <span style="font-size: 24px;">${block.icon.replace('currentColor', 'white')}</span>
+            <span>${block.name}</span>
+        </div>
+        <div class="row g-2 small">
+            <div class="col-6">
+                <div class="info-item p-2 rounded-2">
+                    <div class="info-label opacity-75 mb-1">Kostprijs:</div>
+                    <div class="info-value fw-semibold">&euro;${block.costPerUnit}</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="info-item p-2 rounded-2">
+                    <div class="info-label opacity-75 mb-1">Opbrengst:</div>
+                    <div class="info-value fw-semibold">${block.yieldPercentage}%</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="info-item p-2 rounded-2">
+                    <div class="info-label opacity-75 mb-1">Bewoners:</div>
+                    <div class="info-value fw-semibold">${block.residentsPerUnit}</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="info-item p-2 rounded-2">
+                    <div class="info-label opacity-75 mb-1">Leefbaarheid score:</div>
+                    <div class="info-value fw-semibold">${block.sustainabilityScore}/10</div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex align-items-center gap-2 mt-2">
+                    <span class="small opacity-75">Kleur:</span>
+                    <div class="flex-grow-1" style="height: 8px; background-color: ${block.colorHex}; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    infoPanel.innerHTML = '';
+    infoPanel.appendChild(cardBody);
+    selectedBlockColor = Cesium.Color.fromCssColorString(block.colorHex).withAlpha(0.6);
+
+}
+
 
 window.onload = setup;
 
@@ -5,7 +311,8 @@ var measure;
 var viewer;
 
 function setup() {
-    connect()
+    //TODO: Remove if websocket isn't needed
+    //connect()
 
     const west = 5.798212900532118;
     const south = 53.19304584690279;
@@ -33,6 +340,9 @@ function setup() {
         shadows: true,
         shouldAnimate: true,
     });
+
+    createBuildingUI();
+    console.log('UI should be created now');
 
     viewer.imageryLayers.removeAll();
     viewer.imageryLayers.addImageryProvider(osm);
@@ -119,14 +429,13 @@ function drawShape(positionData) {
         shape = viewer.entities.add({
             polygon: {
                 hierarchy: positionData,
-                material: new Cesium.ColorMaterialProperty(
-                    Cesium.Color.RED.withAlpha(0.7),
-                ),
+                material: selectedBlockColor,  // <-- gebruik nieuwe kleur
             },
         });
     }
     return shape;
 }
+
 
 function setupInputActions() {
     viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
@@ -142,7 +451,6 @@ function setupInputActions() {
     let activeShapePoints = [];
     let activeShape;
     let floatingPoint;
-
     const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
 
     handler.setInputAction(function (event) {
@@ -204,8 +512,19 @@ function setupInputActions() {
     }
     handler.setInputAction(function (event) {
         terminateShape();
+
+/*
+        var xhr = new XMLHttpRequest();
+
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.open("POST", "http://localhost:8080/map/create");
+        xhttp.send({"title": "test", "content": "test"});
+*/
+
+
         //TODO: this should update server and database
-        sendMessage("test", "test");
+        //sendMessage("test", "test");
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 }
 
@@ -373,12 +692,30 @@ function create3DObject(basePolygon, height) {
 }
 
 
+function post (url, data) {
+    fetch(url, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+}
 
 
+function createMap(){
+    let name = prompt("Please enter a name for your map");
+    post("http://localhost:8080/map/create", {title: name, content: "Test"})
+}
+function saveMap(){
+    post("http://localhost:8080/map/save", {title: "save", content: "map"})
+}
 
+function loadMap(){
+    post("http://localhost:8080/map/load", {title: "load", content: "map"})
+}
 
 //Websocket setup
 
+/*
 const stompClient = new StompJs.Client({
     brokerURL: 'ws://localhost:8080/websocket'
 })
@@ -417,4 +754,4 @@ function sendMessage(title, content){
             'content': content
         })
     })
-}
+}*/
