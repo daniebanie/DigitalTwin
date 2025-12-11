@@ -1,3 +1,4 @@
+/*
 package com.nhlstenden.groep3.digital_twin.Config;
 
 import org.springframework.context.annotation.Configuration;
@@ -18,3 +19,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/websocket").setAllowedOrigins("*");
    }
 }
+*/
