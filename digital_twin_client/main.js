@@ -42,7 +42,7 @@ function createInputArea() {
     const panel = document.createElement('div');
     panel.id = 'input-area-panel';
     panel.appendChild(createAIInput());
-    panel.appendChild(createAISubmit());
+    // panel.appendChild(createAISubmit());
 
     return panel;
 }
@@ -64,12 +64,30 @@ function createAIButton() {
 }
 
 function createAIInput() {
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.enctype = 'multipart/form-data';
+
+    const label = document.createElement('label');
+    label.for = 'video';
+    label.class = 'block';
+
     const input = document.createElement('input');
     input.id = 'ai-input';
     input.className = 'input input-primary';
     input.type = 'file';
+    input.accept = 'image/*';
 
-    return input;
+    const button = document.createElement('button');
+    button.id = 'ai-submit-btn';
+    button.className = 'btn btn-primary';
+    button.textContent = 'Submit';
+
+    form.appendChild(label);
+    form.appendChild(input);
+    form.appendChild(button);
+
+    return form;
 }
 
 function createAISubmit() {
@@ -105,10 +123,11 @@ function createResultsPanel() {
         const result = resultBlocks[key];
 
         const col = document.createElement('div');
+        col.id = 'result-block';
         col.className = 'col-6 text-center';
 
         const name = document.createElement('div');
-        name.textContent = result.name;
+        name.textContent = result.name + " / " + result.uploadedOn;
 
         const img = document.createElement('img');
         img.src = result.route; // <-- FIX PATH
@@ -136,6 +155,13 @@ function createResultsPanel() {
 
 const resultBlocks = {
     1: {
+        name: "imageno1",
+        route: `Cesium-1.135/Screenshots/Schermafbeelding2025-11-27221716.png`,
+        uploadedOn: "10-12-2025",
+        result: "Dit is een mooi minecraft huis"
+
+    },
+    2: {
         name: "imageno1",
         route: `Cesium-1.135/Screenshots/Schermafbeelding2025-11-27221716.png`,
         uploadedOn: "10-12-2025",
