@@ -17,5 +17,23 @@ services:
     networks:
       - digitaltwin
 
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: digitaltwin
+      MYSQL_USER: digitaltwin
+      MYSQL_PASSWORD: digitaltwin
+      MYSQL_DATABASE: digital_twin_spoordok
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/backup/data
+
+
+
+
 networks:
   digitaltwin:
+
+volumes:
+  db-data:
