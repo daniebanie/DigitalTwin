@@ -346,12 +346,21 @@ async function setup() {
     //TODO: Remove if websocket isn't needed
     //connect()
 
-    const loaded = await loadBuildingBlocks();
+    let loaded = await loadBuildingBlocks();
 
-    if (!loaded) {
-        alert('Kon bouwblokken niet laden van de server!');
-        return;
+    while (!loaded) {
+
+
+        loaded = await loadBuildingBlocks();
+
+
     }
+    //
+    // if (!loaded) {
+    //     alert('Kon bouwblokken niet laden van de server!');
+    //     return;
+    // }
+
 
     const west = 5.798212900532118;
     const south = 53.19304584690279;
@@ -402,6 +411,9 @@ async function setup() {
             moveCar();
         }, 150);
     }
+
+    viewer.imageryLayers.removeAll();
+    viewer.imageryLayers.addImageryProvider(osm);
 
     moveCar();
 
