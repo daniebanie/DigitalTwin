@@ -42,7 +42,6 @@ function createInputArea() {
     const panel = document.createElement('div');
     panel.id = 'input-area-panel';
     panel.appendChild(createAIInput());
-    // panel.appendChild(createAISubmit());
 
     return panel;
 }
@@ -68,35 +67,41 @@ function createAIInput() {
     form.method = 'post';
     form.enctype = 'multipart/form-data';
 
-    const label = document.createElement('label');
-    label.for = 'video';
-    label.class = 'block';
-
     const input = document.createElement('input');
     input.id = 'ai-input';
     input.className = 'input input-primary';
     input.type = 'file';
     input.accept = 'image/*';
+    input.name = 'image';
+
 
     const button = document.createElement('button');
     button.id = 'ai-submit-btn';
     button.className = 'btn btn-primary';
+    button.type = 'submit'
     button.textContent = 'Submit';
 
-    form.appendChild(label);
     form.appendChild(input);
     form.appendChild(button);
+
+    attachImageUploadHandler(form);
 
     return form;
 }
 
-function createAISubmit() {
-    const button = document.createElement('button');
-    button.id = 'ai-submit-btn'
-    button.className = 'btn btn-primary';
-    button.textContent = 'Submit';
+function attachImageUploadHandler(formEl) {
+    formEl.addEventListener('submit', event => {
+        event.preventDefault();
 
-    return button;
+        const formData = new FormData(formEl);
+
+        fetch('http://localhost:8080/upload', {
+            method: 'POST',
+            body: formData
+        }).then(res => res.json())
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+    })
 }
 
 function createResultsArea() {
