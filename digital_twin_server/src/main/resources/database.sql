@@ -145,7 +145,7 @@ VALUES
 CREATE TABLE `blocks` (
                           `id` INT NOT NULL AUTO_INCREMENT,
                           `type_id` INT NOT NULL,
-                          `geometry` GEOMETRY NOT NULL SRID 4326,
+                          `geometry` GEOMETRY NOT NULL, CHECK (ST_SRID(geometry) = 4326 ),
                           `height` DECIMAL(10,4) DEFAULT NULL,
                           `area_m2` DECIMAL(15,4) DEFAULT NULL,
                           `volume_m3` DECIMAL(15,4) DEFAULT NULL,

@@ -348,10 +348,10 @@ async function setup() {
 
     const loaded = await loadBuildingBlocks();
 
-    if (!loaded) {
+/*    if (!loaded) {
         alert('Kon bouwblokken niet laden van de server!');
         return;
-    }
+    }*/
 
     const west = 5.798212900532118;
     const south = 53.19304584690279;

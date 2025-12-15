@@ -1,15 +1,28 @@
 package com.nhlstenden.groep3.digital_twin.Model;
 
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Entity
+@Table(name = "maps")
 public class Map {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     String name;
+
+    @Column(nullable = false)
     List<Block> blocks;
+
+    @OneToOne
+            @JoinColumn(name = )
     Goals mapGoals;
+
     AgentVerdict verdict;
 
     public Map() {}

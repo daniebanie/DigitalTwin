@@ -43,7 +43,8 @@ public class MapController {
     }
 
     @GetMapping("/load")
-    public Message loadMap() {
+    public Message loadMap(@RequestBody Message message) {
+
         return new Message("test", "test");
     }
 }
