@@ -1,0 +1,39 @@
+services:
+  client:
+    container_name: client
+    build: './digital_twin_client/'
+    ports:
+      - '8383:80'
+    networks:
+      - digitaltwin
+    depends_on:
+      - server
+
+  server:
+    container_name: server
+    build: './digital_twin_server/'
+    ports:
+      - '8080:8080'
+    networks:
+      - digitaltwin
+
+  mariadb:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: digitaltwin
+      MYSQL_USER: digitaltwin
+      MYSQL_PASSWORD: digitaltwin
+      MYSQL_DATABASE: digital_twin_spoordok
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/backup/data
+
+
+
+
+networks:
+  digitaltwin:
+
+volumes:
+  db-data:
