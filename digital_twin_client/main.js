@@ -338,11 +338,11 @@ function updateInfoPanel(blockType) {
 
 
 function createAIUI() {
-    const container = createUIContainer();
+    const container = createUIAIContainer();
     document.body.appendChild(container);
 }
 
-function createUIContainer() {
+function createUIAIContainer() {
     const container = document.createElement('div');
     container.id = 'ai-ui-container';
     container.className = 'd-flex flex-column gap-3';
@@ -555,8 +555,9 @@ async function setup() {
         shouldAnimate: true,
     });
 
+
+    // viewer.imageryLayers.removeAll();
     createAIUI();
-    viewer.imageryLayers.removeAll();
     viewer.imageryLayers.addImageryProvider(osm);
 
     //Improves tile quality

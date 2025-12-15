@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS digital_twin_spoordok;
+USE digital_twin_spoordok;
 CREATE TABLE `block_types` (
                                `id` INT NOT NULL AUTO_INCREMENT,
                                `block_code` VARCHAR(10) NOT NULL UNIQUE,

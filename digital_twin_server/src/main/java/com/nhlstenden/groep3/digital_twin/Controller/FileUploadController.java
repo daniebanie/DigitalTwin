@@ -1,4 +1,4 @@
-package com.nhlstenden.groep3.digital_twin.controllers;
+package com.nhlstenden.groep3.digital_twin.Controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 @CrossOrigin(origins = "*")   // allow your JS client to access it
 public class FileUploadController {
 
-    private static final String UPLOAD_DIR = "uploads/";
+    private static final String UPLOAD_DIR = "src/main/resources/uploads";
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("image") MultipartFile file) throws IOException {
