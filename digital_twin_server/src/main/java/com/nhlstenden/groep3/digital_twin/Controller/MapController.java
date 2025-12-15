@@ -1,3 +1,4 @@
+/*
 package com.nhlstenden.groep3.digital_twin.Controller;
 
 import com.nhlstenden.groep3.digital_twin.Model.Block;
@@ -48,3 +49,4 @@ public class MapController {
         return new Message("test", "test");
     }
 }
+*/

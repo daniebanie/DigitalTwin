@@ -1,3 +1,4 @@
+/*
 package com.nhlstenden.groep3.digital_twin.Model;
 
 import jakarta.persistence.*;
@@ -66,3 +67,4 @@ public class Map {
         this.verdict = verdict;
     }
 }
+*/

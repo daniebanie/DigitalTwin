@@ -118,8 +118,7 @@ async function loadBuildingBlocks() {
                 icon: block.iconSvg
             };
         });
-
-        console.log('Building blocks loaded from database.', buildingBlocks);
+        block_types
         return true;
     } catch (error) {
         console.error('Error loading building blocks:', error);
@@ -521,12 +520,7 @@ async function setup() {
     //TODO: Remove if websocket isn't needed
     //connect()
 
-    const loaded = await loadBuildingBlocks();
-
-/*    if (!loaded) {
-        alert('Kon bouwblokken niet laden van de server!');
-        return;
-    }*/
+    await loadBuildingBlocks();
 
     const west = 5.798212900532118;
     const south = 53.19304584690279;
