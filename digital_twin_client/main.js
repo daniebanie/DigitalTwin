@@ -101,7 +101,14 @@ let buildingBlocks = {};
 
 async function loadBuildingBlocks() {
     try {
-        const response = await fetch('http://localhost:8080/api/blocktypes');
+        const response = await fetch('http://localhost:8080/api/blocktypes', {
+            signal: AbortSignal.timeout(5000) // 5 seconden timeout
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const blockTypes = await response.json();
 
         blockTypes.forEach(block => {
@@ -119,10 +126,10 @@ async function loadBuildingBlocks() {
             };
         });
 
-        console.log('Building blocks loaded from database.', buildingBlocks);
+        console.log('Building blocks geladen van database:', Object.keys(buildingBlocks).length, 'types');
         return true;
     } catch (error) {
-        console.error('Error loading building blocks:', error);
+        console.error('Error loading building blocks:', error.message);
         return false;
     }
 }
@@ -342,6 +349,21 @@ window.onload = setup;
 var measure;
 var viewer;
 
+
+// Probeert opnieuw te connecten in de achtergrond
+function scheduleRetry() {
+    console.log('Nieuwe poging over 15 seconden...');
+    setTimeout(async () => {
+        const success = await loadBuildingBlocks();
+        if (success) {
+            console.log('Bouwblokken succesvol geladen. Ververs de pagina om ze te gebruiken.');
+            alert('Database verbinding hersteld. Ververs de pagina om de bouwblokken te gebruiken.');
+        } else {
+            scheduleRetry();
+        }
+    }, 15000);
+}
+
 async function setup() {
     //TODO: Remove if websocket isn't needed
     //connect()
@@ -355,11 +377,13 @@ async function setup() {
 
 
     }
-    //
-    // if (!loaded) {
-    //     alert('Kon bouwblokken niet laden van de server!');
-    //     return;
-    // }
+
+
+    if (!loaded) {
+        alert('Kan bouwblok data niet laden van de database.\n\nDe applicatie blijft proberen verbinding te maken in de achtergrond.\nVervers de pagina over 15 seconden of wanneer de database beschikbaar is.');
+        scheduleRetry();
+
+    }
 
 
     const west = 5.798212900532118;
@@ -446,8 +470,13 @@ async function setup() {
 
     setupInputActions();
 
-    createBuildingUI();
-    console.log('UI should be created now');
+    if (loaded) {
+        createBuildingUI();
+        console.Log('UI wordt nu aangemaakt');
+    } else {
+        console.log('UI niet aangemaakt, wacht op database verbinding');
+    }
+
 
 }
 
