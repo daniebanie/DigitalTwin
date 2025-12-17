@@ -162,6 +162,8 @@ CREATE TABLE `blocks` (
                           CONSTRAINT `blocks_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `block_types` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+# Ik denk dat dit beter past als we dit gelijk in de maps tabel gooien aangezien dit verder nergens iets doet - Ian
 CREATE TABLE `goals` (
                          `id` INT NOT NULL AUTO_INCREMENT,
                          `name` VARCHAR(100) NOT NULL,
@@ -169,6 +171,20 @@ CREATE TABLE `goals` (
                          `description` TEXT,
                          PRIMARY KEY (`id`),
                          UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `maps` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `livability` INT NOT NULL,
+    `cost` INT NOT NULL,
+    `residents` INT NOT NULL,
+    `workplaces` INT NOT NULL,
+    `parking_spots` INT NOT NULL,
+    `yield` INT NOT NULL,
+    `green_percentage` INT NOT NULL,
+    `workplace_percentage` INT NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `quality_scores` (

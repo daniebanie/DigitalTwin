@@ -935,7 +935,18 @@ async function get (url){
 
 function createMap(){
     let name = prompt("Please enter a name for your map");
-    post("http://localhost:8080/map/create", {title: name, content: "Test"})
+    try {
+        const response = fetch("http://localhost:8080/map/create", {
+            method: "POST",
+            headers: {'Content-Type': 'text/plain'},
+            body: name
+        });
+        if (!response.ok){
+            throw new Error('Response status: ${response.status}');
+        }
+    }catch(error){
+        console.error(error.message)
+    }
 }
 
 function saveMap(){
