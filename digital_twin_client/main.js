@@ -98,11 +98,19 @@
 // };
 
 let buildingBlocks = {};
+let currentBuildingBlock = null;
+let selectedBlockColor = Cesium.Color.GRAY.withAlpha(0.5);
+let placedBuildings = [];
+
 
 async function loadBuildingBlocks() {
     try {
         const response = await fetch('http://localhost:8080/api/blocktypes');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
         const blockTypes = await response.json();
+
+        buildingBlocks = {}; // reset
 
         blockTypes.forEach(block => {
             buildingBlocks[block.blockCode] = {
@@ -119,55 +127,41 @@ async function loadBuildingBlocks() {
             };
         });
 
-        console.log('Building blocks loaded from database.', buildingBlocks);
+        console.log('Building blocks succesvol geladen uit database:', buildingBlocks);
+        rebuildBuildingPanel();
         return true;
     } catch (error) {
-        console.error('Error loading building blocks:', error);
+        console.error('Fout bij laden building blocks:', error);
+        showLoadingMessage();
         return false;
     }
 }
 
-
-
-let currentBuildingBlock = null;
-let placedBuildings = [];
-
-// UI SETUP
-function createBuildingUI() {
-    const container = createUIContainer();
-    document.body.appendChild(container);
+function showLoadingMessage() {
+    const grid = document.querySelector('#building-ui-container .row.g-2');
+    if (grid) {
+        grid.innerHTML = '<div class="col-12 text-center text-muted py-4">Laden van bouwblokken...<br><small>Controleer of Docker draait</small></div>';
+    }
 }
 
-function createUIContainer() {
-    const container = document.createElement('div');
-    container.id = 'building-ui-container';
-    container.className = 'd-flex flex-column gap-3';
-
-    // Bouwblokken Panel
-    container.appendChild(createBuildingPanel());
-
-    // Info Panel
-    container.appendChild(createInfoPanel());
-
-    // Stats Panel
-    container.appendChild(createStatsPanel());
-
-    return container;
+function scheduleRetry() {
+    console.log('Retry over 5 seconden...');
+    setTimeout(async () => {
+        const success = await loadBuildingBlocks();
+        if (!success) scheduleRetry();
+    }, 5000);
 }
 
-function createBuildingPanel() {
-    const panel = document.createElement('div');
-    panel.className = 'ui-panel card shadow-sm';
+function rebuildBuildingPanel() {
+    const grid = document.querySelector('#building-ui-container .row.g-2');
+    if (!grid) return;
 
-    const cardBody = document.createElement('div');
-    cardBody.className = 'card-body p-3';
+    grid.innerHTML = ''; // clear
 
-    const header = document.createElement('h3');
-    header.className = 'panel-header h5 mb-3 fw-bold';
-    header.textContent = 'Bouwblokken';
-
-    const grid = document.createElement('div');
-    grid.className = 'row g-2';
+    if (Object.keys(buildingBlocks).length === 0) {
+        showLoadingMessage();
+        return;
+    }
 
     Object.keys(buildingBlocks).forEach(key => {
         const block = buildingBlocks[key];
@@ -189,6 +183,40 @@ function createBuildingPanel() {
         col.appendChild(button);
         grid.appendChild(col);
     });
+}
+
+// UI SETUP
+function createBuildingUI() {
+    const container = createUIContainer();
+    document.body.appendChild(container);
+    showLoadingMessage();
+}
+
+function createUIContainer() {
+    const container = document.createElement('div');
+    container.id = 'building-ui-container';
+    container.className = 'd-flex flex-column gap-3';
+
+    container.appendChild(createBuildingPanel());
+    container.appendChild(createInfoPanel());
+    container.appendChild(createStatsPanel());
+
+    return container;
+}
+
+function createBuildingPanel() {
+    const panel = document.createElement('div');
+    panel.className = 'ui-panel card shadow-sm';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body p-3';
+
+    const header = document.createElement('h3');
+    header.className = 'panel-header h5 mb-3 fw-bold';
+    header.textContent = 'Bouwblokken';
+
+    const grid = document.createElement('div');
+    grid.className = 'row g-2';
 
     cardBody.appendChild(header);
     cardBody.appendChild(grid);
@@ -342,16 +370,16 @@ window.onload = setup;
 var measure;
 var viewer;
 
-async function setup() {
+function setup() {
     //TODO: Remove if websocket isn't needed
     //connect()
 
-    const loaded = await loadBuildingBlocks();
+    loadBuildingBlocks().then(success => {
+        if (!success) {
+            scheduleRetry();
+        }
+    });
 
-    if (!loaded) {
-        alert('Kon bouwblokken niet laden van de server!');
-        return;
-    }
 
     const west = 5.798212900532118;
     const south = 53.19304584690279;
@@ -402,6 +430,9 @@ async function setup() {
             moveCar();
         }, 150);
     }
+
+    viewer.imageryLayers.removeAll();
+    viewer.imageryLayers.addImageryProvider(osm);
 
     moveCar();
 
@@ -551,14 +582,14 @@ function setupInputActions() {
     handler.setInputAction(function (event) {
         terminateShape();
 
-/*
-        var xhr = new XMLHttpRequest();
+        /*
+                var xhr = new XMLHttpRequest();
 
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.open("POST", "http://localhost:8080/map/create");
-        xhttp.send({"title": "test", "content": "test"});
-*/
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.open("POST", "http://localhost:8080/map/create");
+                xhttp.send({"title": "test", "content": "test"});
+        */
 
 
         //TODO: this should update server and database
