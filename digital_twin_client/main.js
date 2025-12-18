@@ -1,3 +1,7 @@
+/**
+ * Oude hardcoded block data
+
+ */
 // const buildingBlocks = {
 //     A: {
 //         name: "Vrijstaand huis",
@@ -98,12 +102,31 @@
 // };
 
 let buildingBlocks = {};
+let currentBuildingBlock = null;
+let selectedBlockColor = Cesium.Color.GRAY.withAlpha(0.5);
+let placedBuildings = [];
 
+
+/**
+ * Laadt alle BlockTypes van de server en converteert ze naar frontend formaat.
+ * Frontend heeft BlockType data nodig om bouwblok knoppen te maken.
+ * @returns {Promise<boolean>} true als succesvol, false bij fout
+ */
 async function loadBuildingBlocks() {
     try {
+        // Haal BlockTypes op van server
         const response = await fetch('http://localhost:8080/api/blocktypes');
+
+        // Controleer of request succesvol was (HTTP 200-299)
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        // JSON response naar JavaScript array
         const blockTypes = await response.json();
 
+        // Reset buildingBlocks object
+        buildingBlocks = {};
+
+        // Stap 2: Converteer elk BlockType naar frontend formaat
         blockTypes.forEach(block => {
             buildingBlocks[block.blockCode] = {
                 name: block.name,
@@ -119,23 +142,99 @@ async function loadBuildingBlocks() {
             };
         });
 
-        console.log('Building blocks loaded from database.', buildingBlocks);
+        console.log('Building blocks succesvol geladen uit database:', buildingBlocks);
+
+        // Maak UI knoppen met de nieuwe data
+        rebuildBuildingPanel();
+
         return true;
+
     } catch (error) {
-        console.error('Error loading building blocks:', error);
-        return false;
+        console.error('Fout bij laden building blocks:', error);
+
+        // Toon foutmelding aan gebruiker
+        showLoadingMessage();
+
+        return false; // Failure
+    }
+}
+
+/** Toont een bericht in de UI wanneer BlockTypes niet geladen kunnen worden
+ *
+ */
+function showLoadingMessage() {
+    const grid = document.querySelector('#building-ui-container .row.g-2');
+    if (grid) {
+        grid.innerHTML = '<div class="col-12 text-center text-muted py-4">Laden van bouwblokken...<br><small>Controleer of de database online is</small></div>';
     }
 }
 
 
+/** Plant een retry poging na 5 seconden als laden mislukt
+ * Recursief en voorkomt dat handmatig herladen moet worden voor als de database niet bereikbaar is
+ *
+ * evt. max aantal retries toevoegen bij uitbreiding
+ */
+function scheduleRetry() {
+    console.log('Retry over 5 seconden...');
+    setTimeout(async () => {
+        const success = await loadBuildingBlocks();
+        if (!success) scheduleRetry();
+    }, 5000);
+}
 
-let currentBuildingBlock = null;
-let placedBuildings = [];
+/**
+ * Genereert de bouwblok-selectieknoppen in de UI.
+ *
+ * Leeg de huidige grid > loop door buildingBlocks > maar voor elke blok een knop met icoon, naam, code, kleur > voeg onclick handlers toe
+ *
+ * Data driven design; UI past zich aan op basis van de informatie die uit de database gehaald wordt
+ */
+function rebuildBuildingPanel() {
+    const grid = document.querySelector('#building-ui-container .row.g-2');
+    if (!grid) return;
+
+    // Clear bestaande knoppen
+    grid.innerHTML = '';
+
+    // Controleer of er data is
+    if (Object.keys(buildingBlocks).length === 0) {
+        showLoadingMessage();
+        return;
+    }
+
+    // Genereer een knop voor elk bouwblok type
+    Object.keys(buildingBlocks).forEach(key => {
+        const block = buildingBlocks[key];
+
+        // Maak column element via bootstrap grids
+        const col = document.createElement('div');
+        col.className = 'col-6'; // 2 knoppen per rij
+
+        // Maak knop element
+        const button = document.createElement('button');
+        button.className = 'building-btn btn w-100 d-flex flex-column align-items-center gap-2 p-3 rounded-3';
+        button.id = `block-${key}`; // ID
+        button.onclick = () => selectBuildingBlock(key); // Click handler
+
+        // Vul knop met HTML (icoon, code badge, naam, kleur indicator)
+        button.innerHTML = `
+            <div class="btn-icon">${block.icon}</div>
+            <span class="btn-code badge rounded-pill px-2">${key}</span>
+            <div class="btn-label text-center lh-sm">${block.name}</div>
+            <div class="color-indicator" style="background-color: ${block.colorHex};"></div>
+        `;
+
+        col.appendChild(button);
+        grid.appendChild(col);
+    });
+}
 
 // UI SETUP
 function createBuildingUI() {
     const container = createUIContainer();
     document.body.appendChild(container);
+    showLoadingMessage();
 }
 
 function createUIContainer() {
@@ -143,13 +242,8 @@ function createUIContainer() {
     container.id = 'building-ui-container';
     container.className = 'd-flex flex-column gap-3';
 
-    // Bouwblokken Panel
     container.appendChild(createBuildingPanel());
-
-    // Info Panel
     container.appendChild(createInfoPanel());
-
-    // Stats Panel
     container.appendChild(createStatsPanel());
 
     return container;
@@ -168,27 +262,6 @@ function createBuildingPanel() {
 
     const grid = document.createElement('div');
     grid.className = 'row g-2';
-
-    Object.keys(buildingBlocks).forEach(key => {
-        const block = buildingBlocks[key];
-        const col = document.createElement('div');
-        col.className = 'col-6';
-
-        const button = document.createElement('button');
-        button.className = 'building-btn btn w-100 d-flex flex-column align-items-center gap-2 p-3 rounded-3';
-        button.id = `block-${key}`;
-        button.onclick = () => selectBuildingBlock(key);
-
-        button.innerHTML = `
-            <div class="btn-icon">${block.icon}</div>
-            <span class="btn-code badge rounded-pill px-2">${key}</span>
-            <div class="btn-label text-center lh-sm">${block.name}</div>
-            <div class="color-indicator" style="background-color: ${block.colorHex};"></div>
-        `;
-
-        col.appendChild(button);
-        grid.appendChild(col);
-    });
 
     cardBody.appendChild(header);
     cardBody.appendChild(grid);
@@ -265,7 +338,12 @@ function createStatsPanel() {
     return panel;
 }
 
-// BOUWBLOK SELECTIE
+/**
+ * Wordt opgeroepen wanneer gebruiker op bouwblok knop klikt
+ *
+ * Reset alle knoppen > Markeer geselecteerde knop als actief > Update currentBuildingBlock variabele > Toon info panel > Update selectedBlockColor
+ * @param blockType
+ */
 function selectBuildingBlock(blockType) {
     // Reset alle knoppen
     document.querySelectorAll('.building-btn').forEach(btn => {
@@ -551,15 +629,16 @@ window.onload = setup;
 var measure;
 var viewer;
 
-async function setup() {
+function setup() {
     //TODO: Remove if websocket isn't needed
     //connect()
 
-    let loaded = await loadBuildingBlocks();
+    loadBuildingBlocks().then(success => {
+        if (!success) {
+            scheduleRetry();
+        }
+    });
 
-    while (!loaded) {
-        loaded = await loadBuildingBlocks();
-    }
 
     const west = 5.798212900532118;
     const south = 53.19304584690279;
@@ -615,6 +694,9 @@ async function setup() {
         }, 150);
     }
 
+    viewer.imageryLayers.removeAll();
+    viewer.imageryLayers.addImageryProvider(osm);
+
     moveCar();
 
     createPolygonFromXYs([
@@ -665,8 +747,17 @@ function createPoint(worldPosition) {
 
 let drawingMode = "polygon"; //Deze kun je aanpassen als je een GUI-element hiervoor maakt.
 
+/**
+ * Tekent een vorm (lijn of polygon) in de 3D viewer.
+ *
+ * Gebruikt selectedBlockColor voor de kleur ingesteld door selectBuildingBlock
+ *
+ * @param {Cesium.CallbackProperty} positionData - Dynamische posities voor de vorm
+ * @returns {Cesium.Entity} De getekende vorm
+ */
 function drawShape(positionData) {
     let shape;
+
     if (drawingMode === "line") {
         shape = viewer.entities.add({
             polyline: {
@@ -676,13 +767,15 @@ function drawShape(positionData) {
             },
         });
     } else if (drawingMode === "polygon") {
+        // Teken een polygon met de kleur van het geselecteerde bouwblok
         shape = viewer.entities.add({
             polygon: {
                 hierarchy: positionData,
-                material: selectedBlockColor,  // <-- gebruik nieuwe kleur
+                material: selectedBlockColor,  // Gebruikt kleur van geselecteerd BlockType
             },
         });
     }
+
     return shape;
 }
 
@@ -763,14 +856,14 @@ function setupInputActions() {
     handler.setInputAction(function (event) {
         terminateShape();
 
-/*
-        var xhr = new XMLHttpRequest();
+        /*
+                var xhr = new XMLHttpRequest();
 
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.open("POST", "http://localhost:8080/map/create");
-        xhttp.send({"title": "test", "content": "test"});
-*/
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.open("POST", "http://localhost:8080/map/create");
+                xhttp.send({"title": "test", "content": "test"});
+        */
 
 
         //TODO: this should update server and database
