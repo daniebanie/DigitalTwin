@@ -31,6 +31,18 @@ services:
     networks:
       - digitaltwin
 
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - digitaltwin
+    restart: unless-stopped
+
+
 
 
 networks:
@@ -38,3 +50,4 @@ networks:
 
 volumes:
   db-data:
+  ollama-data:

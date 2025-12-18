@@ -433,18 +433,52 @@ function attachImageUploadHandler(formEl) {
 
         const formData = new FormData(formEl);
 
+        // Optional: show loading state
+        setAIResult("Analyzing image...");
+
         fetch('http://localhost:8080/upload', {
             method: 'POST',
             body: formData
-        }).then(res => res.json())
-            .then(data => console.log(data))
-            .catch(error => console.log(error));
-    })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Server response:", data);
+
+                const aiText = data?.aiResponse?.response
+                    || "No AI response received";
+
+                setAIResult(aiText);
+            })
+            .catch(error => {
+                console.error(error);
+                setAIResult("AI analysis failed.");
+            });
+    });
 }
+
+function setAIResult(text) {
+    const resultText = document.getElementById('resultai');
+
+    if (!resultText) {
+        console.error("resultai element not found");
+        return;
+    }
+
+    resultText.textContent = text;
+}
+
+
 
 function createResultsArea() {
     const panel = document.createElement('div');
     panel.id = 'results-area-panel';
+
+    const text = document.createElement('plaintext');
+    text.id = 'resultai';
+    text.className = 'mb-3 fw-bold';
+    text.textContent = 'Resultaten komen hier';
+
+    panel.appendChild(text);
 
     panel.appendChild(createResultsPanel())
 
