@@ -665,6 +665,14 @@ function setup() {
         selectionIndicator: false,
         shadows: true,
         shouldAnimate: true,
+
+        geocoder: false,
+        sceneModePicker: false,
+        navigationHelpButton: false,
+        homeButton: false,
+
+        animation: false,
+        timeline: false,
     });
 
 
