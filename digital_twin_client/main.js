@@ -494,7 +494,7 @@ function createAIInput() {
     const button = document.createElement('button');
     button.id = 'ai-submit-btn';
     button.className = 'btn btn-primary';
-    button.type = 'submit'
+    button.type = 'submit';
     button.textContent = 'Submit';
 
     form.appendChild(input);
@@ -685,34 +685,9 @@ function setup() {
 
     // console.log(viewer.scene.globe.maximumScreenSpaceError);
 
-    const condo1 = createBox(200, 300, 50, 40, 70, 0, "building_tex.jpg");
     measure = createBox(0, 0, 3, 3, 30, 0, Cesium.Color.RED);
 
-    var carX = 230;
-    var carY = 78;
 
-    const car = createBox(carX, carY, 5, 2, 1.5, 0, Cesium.Color.BLUE);
-
-    function moveCar() {
-        carX++;
-        carY += 0.35;
-        moveEntity(car, carX, carY);
-        setTimeout(() => {
-            moveCar();
-        }, 150);
-    }
-
-    viewer.imageryLayers.removeAll();
-    viewer.imageryLayers.addImageryProvider(osm);
-
-    moveCar();
-
-    createPolygonFromXYs([
-        [250, 72], //linksonder-onder
-        [230, 85], //linksonder-boven
-        [510, 185], //midden-links-boven
-        [520, 175] //midden-links-onder
-    ], Cesium.Color.WHITE);
 
     const redPolygon = viewer.entities.add({
         name: "Spoordok",
@@ -730,9 +705,6 @@ function setup() {
         },
     });
 
-    createModel("Cesium_Man.glb", latlonFromXY(220, 70), 0);
-
-    createModel("strange_building.glb", latlonFromXY(240, 70), 0);
 
     setupInputActions();
 
@@ -851,16 +823,58 @@ function setupInputActions() {
         }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
-    // Redraw the shape so it's not dynamic and remove the dynamic shape.
+
     function terminateShape() {
         activeShapePoints.pop();
         drawShape(activeShapePoints);
+        const finalShape = drawShape(activeShapePoints);
+
         viewer.entities.remove(floatingPoint);
         viewer.entities.remove(activeShape);
+
+        // Verstuur polygon data naar server
+        if (currentBuildingBlock && activeShapePoints.length > 0) {
+            sendPolygonToServer(activeShapePoints, currentBuildingBlock, finalShape);
+        }
+
         floatingPoint = undefined;
         activeShape = undefined;
         activeShapePoints = [];
     }
+
+    async function sendPolygonToServer(points, blockCode, entity) {
+        // Converteer Cartesian3 naar lat/lon
+        const coordinates = points.map(point => {
+            const coords = cartesianToLatLon(point);
+            return {
+                latitude: Cesium.Math.toDegrees(coords.lat),
+                longitude: Cesium.Math.toDegrees(coords.lon)
+            };
+        });
+
+        const polygonData = {
+            blockCode: blockCode,
+            coordinates: coordinates,
+            height: entity.polygon.extrudedHeight?._value || 0
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/api/blocks/process', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(polygonData)
+            });
+
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+            const result = await response.json();
+            console.log('Server response:', result);
+
+        } catch (error) {
+            console.error('Fout bij versturen polygon:', error);
+        }
+    }
+
     handler.setInputAction(function (event) {
         terminateShape();
 
