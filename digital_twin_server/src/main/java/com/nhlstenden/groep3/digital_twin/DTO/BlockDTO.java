@@ -1,59 +1,58 @@
-package com.nhlstenden.groep3.digital_twin.Model;
+package com.nhlstenden.groep3.digital_twin.DTO;
 
+import com.nhlstenden.groep3.digital_twin.Model.BlockType;
+import com.nhlstenden.groep3.digital_twin.Model.Map;
 import jakarta.persistence.*;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 
-@Entity
-@Table(name = "blocks")
-public class Block {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BlockDTO {
+    //TODO: make mapper for this DTO and try using it instead of Block object in MapDTO
+
+
+
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "type_id")
     private BlockType blockType;
 
-    @ManyToOne
-    @JoinColumn(name = "map_id", nullable = false)
     private Map map;
 
 /*    //Dit moet nog werkend gemaakt worden
-    @Column(nullable = false)
     private Polygon geometry;*/
 
-    @Column(nullable = false)
     private float height;
 
-    @Column(nullable = false, name = "area_m2")
     private float area;
 
-    @Column(nullable = false, name = "volume_m3")
     private float volume;
 
-    @Column(nullable = false)
     private float calculated_cost;
 
-    @Column(nullable = false)
     private float Calculated_yield;
 
-    @Column(nullable = false)
     private float calculated_residents;
 
-    @Column(nullable = false)
     private String description;
 
-
-    public Block() {}
-
-    public void setId(Long id){
+    public BlockDTO(Long id, BlockType blockType, Map map/*, Polygon geometry*/, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
         this.id = id;
+        this.blockType = blockType;
+        this.map = map;
+        //this.geometry = geometry;
+        this.height = height;
+        this.area = area;
+        this.volume = volume;
+        this.calculated_cost = calculated_cost;
+        Calculated_yield = calculated_yield;
+        this.calculated_residents = calculated_residents;
+        this.description = description;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public BlockType getBlockType() {
