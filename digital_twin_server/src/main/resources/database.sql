@@ -147,6 +147,7 @@ VALUES
 CREATE TABLE `blocks` (
                           `id` INT NOT NULL AUTO_INCREMENT,
                           `type_id` INT NOT NULL,
+                          `map_id` INT NOT NULL,
                           `geometry` GEOMETRY NOT NULL, CHECK (ST_SRID(geometry) = 4326 ),
                           `height` DECIMAL(10,4) DEFAULT NULL,
                           `area_m2` DECIMAL(15,4) DEFAULT NULL,
@@ -159,7 +160,8 @@ CREATE TABLE `blocks` (
                           PRIMARY KEY (`id`),
                           SPATIAL KEY `idx_geometry` (`geometry`),
                           KEY `idx_type_id` (`type_id`),
-                          CONSTRAINT `blocks_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `block_types` (`id`) ON DELETE RESTRICT
+                          CONSTRAINT `blocks_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `block_types` (`id`) ON DELETE RESTRICT,
+                          CONSTRAINT `map_idfk_1` FOREIGN KEY (`map_id`) REFERENCES `maps` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -175,7 +177,7 @@ CREATE TABLE `goals` (
 
 CREATE TABLE `maps` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(100) NOT NULL,
+    `name` VARCHAR(100) NOT NULL UNIQUE,
     `livability` INT NOT NULL,
     `cost` INT NOT NULL,
     `residents` INT NOT NULL,

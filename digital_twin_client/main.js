@@ -1,3 +1,7 @@
+/**
+ * Oude hardcoded block data
+
+ */
 // const buildingBlocks = {
 //     A: {
 //         name: "Vrijstaand huis",
@@ -820,10 +824,8 @@ function setupInputActions() {
 
 
 
+        //TODO: this should update server
 
-
-        //TODO: this should update server and database
-        //sendMessage("test", "test");
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 }
 
@@ -992,24 +994,74 @@ function create3DObject(basePolygon, height) {
 
 
 function post (url, data) {
-    fetch(url, {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    })
+    try {
+        const response =     fetch(url, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        if (!response.ok){
+            throw new Error('Response status:' + response.status);
+        }
+    }catch(error){
+        console.error(error.message)
+    }
+
+}
+
+async function get (url){
+    try {
+        const response = await fetch(url);
+        if (!response.ok){
+            throw new Error('Response status:' + response.status);
+        }
+        const content = await response.json();
+        console.log(content);
+    } catch(error){
+        console.error(error.message)
+    }
+
 }
 
 
 function createMap(){
     let name = prompt("Please enter a name for your map");
-    post("http://localhost:8080/map/create", {title: name, content: "Test"})
-}
-function saveMap(){
-    post("http://localhost:8080/map/save", {title: "save", content: "map"})
+    try {
+        const response = fetch("http://localhost:8080/map/create", {
+            method: "POST",
+            headers: {'Content-Type': 'text/plain'},
+            body: name
+        });
+        if (!response.ok){
+            throw new Error('Response status:' + response.status);
+        }
+    }catch(error){
+        console.error(error.message)
+    }
 }
 
-function loadMap(){
-    post("http://localhost:8080/map/load", {title: "load", content: "map"})
+function saveMap(){
+    post("http://localhost:8080/map/save")
+}
+
+//TODO: This should update all of the variables that are given and build all the blocks
+async function loadMap(){
+    let name = prompt("Please enter the name of the map you want to load");
+    try {
+        const response = await fetch("http://localhost:8080/map/load", {
+            method: "POST",
+            headers: {'Content-Type': 'text/plain'},
+            body: name
+        });
+        const content = await response.json();
+        console.log(content);
+        if (!response.ok){
+            throw new Error('Response status:' + response.status);
+        }
+    }catch(error){
+        console.error(error.message)
+    }
+
 }
 
 //Websocket setup

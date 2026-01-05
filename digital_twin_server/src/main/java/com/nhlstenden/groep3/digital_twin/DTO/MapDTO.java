@@ -1,56 +1,55 @@
-package com.nhlstenden.groep3.digital_twin.Model;
+package com.nhlstenden.groep3.digital_twin.DTO;
 
+import com.nhlstenden.groep3.digital_twin.Model.Block;
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "maps")
-public class Map {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MapDTO {
+
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String name = "default";
 
-    @OneToMany(mappedBy = "map")
-    private List<Block> blocks = new ArrayList<>();
+    private List<BlockDTO> blocks = new ArrayList<>();
 
-    @Column(nullable = false)
+    //private List<Long> blockIds = new ArrayList<>();
+
     private int livability = 0;
 
-    @Column(nullable = false)
     private int cost = 0;
 
-    @Column(nullable = false)
     private int residents = 0;
 
-    @Column(nullable = false)
     private int workplaces = 0;
 
-    @Column(name = "parking_spots", nullable = false)
     private int parkingSpots = 0;
 
-    @Column(nullable = false)
     private int yield = 0;
 
-    @Column(name = "green_percentage", nullable = false)
     private int greenPercentage = 0;
 
-    @Column(name = "workplace_percentage", nullable = false)
     private int workplacePercentage = 0;
 
-/*    @OneToOne
-    @JoinColumn(name = "verdicts")
-    private AgentVerdict verdict;*/
+    public MapDTO() {}
 
-    public Map() {}
+/*    public MapDTO(Long id, String name, List<Long> blockIds, int livability, int cost, int residents, int workplaces, int parkingSpots, int yield, int greenPercentage, int workplacePercentage) {
+        this.id = id;
+        this.name = name;
+        this.blockIds = blockIds;
+        this.livability = livability;
+        this.cost = cost;
+        this.residents = residents;
+        this.workplaces = workplaces;
+        this.parkingSpots = parkingSpots;
+        this.yield = yield;
+        this.greenPercentage = greenPercentage;
+        this.workplacePercentage = workplacePercentage;
+    }*/
 
-    public Map(String name, List<Block> blocks, int livability, int cost, int residents, int workplaces, int parkingSpots, int yield, int greenPercentage, int workplacePercentage) {
+    public MapDTO(Long id, String name, List<BlockDTO> blocks, int livability, int cost, int residents, int workplaces, int parkingSpots, int yield, int greenPercentage, int workplacePercentage) {
+        this.id = id;
         this.name = name;
         this.blocks = blocks;
         this.livability = livability;
@@ -79,20 +78,20 @@ public class Map {
         this.name = name;
     }
 
-    public List<Block> getBlocks() {
+/*    public List<Long> getBlockIds() {
+        return blockIds;
+    }
+
+    public void setBlockIds(List<Long> blockIds) {
+        this.blockIds = blockIds;
+    }*/
+
+    public List<BlockDTO> getBlocks() {
         return blocks;
     }
 
-    public void setBlocks(List<Block> blocks) {
+    public void setBlocks(List<BlockDTO> blocks) {
         this.blocks = blocks;
-    }
-
-    public void addBlock(Block block){
-        blocks.add(block);
-    }
-
-    public void removeBlock(int id){
-        blocks.removeIf(block -> block.getId() == id);
     }
 
     public int getLivability() {
@@ -158,12 +157,4 @@ public class Map {
     public void setWorkplacePercentage(int workplacePercentage) {
         this.workplacePercentage = workplacePercentage;
     }
-
-/*    public AgentVerdict getVerdict() {
-        return verdict;
-    }
-
-    public void setVerdict(AgentVerdict verdict) {
-        this.verdict = verdict;
-    }*/
 }
