@@ -13,9 +13,11 @@ import java.util.List;
 public class MapMapper implements Mapper<MapDTO, Map> {
 
     private final BlockRepository blockRepository;
+    private final BlockMapper blockMapper;
 
-    public MapMapper(BlockRepository blockRepository) {
+    public MapMapper(BlockRepository blockRepository, BlockMapper blockMapper) {
         this.blockRepository = blockRepository;
+        this.blockMapper = blockMapper;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class MapMapper implements Mapper<MapDTO, Map> {
                 .map(Block::getId)
                 .toList();
         dto.setBlockIds(blockIds);*/
-        dto.setBlocks(map.getBlocks());
+        dto.setBlocks(blockMapper.toDTO(map.getBlocks()));
         dto.setLivability(map.getLivability());
         dto.setCost(map.getCost());
         dto.setResidents(map.getResidents());
@@ -49,7 +51,7 @@ public class MapMapper implements Mapper<MapDTO, Map> {
         return new Map(
                 mapDTO.getName(),
                 //blocks,
-                mapDTO.getBlocks(),
+                blockMapper.toEntity(mapDTO.getBlocks()),
                 mapDTO.getLivability(),
                 mapDTO.getCost(),
                 mapDTO.getResidents(),

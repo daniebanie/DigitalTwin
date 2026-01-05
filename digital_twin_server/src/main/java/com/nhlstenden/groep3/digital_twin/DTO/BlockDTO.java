@@ -6,15 +6,12 @@ import jakarta.persistence.*;
 import org.locationtech.jts.geom.Polygon;
 
 public class BlockDTO {
-    //TODO: make mapper for this DTO and try using it instead of Block object in MapDTO
-
-
 
     private Long id;
 
     private BlockType blockType;
 
-    private Map map;
+    private Long mapId;
 
 /*    //Dit moet nog werkend gemaakt worden
     private Polygon geometry;*/
@@ -27,22 +24,24 @@ public class BlockDTO {
 
     private float calculated_cost;
 
-    private float Calculated_yield;
+    private float calculated_yield;
 
     private float calculated_residents;
 
     private String description;
 
-    public BlockDTO(Long id, BlockType blockType, Map map/*, Polygon geometry*/, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
+    public BlockDTO(){}
+
+    public BlockDTO(Long id, BlockType blockType, Long mapId/*, Polygon geometry*/, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
         this.id = id;
         this.blockType = blockType;
-        this.map = map;
+        this.mapId = mapId;
         //this.geometry = geometry;
         this.height = height;
         this.area = area;
         this.volume = volume;
         this.calculated_cost = calculated_cost;
-        Calculated_yield = calculated_yield;
+        this.calculated_yield = calculated_yield;
         this.calculated_residents = calculated_residents;
         this.description = description;
     }
@@ -63,12 +62,12 @@ public class BlockDTO {
         this.blockType = blockType;
     }
 
-    public Map getMap() {
-        return map;
+    public Long getMapId() {
+        return mapId;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setMapId(Long mapId) {
+        this.mapId = mapId;
     }
 
 /*    public Polygon getGeometry() {
@@ -112,11 +111,11 @@ public class BlockDTO {
     }
 
     public float getCalculated_yield() {
-        return Calculated_yield;
+        return calculated_yield;
     }
 
     public void setCalculated_yield(float calculated_yield) {
-        Calculated_yield = calculated_yield;
+        calculated_yield = calculated_yield;
     }
 
     public float getCalculated_residents() {

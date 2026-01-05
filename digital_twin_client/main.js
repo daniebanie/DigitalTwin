@@ -643,18 +643,8 @@ function setupInputActions() {
     handler.setInputAction(function (event) {
         terminateShape();
 
-        /*
-                var xhr = new XMLHttpRequest();
+        //TODO: this should update server
 
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.open("POST", "http://localhost:8080/map/create");
-                xhttp.send({"title": "test", "content": "test"});
-        */
-
-
-        //TODO: this should update server and database
-        //sendMessage("test", "test");
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 }
 
