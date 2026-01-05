@@ -26,13 +26,13 @@ public class BlockDTO {
 
     private float calculated_yield;
 
-    private float calculated_residents;
+    private int calculated_residents;
 
     private String description;
 
     public BlockDTO(){}
 
-    public BlockDTO(Long id, BlockType blockType, Long mapId/*, Polygon geometry*/, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
+    public BlockDTO(Long id, BlockType blockType, Long mapId/*, Polygon geometry*/, float height, float area, float volume, float calculated_cost, float calculated_yield, int calculated_residents, String description) {
         this.id = id;
         this.blockType = blockType;
         this.mapId = mapId;
@@ -118,11 +118,11 @@ public class BlockDTO {
         calculated_yield = calculated_yield;
     }
 
-    public float getCalculated_residents() {
+    public int getCalculated_residents() {
         return calculated_residents;
     }
 
-    public void setCalculated_residents(float calculated_residents) {
+    public void setCalculated_residents(int calculated_residents) {
         this.calculated_residents = calculated_residents;
     }
 
