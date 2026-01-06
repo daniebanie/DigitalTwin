@@ -147,6 +147,7 @@ VALUES
 CREATE TABLE `blocks` (
                           `id` INT NOT NULL AUTO_INCREMENT,
                           `type_id` INT NOT NULL,
+                          `map_id` INT NOT NULL,
                           `geometry` GEOMETRY NOT NULL, CHECK (ST_SRID(geometry) = 4326 ),
                           `height` DECIMAL(10,4) DEFAULT NULL,
                           `area_m2` DECIMAL(15,4) DEFAULT NULL,
@@ -159,9 +160,12 @@ CREATE TABLE `blocks` (
                           PRIMARY KEY (`id`),
                           SPATIAL KEY `idx_geometry` (`geometry`),
                           KEY `idx_type_id` (`type_id`),
-                          CONSTRAINT `blocks_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `block_types` (`id`) ON DELETE RESTRICT
+                          CONSTRAINT `blocks_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `block_types` (`id`) ON DELETE RESTRICT,
+                          CONSTRAINT `map_idfk_1` FOREIGN KEY (`map_id`) REFERENCES `maps` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+# Ik denk dat dit beter past als we dit gelijk in de maps tabel gooien aangezien dit verder nergens iets doet - Ian
 CREATE TABLE `goals` (
                          `id` INT NOT NULL AUTO_INCREMENT,
                          `name` VARCHAR(100) NOT NULL,
@@ -169,6 +173,20 @@ CREATE TABLE `goals` (
                          `description` TEXT,
                          PRIMARY KEY (`id`),
                          UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `maps` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL UNIQUE,
+    `livability` INT NOT NULL,
+    `cost` INT NOT NULL,
+    `residents` INT NOT NULL,
+    `workplaces` INT NOT NULL,
+    `parking_spots` INT NOT NULL,
+    `yield` INT NOT NULL,
+    `green_percentage` INT NOT NULL,
+    `workplace_percentage` INT NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `quality_scores` (

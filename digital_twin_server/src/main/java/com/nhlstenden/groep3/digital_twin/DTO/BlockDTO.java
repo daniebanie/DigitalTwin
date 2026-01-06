@@ -1,56 +1,41 @@
-package com.nhlstenden.groep3.digital_twin.Model;
+package com.nhlstenden.groep3.digital_twin.DTO;
 
+import com.nhlstenden.groep3.digital_twin.Model.BlockType;
+import com.nhlstenden.groep3.digital_twin.Model.Map;
 import jakarta.persistence.*;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 
-@Entity
-@Table(name = "blocks")
-public class Block {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BlockDTO {
+
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "type_id")
     private BlockType blockType;
 
-    @ManyToOne
-    @JoinColumn(name = "map_id", nullable = false)
-    private Map map;
+    private Long mapId;
 
 /*    //Dit moet nog werkend gemaakt worden
-    @Column(nullable = false)
     private Polygon geometry;*/
 
-    @Column(nullable = false)
     private float height;
 
-    @Column(nullable = false, name = "area_m2")
     private float area;
 
-    @Column(nullable = false, name = "volume_m3")
     private float volume;
 
-    @Column(nullable = false)
     private float calculated_cost;
 
-    @Column(nullable = false)
     private float calculated_yield;
 
-    @Column(nullable = false)
     private float calculated_residents;
 
-    @Column(nullable = false)
     private String description;
 
+    public BlockDTO(){}
 
-    public Block() {}
-
-    public Block(BlockType blockType, Map map, /*Polygon geometry,*/ float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
+    public BlockDTO(Long id, BlockType blockType, Long mapId/*, Polygon geometry*/, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
+        this.id = id;
         this.blockType = blockType;
-        this.map = map;
+        this.mapId = mapId;
         //this.geometry = geometry;
         this.height = height;
         this.area = area;
@@ -61,12 +46,12 @@ public class Block {
         this.description = description;
     }
 
-    public void setId(Long id){
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public BlockType getBlockType() {
@@ -77,12 +62,12 @@ public class Block {
         this.blockType = blockType;
     }
 
-    public Map getMap() {
-        return map;
+    public Long getMapId() {
+        return mapId;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setMapId(Long mapId) {
+        this.mapId = mapId;
     }
 
 /*    public Polygon getGeometry() {
@@ -130,7 +115,7 @@ public class Block {
     }
 
     public void setCalculated_yield(float calculated_yield) {
-        this.calculated_yield = calculated_yield;
+        calculated_yield = calculated_yield;
     }
 
     public float getCalculated_residents() {

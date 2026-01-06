@@ -5,7 +5,10 @@ public class Goals {
     int cost;
     int residents;
     int workplaces;
+    int parkingSpots;
     int yield;
+    int greenPercentage;
+    int workplacePercentage;
 
     public Goals(int livability, int cost, int residents, int workplaces, int yield) {
         this.livability = livability;
