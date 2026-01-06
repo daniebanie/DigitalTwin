@@ -22,7 +22,7 @@ public class AIController {
         String requestBody = """
         {
           "model": "llava",
-          "prompt": "Describe what you see in this image",
+          "prompt": "Describe what you see in this image in 20 words or less.",
           "images": ["%s"]
         }
         """.formatted(base64Image);

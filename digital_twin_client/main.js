@@ -232,17 +232,34 @@ function rebuildBuildingPanel() {
 
 // UI SETUP
 function createBuildingUI() {
-    const container = createUIContainer();
+    const container = createBuildingUIContainer("left");
     document.body.appendChild(container);
     showLoadingMessage();
 }
 
-function createUIContainer() {
+function createAIUI() {
+    const container2 = createUIAIContainer("right");
+    document.body.appendChild(container2);
+    showLoadingMessage();
+}
+
+function createBuildingUIContainer(Position) {
     const container = document.createElement('div');
     container.id = 'building-ui-container';
-    container.className = 'd-flex flex-column gap-3';
+    container.className = 'd-flex flex-column gap-3 ' + Position;
 
     container.appendChild(createBuildingPanel());
+    container.appendChild(createInfoPanel());
+    container.appendChild(createStatsPanel());
+
+    return container;
+}
+function createAIUIContainer(Position) {
+    const container = document.createElement('div');
+    container.id = 'building-ui-container';
+    container.className = 'd-flex flex-column gap-3 ' + Position;
+
+    container.appendChild(createUIAIContainer());
     container.appendChild(createInfoPanel());
     container.appendChild(createStatsPanel());
 
@@ -415,15 +432,15 @@ function updateInfoPanel(blockType) {
 }
 
 
-function createAIUI() {
+function createAIUI2() {
     const container = createUIAIContainer();
     document.body.appendChild(container);
 }
 
-function createUIAIContainer() {
+function createUIAIContainer(Position) {
     const container = document.createElement('div');
     container.id = 'ai-ui-container';
-    container.className = 'd-flex flex-column gap-3';
+    container.className = 'building-ui-container d-flex flex-column gap-3 ' + Position;
 
     // Hide/Show AI Panel Button
     container.appendChild(createAIButton());
@@ -559,7 +576,6 @@ function createResultsArea() {
     panel.appendChild(text);
 
     panel.appendChild(createResultsPanel())
-
     return panel;
 }
 
@@ -737,6 +753,7 @@ function setup() {
     setupInputActions();
 
     createBuildingUI();
+    createBuildingUI2();
     console.log('UI should be created now');
 
 }
