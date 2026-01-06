@@ -40,7 +40,7 @@ public class FileUploadController {
             String requestBody = """
             {
               "model": "llava",
-              "prompt": "Describe what you see in this image",
+              "prompt": "Describe what you see in this image in 20 words or less",
               "images": ["%s"],
               "stream": false
             }
