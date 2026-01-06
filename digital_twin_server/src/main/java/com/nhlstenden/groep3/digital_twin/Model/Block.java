@@ -25,6 +25,9 @@ public class Block {
     private Polygon geometry;*/
 
     @Column(nullable = false)
+    private String coords;
+
+    @Column(nullable = false)
     private float height;
 
     @Column(nullable = false, name = "area_m2")
@@ -42,23 +45,20 @@ public class Block {
     @Column(nullable = false)
     private float calculated_residents;
 
-    @Column(nullable = false)
-    private String description;
 
 
     public Block() {}
 
-    public Block(BlockType blockType, Map map, /*Polygon geometry,*/ float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
+    public Block(BlockType blockType, Map map, String coords, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
         this.blockType = blockType;
         this.map = map;
-        //this.geometry = geometry;
+        this.coords = coords;
         this.height = height;
         this.area = area;
         this.volume = volume;
         this.calculated_cost = calculated_cost;
         this.calculated_yield = calculated_yield;
         this.calculated_residents = calculated_residents;
-        this.description = description;
     }
 
     public void setId(Long id){
@@ -85,13 +85,13 @@ public class Block {
         this.map = map;
     }
 
-/*    public Polygon getGeometry() {
-        return geometry;
+    public String getCoords() {
+        return coords;
     }
 
-    public void setGeometry(Polygon geometry) {
-        this.geometry = geometry;
-    }*/
+    public void setCoords(String coords) {
+        this.coords = coords;
+    }
 
     public float getHeight() {
         return height;
@@ -141,11 +141,4 @@ public class Block {
         this.calculated_residents = calculated_residents;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

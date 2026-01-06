@@ -7,6 +7,7 @@ import com.nhlstenden.groep3.digital_twin.Model.Block;
 import com.nhlstenden.groep3.digital_twin.Model.BlockType;
 import com.nhlstenden.groep3.digital_twin.Model.Map;
 import com.nhlstenden.groep3.digital_twin.Model.Message;
+import com.nhlstenden.groep3.digital_twin.Repository.BlockRepository;
 import com.nhlstenden.groep3.digital_twin.Repository.BlockTypeRepository;
 import com.nhlstenden.groep3.digital_twin.Repository.MapRepository;
 import jakarta.servlet.ServletContext;
@@ -26,6 +27,7 @@ import java.util.List;
 @RequestMapping("/map")
 public class MapController {
 
+    private final BlockRepository blockRepository;
     private Map currentMap = new Map();
     private final MapMapper mapMapper;
     private final MapRepository mapRepository;
@@ -33,26 +35,31 @@ public class MapController {
     //For testing
     private final BlockTypeRepository blockTypeRepository;
 
-    public MapController(MapRepository mapRepository, MapMapper mapMapper, BlockTypeRepository blockTypeRepository) {
+    public MapController(MapRepository mapRepository, MapMapper mapMapper, BlockTypeRepository blockTypeRepository, BlockRepository blockRepository) {
         this.mapRepository = mapRepository;
         this.blockTypeRepository = blockTypeRepository;
         this.mapMapper = mapMapper;
+        this.blockRepository = blockRepository;
     }
 
 
     @PostMapping("/create")
-    public void createMap(@RequestBody String name) {
+    public ResponseEntity<String> createMap(@RequestBody String name) {
         System.out.println("Creating Map");
-        System.out.println(name);
-        currentMap = new Map();
-        currentMap.setName(name);
+        Map map = new Map();
+        map.setName(name);
+        mapRepository.save(map);
+        System.out.println(map.getName());
+        System.out.println(map.getId());
+        return ResponseEntity.ok("{\"id\" : \"" + map.getId().toString() + "\"}");
     }
 
+    //TODO: can probably be removed
     @PostMapping("/save")
-    public void saveMap(@RequestBody Message message) {
+    public void saveMap(@RequestBody Long mapId) {
         System.out.println("Saving Map");
-        System.out.println(currentMap.getName());
-        mapRepository.save(currentMap);
+        Map map = mapRepository.findById(mapId).orElseThrow();
+        System.out.println(map.getBlocks());
     }
 
     @PostMapping("/load")
@@ -85,7 +92,6 @@ public class MapController {
             block.setCalculated_cost(40);
             block.setCalculated_yield(50);
             block.setCalculated_residents(60);
-            block.setDescription("test");
 
             block.setHeight(i+10);
             addBlockToMap(block);
@@ -104,6 +110,10 @@ public class MapController {
 
     public void addBlockToMap(Block block){
         currentMap.addBlock(block);
+    }
+
+    public Long getCurrentMapId() {
+        return currentMap.getId();
     }
 }
 
