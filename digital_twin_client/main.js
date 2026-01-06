@@ -232,17 +232,34 @@ function rebuildBuildingPanel() {
 
 // UI SETUP
 function createBuildingUI() {
-    const container = createUIContainer();
+    const container = createBuildingUIContainer("left");
     document.body.appendChild(container);
     showLoadingMessage();
 }
 
-function createUIContainer() {
+function createAIUI() {
+    const container2 = createUIAIContainer("right");
+    document.body.appendChild(container2);
+    showLoadingMessage();
+}
+
+function createBuildingUIContainer(Position) {
     const container = document.createElement('div');
     container.id = 'building-ui-container';
-    container.className = 'd-flex flex-column gap-3';
+    container.className = 'd-flex flex-column gap-3 ' + Position;
 
     container.appendChild(createBuildingPanel());
+    container.appendChild(createInfoPanel());
+    container.appendChild(createStatsPanel());
+
+    return container;
+}
+function createAIUIContainer(Position) {
+    const container = document.createElement('div');
+    container.id = 'building-ui-container';
+    container.className = 'd-flex flex-column gap-3 ' + Position;
+
+    container.appendChild(createUIAIContainer());
     container.appendChild(createInfoPanel());
     container.appendChild(createStatsPanel());
 
@@ -415,6 +432,214 @@ function updateInfoPanel(blockType) {
 }
 
 
+function createAIUI2() {
+    const container = createUIAIContainer();
+    document.body.appendChild(container);
+}
+
+function createUIAIContainer(Position) {
+    const container = document.createElement('div');
+    container.id = 'ai-ui-container';
+    container.className = 'building-ui-container d-flex flex-column gap-3 ' + Position;
+
+    // Hide/Show AI Panel Button
+    container.appendChild(createAIButton());
+    // AI Panel
+    container.appendChild(createAIPanel());
+
+    return container;
+}
+
+function createAIPanel() {
+    const panel = document.createElement('div');
+    panel.id = 'ai-panel';
+    panel.className = 'ui-panel card shadow-sm ai-panel';
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body p-3';
+
+    const header = document.createElement('h3');
+    header.className = 'panel-header h5 mb-3 fw-bold';
+    header.textContent = 'AI panel';
+
+    cardBody.appendChild(header);
+    panel.appendChild(cardBody);
+
+    panel.appendChild(createInputArea());
+    panel.appendChild(createResultsArea());
+
+    return panel;
+}
+
+function createInputArea() {
+    const panel = document.createElement('div');
+    panel.id = 'input-area-panel';
+    panel.appendChild(createAIInput());
+
+    return panel;
+}
+
+function createAIButton() {
+    const button = document.createElement('button');
+    button.id = 'ai-toggle-btn';
+    button.className = 'btn btn-primary';
+    button.textContent = 'AI Panel';
+
+    button.onclick = () => {
+        const panel = document.getElementById('ai-panel');
+        panel.style.display = (panel.style.display === 'none' || panel.style.display === '')
+            ? 'block'
+            : 'none';
+    };
+
+    return button;
+}
+
+function createAIInput() {
+    const form = document.createElement('form');
+    form.method = 'post';
+    form.enctype = 'multipart/form-data';
+
+    const input = document.createElement('input');
+    input.id = 'ai-input';
+    input.className = 'input input-primary';
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.name = 'image';
+
+
+    const button = document.createElement('button');
+    button.id = 'ai-submit-btn';
+    button.className = 'btn btn-primary';
+    button.type = 'submit'
+    button.textContent = 'Submit';
+
+    form.appendChild(input);
+    form.appendChild(button);
+
+    attachImageUploadHandler(form);
+
+    return form;
+}
+
+function attachImageUploadHandler(formEl) {
+    formEl.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const formData = new FormData(formEl);
+
+        // Optional: show loading state
+        setAIResult("Analyzing image...");
+
+        fetch('http://localhost:8080/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Server response:", data);
+
+                const aiText = data?.aiResponse?.response
+                    || "No AI response received";
+
+                setAIResult(aiText);
+            })
+            .catch(error => {
+                console.error(error);
+                setAIResult("AI analysis failed.");
+            });
+    });
+}
+
+function setAIResult(text) {
+    const resultText = document.getElementById('resultai');
+
+    if (!resultText) {
+        console.error("resultai element not found");
+        return;
+    }
+
+    resultText.textContent = text;
+}
+
+
+
+function createResultsArea() {
+    const panel = document.createElement('div');
+    panel.id = 'results-area-panel';
+
+    const text = document.createElement('plaintext');
+    text.id = 'resultai';
+    text.className = 'mb-3 fw-bold';
+    text.textContent = 'Resultaten komen hier';
+
+    panel.appendChild(text);
+
+    panel.appendChild(createResultsPanel())
+    return panel;
+}
+
+function createResultsPanel() {
+    const panel = document.createElement('div');
+    panel.id = 'test';
+
+    const header = document.createElement('h3');
+    header.className = 'panel-header h5 mb-3 fw-bold';
+    header.textContent = 'Resultaten';
+
+    const grid = document.createElement('div');
+    grid.className = 'row g-2';
+
+    Object.keys(resultBlocks).forEach(key => {
+        const result = resultBlocks[key];
+
+        const col = document.createElement('div');
+        col.id = 'result-block';
+        col.className = 'col-6 text-center';
+
+        const name = document.createElement('div');
+        name.textContent = result.name + " / " + result.uploadedOn;
+
+        const img = document.createElement('img');
+        img.src = result.route; // <-- FIX PATH
+        img.alt = 'result';
+        img.style.width = '100%';
+
+        const resultText = document.createElement('div');
+        resultText.textContent = result.result;
+
+
+        col.appendChild(name);
+        col.appendChild(img);
+        col.appendChild(resultText);
+        grid.appendChild(col);
+    });
+
+
+
+    panel.appendChild(header);
+    panel.appendChild(grid);
+
+    return panel;
+}
+
+
+const resultBlocks = {
+    1: {
+        name: "imageno1",
+        route: `Cesium-1.135/Screenshots/Schermafbeelding2025-11-27221716.png`,
+        uploadedOn: "10-12-2025",
+        result: "Dit is een mooi minecraft huis"
+
+    },
+    2: {
+        name: "imageno1",
+        route: `Cesium-1.135/Screenshots/Schermafbeelding2025-11-27221716.png`,
+        uploadedOn: "10-12-2025",
+        result: "Dit is een mooi minecraft huis"
+    }
+};
+
 window.onload = setup;
 
 var measure;
@@ -456,8 +681,20 @@ function setup() {
         selectionIndicator: false,
         shadows: true,
         shouldAnimate: true,
+
+        geocoder: false,
+        sceneModePicker: false,
+        navigationHelpButton: false,
+        homeButton: false,
+
+        animation: false,
+        timeline: false,
     });
 
+
+    // viewer.imageryLayers.removeAll();
+    createAIUI();
+    viewer.imageryLayers.addImageryProvider(osm);
 
     //Improves tile quality
     viewer.scene.globe.maximumScreenSpaceError = 1;
@@ -516,6 +753,7 @@ function setup() {
     setupInputActions();
 
     createBuildingUI();
+    createBuildingUI2();
     console.log('UI should be created now');
 
 }

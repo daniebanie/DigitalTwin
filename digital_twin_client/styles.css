@@ -2,13 +2,28 @@
 /** Container voor alle UI panels (bouwblokken, info, statistieken)
 */
 
-#building-ui-container {
+.building-ui-container {
     position: absolute;
     top: 20px;
-    left: 25px;
     max-height: calc(100vh - 40px);
     overflow-y: auto;
     z-index: 1000;
+}
+
+#building-ui-container {
+    position: absolute;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.left {
+    left: 25px;
+}
+
+.right {
+    right: 25px;
 }
 
 /** Breedte van de scrollbar
@@ -158,4 +173,25 @@
  */
 .stat-icon svg {
     fill: currentColor;
+}
+#ai-ui-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;        /* makes it sit above Cesium */
+    pointer-events: auto; /* allows clicking inside */
+    max-width: 350px;
+}
+/*#ai-panel {*/
+/*    background: rgba(0, 0, 0, 0.65);*/
+/*    color: white;*/
+/*    border-radius: 10px;*/
+/*    padding: 12px;*/
+/*}*/
+
+#result-block {
+    background: rgba(0, 0, 0, 0.65);
+    color: white;
+    border-radius: 10px;
+    padding: 12px;
 }
