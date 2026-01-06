@@ -13,16 +13,20 @@ import java.util.Objects;
 public class InformationController {
     private int currentLivability = 0;
     private float currentCost = 0;
+    private float currentYield = 0;
     private int currentWorkplaces = 0;
     private int currentResidents = 0;
     private int currentParkingSpots = 0;
     private float currentTotalVolume = 0;
+    private float currentTotalArea = 0;
     private float currentGreenPercentage = 0;
     private float currentWorkplacePercentage = 0;
 
     public void updateValuesFromBlock(Block block){
         currentLivability = currentLivability + block.getBlockType().getLivabilityPoints();
         currentCost = currentCost + block.getCalculated_cost();
+        currentYield = currentYield + block.getCalculated_yield();
+        currentTotalArea = currentTotalArea + block.getArea();
         switch (block.getBlockType().getBlockCode()){
             case "A", "B", "C":
                 currentResidents = currentResidents + block.getCalculated_residents();
@@ -51,6 +55,10 @@ public class InformationController {
         return currentCost;
     }
 
+    public float getCurrentYield() {
+        return  currentYield;
+    }
+
     public int getCurrentWorkplaces() {
         return currentWorkplaces;
     }
@@ -65,6 +73,10 @@ public class InformationController {
 
     public float getCurrentTotalVolume() {
         return currentTotalVolume;
+    }
+
+    public float getCurrentTotalArea() {
+        return currentTotalArea;
     }
 
     public float getCurrentGreenPercentage() {
