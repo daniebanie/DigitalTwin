@@ -232,17 +232,34 @@ function rebuildBuildingPanel() {
 
 // UI SETUP
 function createBuildingUI() {
-    const container = createUIContainer();
+    const container = createBuildingUIContainer("left");
     document.body.appendChild(container);
     showLoadingMessage();
 }
 
-function createUIContainer() {
+function createAIUI() {
+    const container2 = createUIAIContainer("right");
+    document.body.appendChild(container2);
+    showLoadingMessage();
+}
+
+function createBuildingUIContainer(Position) {
     const container = document.createElement('div');
     container.id = 'building-ui-container';
-    container.className = 'd-flex flex-column gap-3';
+    container.className = 'd-flex flex-column gap-3 ' + Position;
 
     container.appendChild(createBuildingPanel());
+    container.appendChild(createInfoPanel());
+    container.appendChild(createStatsPanel());
+
+    return container;
+}
+function createAIUIContainer(Position) {
+    const container = document.createElement('div');
+    container.id = 'building-ui-container';
+    container.className = 'd-flex flex-column gap-3 ' + Position;
+
+    container.appendChild(createUIAIContainer());
     container.appendChild(createInfoPanel());
     container.appendChild(createStatsPanel());
 
@@ -415,15 +432,15 @@ function updateInfoPanel(blockType) {
 }
 
 
-function createAIUI() {
+function createAIUI2() {
     const container = createUIAIContainer();
     document.body.appendChild(container);
 }
 
-function createUIAIContainer() {
+function createUIAIContainer(Position) {
     const container = document.createElement('div');
     container.id = 'ai-ui-container';
-    container.className = 'd-flex flex-column gap-3';
+    container.className = 'building-ui-container d-flex flex-column gap-3 ' + Position;
 
     // Hide/Show AI Panel Button
     container.appendChild(createAIButton());
@@ -511,21 +528,54 @@ function attachImageUploadHandler(formEl) {
 
         const formData = new FormData(formEl);
 
+        // Optional: show loading state
+        setAIResult("Analyzing image...");
+
         fetch('http://localhost:8080/upload', {
             method: 'POST',
             body: formData
-        }).then(res => res.json())
-            .then(data => console.log(data))
-            .catch(error => console.log(error));
-    })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Server response:", data);
+
+                const aiText = data?.aiResponse?.response
+                    || "No AI response received";
+
+                setAIResult(aiText);
+            })
+            .catch(error => {
+                console.error(error);
+                setAIResult("AI analysis failed.");
+            });
+    });
 }
+
+function setAIResult(text) {
+    const resultText = document.getElementById('resultai');
+
+    if (!resultText) {
+        console.error("resultai element not found");
+        return;
+    }
+
+    resultText.textContent = text;
+}
+
+
 
 function createResultsArea() {
     const panel = document.createElement('div');
     panel.id = 'results-area-panel';
 
-    panel.appendChild(createResultsPanel())
+    const text = document.createElement('plaintext');
+    text.id = 'resultai';
+    text.className = 'mb-3 fw-bold';
+    text.textContent = 'Resultaten komen hier';
 
+    panel.appendChild(text);
+
+    panel.appendChild(createResultsPanel())
     return panel;
 }
 
@@ -631,6 +681,14 @@ function setup() {
         selectionIndicator: false,
         shadows: true,
         shouldAnimate: true,
+
+        geocoder: false,
+        sceneModePicker: false,
+        navigationHelpButton: false,
+        homeButton: false,
+
+        animation: false,
+        timeline: false,
     });
 
 
@@ -695,6 +753,7 @@ function setup() {
     setupInputActions();
 
     createBuildingUI();
+    createBuildingUI2();
     console.log('UI should be created now');
 
 }
@@ -821,8 +880,6 @@ function setupInputActions() {
     }
     handler.setInputAction(function (event) {
         terminateShape();
-
-
 
         //TODO: this should update server
 
