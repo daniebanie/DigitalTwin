@@ -1,31 +1,47 @@
 package com.nhlstenden.groep3.digital_twin.Mapper;
 
+import com.nhlstenden.groep3.digital_twin.DTO.BlockDTO;
+import com.nhlstenden.groep3.digital_twin.DTO.BlockLoadDTO;
 import com.nhlstenden.groep3.digital_twin.DTO.MapDTO;
 import com.nhlstenden.groep3.digital_twin.Model.Block;
 import com.nhlstenden.groep3.digital_twin.Model.Map;
 import com.nhlstenden.groep3.digital_twin.Repository.BlockRepository;
+import org.locationtech.jts.io.geojson.GeoJsonWriter;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class MapMapper implements Mapper<MapDTO, Map> {
+public class MapMapper{
 
     private final BlockRepository blockRepository;
     private final BlockMapper blockMapper;
+
+    GeoJsonWriter writer = new GeoJsonWriter();
+    ObjectMapper mapper = new ObjectMapper();
+
 
     public MapMapper(BlockRepository blockRepository, BlockMapper blockMapper) {
         this.blockRepository = blockRepository;
         this.blockMapper = blockMapper;
     }
 
-    @Override
     public MapDTO toDTO(Map map) {
         MapDTO dto = new MapDTO();
         dto.setId(map.getId());
         dto.setName(map.getName());
-        dto.setBlocks(blockMapper.toDTO(map.getBlocks()));
+        List<BlockLoadDTO> blocks = new ArrayList<>();
+        for (Block block : map.getBlocks()){
+            BlockLoadDTO blockDTO = new BlockLoadDTO();
+            blockDTO.setBlockType(block.getBlockType());
+            blockDTO.setMapId(block.getMap().getId());
+            blockDTO.setGeometry(mapper.readTree(writer.write(block.getGeometry())));
+            blockDTO.setHeight(block.getHeight());
+            blocks.add(blockDTO);
+        }
+        dto.setBlocks(blocks);
         dto.setLivability(map.getLivability());
         dto.setCost(map.getCost());
         dto.setResidents(map.getResidents());
@@ -37,20 +53,4 @@ public class MapMapper implements Mapper<MapDTO, Map> {
         return dto;
     }
 
-    @Override
-    public Map toEntity(MapDTO mapDTO) {
-        return new Map(
-                mapDTO.getName(),
-                //blocks,
-                blockMapper.toEntity(mapDTO.getBlocks()),
-                mapDTO.getLivability(),
-                mapDTO.getCost(),
-                mapDTO.getResidents(),
-                mapDTO.getWorkplaces(),
-                mapDTO.getParkingSpots(),
-                mapDTO.getYield(),
-                mapDTO.getGreenPercentage(),
-                mapDTO.getWorkplacePercentage()
-        );
-    }
 }

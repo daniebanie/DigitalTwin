@@ -27,19 +27,13 @@ import java.util.List;
 @RequestMapping("/map")
 public class MapController {
 
-    private final BlockRepository blockRepository;
-    private Map currentMap = new Map();
     private final MapMapper mapMapper;
     private final MapRepository mapRepository;
 
-    //For testing
-    private final BlockTypeRepository blockTypeRepository;
 
-    public MapController(MapRepository mapRepository, MapMapper mapMapper, BlockTypeRepository blockTypeRepository, BlockRepository blockRepository) {
+    public MapController(MapRepository mapRepository, MapMapper mapMapper) {
         this.mapRepository = mapRepository;
-        this.blockTypeRepository = blockTypeRepository;
         this.mapMapper = mapMapper;
-        this.blockRepository = blockRepository;
     }
 
 
@@ -64,33 +58,8 @@ public class MapController {
 
     @PostMapping("/load")
     public ResponseEntity<MapDTO> loadMap(@RequestBody String name){
-        //For testing
-
-
-        for (int i = 0; i < 5; i++) {
-            Block block = new Block();
-            block.setId((long) i);
-            block.setBlockType(blockTypeRepository.findByBlockCode("A").orElse(null));
-            block.setMap(currentMap);
-            block.setArea(20);
-            block.setVolume(30);
-            block.setCalculated_cost(40);
-            block.setCalculated_yield(50);
-            block.setCalculated_residents(60);
-
-            block.setHeight(i+10);
-            addBlockToMap(block);
-        }
-        for(Block blocks: currentMap.getBlocks()){
-            System.out.println(blocks.getId());
-            System.out.println(blocks.getHeight());
-        }
-        return ResponseEntity.ok(mapMapper.toDTO(currentMap));
-
+        return ResponseEntity.ok(mapMapper.toDTO(mapRepository.findByName(name).orElseThrow()));
     }
 
-    public void addBlockToMap(Block block){
-        currentMap.addBlock(block);
-    }
 }
 

@@ -704,34 +704,34 @@ function setup() {
 
     // console.log(viewer.scene.globe.maximumScreenSpaceError);
 
-    const condo1 = createBox(200, 300, 50, 40, 70, 0, "building_tex.jpg");
-    measure = createBox(0, 0, 3, 3, 30, 0, Cesium.Color.RED);
+    // const condo1 = createBox(200, 300, 50, 40, 70, 0, "building_tex.jpg");
+    // measure = createBox(0, 0, 3, 3, 30, 0, Cesium.Color.RED);
 
-    var carX = 230;
-    var carY = 78;
-
-    const car = createBox(carX, carY, 5, 2, 1.5, 0, Cesium.Color.BLUE);
-
-    function moveCar() {
-        carX++;
-        carY += 0.35;
-        moveEntity(car, carX, carY);
-        setTimeout(() => {
-            moveCar();
-        }, 150);
-    }
+    // var carX = 230;
+    // var carY = 78;
+    //
+    // const car = createBox(carX, carY, 5, 2, 1.5, 0, Cesium.Color.BLUE);
+    //
+    // function moveCar() {
+    //     carX++;
+    //     carY += 0.35;
+    //     moveEntity(car, carX, carY);
+    //     setTimeout(() => {
+    //         moveCar();
+    //     }, 150);
+    // }
 
     viewer.imageryLayers.removeAll();
     viewer.imageryLayers.addImageryProvider(osm);
 
-    moveCar();
+    // moveCar();
 
-    createPolygonFromXYs([
-        [250, 72], //linksonder-onder
-        [230, 85], //linksonder-boven
-        [510, 185], //midden-links-boven
-        [520, 175] //midden-links-onder
-    ], Cesium.Color.WHITE);
+    // createPolygonFromXYs([
+    //     [250, 72], //linksonder-onder
+    //     [230, 85], //linksonder-boven
+    //     [510, 185], //midden-links-boven
+    //     [520, 175] //midden-links-onder
+    // ], Cesium.Color.WHITE);
 
     const redPolygon = viewer.entities.add({
         name: "Spoordok",
@@ -749,9 +749,9 @@ function setup() {
         },
     });
 
-    createModel("Cesium_Man.glb", latlonFromXY(220, 70), 0);
-
-    createModel("strange_building.glb", latlonFromXY(240, 70), 0);
+    // createModel("Cesium_Man.glb", latlonFromXY(220, 70), 0);
+    //
+    // createModel("strange_building.glb", latlonFromXY(240, 70), 0);
 
     setupInputActions();
 
@@ -1159,6 +1159,46 @@ async function loadMap(){
         });
         const content = await response.json();
         console.log(content);
+        mapId = content.id;
+
+        const featureCollection = {
+            type: "FeatureCollection",
+            features: content.blocks.map(block => ({
+                type: "Feature",
+                properties: {
+                    id: block.id,
+                    height: block.height
+                },
+                geometry: block.geometry
+            }))
+        };
+
+            Cesium.GeoJsonDataSource.load(featureCollection)
+                .then(dataSource => {
+                   viewer.dataSources.add(dataSource);
+
+                   dataSource.entities.values.forEach(entity =>{
+                       entity.polygon.extrudedHeight = entity.properties.height.getValue();
+                       //TODO: have this match blocktype
+                       entity.polygon.material = Cesium.Color.RED;
+                       entity.polygon.outline = false;
+                   })
+                });
+
+
+            // console.log(block.coords, typeof block.coords)
+            // const points = [];
+            // block.coords.forEach(coord => {
+            //     points.push(Cesium.Cartesian3.fromDegrees(coord.longitude, coord.latitude))
+            // });
+            // console.log(points);
+            // viewer.entities.add({
+            //     polygon: {
+            //         hierarchy: points,
+            //         extrudedHeight: block.height,
+            //         material: selectedBlockColor,  // Gebruikt kleur van geselecteerd BlockType
+            //     },
+            // });
         if (!response.ok){
             throw new Error('Response status:' + response.status);
         }

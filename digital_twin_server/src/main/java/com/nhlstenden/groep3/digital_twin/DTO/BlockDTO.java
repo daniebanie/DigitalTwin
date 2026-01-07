@@ -13,7 +13,7 @@ public class BlockDTO {
 
     private Long mapId;
 
-    private String coords;
+    private Polygon geometry;
 
     private float height;
 
@@ -30,11 +30,11 @@ public class BlockDTO {
 
     public BlockDTO(){}
 
-    public BlockDTO(Long id, BlockType blockType, Long mapId, String coords, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
+    public BlockDTO(Long id, BlockType blockType, Long mapId, Polygon geometry, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
         this.id = id;
         this.blockType = blockType;
         this.mapId = mapId;
-        this.coords = coords;
+        this.geometry = geometry;
         this.height = height;
         this.area = area;
         this.volume = volume;
@@ -67,12 +67,12 @@ public class BlockDTO {
         this.mapId = mapId;
     }
 
-    public String getCoords() {
-        return coords;
+    public Polygon getGeometry() {
+        return geometry;
     }
 
-    public void setCoords(String coords) {
-        this.coords = coords;
+    public void setGeometry(Polygon geometry) {
+        this.geometry = geometry;
     }
 
     public float getHeight() {

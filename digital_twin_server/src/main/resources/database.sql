@@ -6,6 +6,7 @@ CREATE TABLE `block_types` (
                                `name` VARCHAR(100) NOT NULL,
                                `description` TEXT,
                                `unit` ENUM('m2', 'm3') NOT NULL,
+                               `resident_type` ENUM('residential', 'workplaces', 'parkingSpots') NOT NULL,
                                `cost_per_unit` DECIMAL(15,4) NOT NULL,
                                `yield_percentage` DECIMAL(5,2) NOT NULL,
                                `residents_per_unit` DECIMAL(10,4) DEFAULT NULL,
@@ -143,12 +144,26 @@ VALUES
         '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M160-80q-33 0-56.5-23.5T80-160v-640q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v640q0 33-23.5 56.5T800-80H160Zm0-80h640v-640H160v640Zm200-240q-17 0-28.5-11.5T320-440q0-17 11.5-28.5T360-480q17 0 28.5 11.5T400-440q0 17-11.5 28.5T360-400Zm240 0q-17 0-28.5-11.5T560-440q0-17 11.5-28.5T600-480q17 0 28.5 11.5T640-440q0 17-11.5 28.5T600-400ZM200-516v264q0 14 9 23t23 9h16q14 0 23-9t9-23v-48h400v48q0 14 9 23t23 9h16q14 0 23-9t9-23v-264l-66-192q-5-14-16.5-23t-25.5-9H308q-14 0-25.5 9T266-708l-66 192Zm106-64 28-80h292l28 80H306ZM160-800v640-640Zm120 420v-120h400v120H280Z"/></svg>'
     );
 
+CREATE TABLE `maps` (
+                        `id` INT NOT NULL AUTO_INCREMENT,
+                        `name` VARCHAR(100) NOT NULL UNIQUE,
+                        `livability` INT NOT NULL,
+                        `cost` INT NOT NULL,
+                        `residents` INT NOT NULL,
+                        `workplaces` INT NOT NULL,
+                        `parking_spots` INT NOT NULL,
+                        `yield` INT NOT NULL,
+                        `green_percentage` INT NOT NULL,
+                        `workplace_percentage` INT NOT NULL,
+                        PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `blocks` (
                           `id` INT NOT NULL AUTO_INCREMENT,
                           `type_id` INT NOT NULL,
                           `map_id` INT NOT NULL,
-                          `coords` TEXT NOT NULL,
+                          `geometry` GEOMETRY NOT NULL,
+#                           `coords` TEXT NOT NULL,
                           `height` DECIMAL(10,4) DEFAULT NULL,
                           `area_m2` DECIMAL(15,4) DEFAULT NULL,
                           `volume_m3` DECIMAL(15,4) DEFAULT NULL,
@@ -157,35 +172,13 @@ CREATE TABLE `blocks` (
                           `calculated_residents` INT DEFAULT NULL,
                           `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           PRIMARY KEY (`id`),
-                          KEY `idx_type_id` (`type_id`),
-                          CONSTRAINT `blocks_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `block_types` (`id`) ON DELETE RESTRICT,
+                          SPATIAL INDEX(geometry),
+                          CONSTRAINT `fk_blocks_blocktypes` FOREIGN KEY (`type_id`) REFERENCES `block_types` (`id`) ON DELETE RESTRICT,
                           CONSTRAINT `map_idfk_1` FOREIGN KEY (`map_id`) REFERENCES `maps` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-# Ik denk dat dit beter past als we dit gelijk in de maps tabel gooien aangezien dit verder nergens iets doet - Ian
-CREATE TABLE `goals` (
-                         `id` INT NOT NULL AUTO_INCREMENT,
-                         `name` VARCHAR(100) NOT NULL,
-                         `value` DECIMAL(15,4) NOT NULL,
-                         `description` TEXT,
-                         PRIMARY KEY (`id`),
-                         UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `maps` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(100) NOT NULL UNIQUE,
-    `livability` INT NOT NULL,
-    `cost` INT NOT NULL,
-    `residents` INT NOT NULL,
-    `workplaces` INT NOT NULL,
-    `parking_spots` INT NOT NULL,
-    `yield` INT NOT NULL,
-    `green_percentage` INT NOT NULL,
-    `workplace_percentage` INT NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `quality_scores` (
                                   `id` INT NOT NULL AUTO_INCREMENT,
