@@ -101,6 +101,9 @@
 //     }
 // };
 
+
+let mapName;
+let mapId;
 let buildingBlocks = {};
 let currentBuildingBlock = null;
 let selectedBlockColor = Cesium.Color.GRAY.withAlpha(0.5);
@@ -871,6 +874,10 @@ function setupInputActions() {
     // Redraw the shape so it's not dynamic and remove the dynamic shape.
     function terminateShape() {
         activeShapePoints.pop();
+
+        console.log(activeShapePoints)
+        SendPolygon(activeShapePoints, currentBuildingBlock, drawShape(activeShapePoints));
+
         drawShape(activeShapePoints);
         viewer.entities.remove(floatingPoint);
         viewer.entities.remove(activeShape);
@@ -878,6 +885,7 @@ function setupInputActions() {
         activeShape = undefined;
         activeShapePoints = [];
     }
+
     handler.setInputAction(function (event) {
         terminateShape();
 
@@ -1051,7 +1059,39 @@ function create3DObject(basePolygon, height) {
     basePolygon.polygon.extrudedHeight *= 1.5;
 }
 
+async function SendPolygon(points, type, entity){
+    const coordinates = points.map(point => {
+        const coords = cartesianToLatLon(point);
+        return{
+            latitude: Cesium.Math.toDegrees(coords.lat),
+            longitude: Cesium.Math.toDegrees(coords.lon)
+        };
+    });
 
+    const data = {
+        mapId: mapId,
+        blockCode: type,
+        coordinates: coordinates,
+        height: entity.polygon.extrudedHeight?._value || 0
+    };
+
+    try {
+        const response = await fetch("http://localhost:8080/block/send", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        const content = await response.json();
+        console.log(response)
+        if (!response.ok){
+            throw new Error('Response status:' + response.status);
+        }
+        }catch(error){
+        console.log(error.message)
+    }
+}
+
+//TODO: this can probably be removed
 function post (url, data) {
     try {
         const response =     fetch(url, {
@@ -1068,6 +1108,7 @@ function post (url, data) {
 
 }
 
+//TODO: this can probably be removed
 async function get (url){
     try {
         const response = await fetch(url);
@@ -1083,14 +1124,18 @@ async function get (url){
 }
 
 
-function createMap(){
-    let name = prompt("Please enter a name for your map");
+async function createMap(){
+    mapName = prompt("Please enter a name for your map");
+
     try {
-        const response = fetch("http://localhost:8080/map/create", {
+        const response = await fetch("http://localhost:8080/map/create", {
             method: "POST",
             headers: {'Content-Type': 'text/plain'},
-            body: name
+            body: mapName
         });
+        const content = await response.json();
+        console.log(content)
+        mapId = content.id;
         if (!response.ok){
             throw new Error('Response status:' + response.status);
         }
@@ -1099,8 +1144,10 @@ function createMap(){
     }
 }
 
+
+//TODO: this can probably be removed
 function saveMap(){
-    post("http://localhost:8080/map/save")
+    post("http://localhost:8080/map/save", mapId)
 }
 
 //TODO: This should update all of the variables that are given and build all the blocks

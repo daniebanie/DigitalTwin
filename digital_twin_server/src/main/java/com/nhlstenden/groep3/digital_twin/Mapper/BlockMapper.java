@@ -23,14 +23,13 @@ public class BlockMapper implements Mapper<BlockDTO, Block> {
         dto.setId(block.getId());
         dto.setBlockType(block.getBlockType());
         dto.setMapId(block.getMap().getId());
-        //dto.setGeometry(block.getGeometry());
+        dto.setCoords(block.getCoords());
         dto.setHeight(block.getHeight());
         dto.setArea(block.getArea());
         dto.setVolume(block.getVolume());
         dto.setCalculated_cost(block.getCalculated_cost());
         dto.setCalculated_yield(block.getCalculated_yield());
         dto.setCalculated_residents(block.getCalculated_residents());
-        dto.setDescription(block.getDescription());
         return dto;
     }
 
@@ -39,14 +38,13 @@ public class BlockMapper implements Mapper<BlockDTO, Block> {
         return new Block(
                 blockDTO.getBlockType(),
                 mapRepository.findById(blockDTO.getMapId()).orElseThrow(),
-                //blockDTO.getGeometry,
+                blockDTO.getCoords(),
                 blockDTO.getHeight(),
                 blockDTO.getArea(),
                 blockDTO.getVolume(),
                 blockDTO.getCalculated_cost(),
                 blockDTO.getCalculated_yield(),
-                blockDTO.getCalculated_residents(),
-                blockDTO.getDescription()
+                blockDTO.getCalculated_residents()
         );
     }
 
