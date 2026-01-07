@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+//Residents should probably be changed into something like spots or something and some type of value should be added that represents if
+//those spots are residential, parking or workplaces
+
 @Entity
 @Table(name = "block_types")
 public class BlockType {
