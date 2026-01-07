@@ -43,7 +43,7 @@ public class Block {
     private float calculated_yield;
 
     @Column(nullable = false)
-    private float calculated_residents;
+    private int calculated_residents;
 
 
 
@@ -133,11 +133,11 @@ public class Block {
         this.calculated_yield = calculated_yield;
     }
 
-    public float getCalculated_residents() {
+    public int getCalculated_residents() {
         return calculated_residents;
     }
 
-    public void setCalculated_residents(float calculated_residents) {
+    public void setCalculated_residents(int calculated_residents) {
         this.calculated_residents = calculated_residents;
     }
 

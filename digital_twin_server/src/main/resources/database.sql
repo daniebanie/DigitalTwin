@@ -8,7 +8,7 @@ CREATE TABLE `block_types` (
                                `unit` ENUM('m2', 'm3') NOT NULL,
                                `cost_per_unit` DECIMAL(15,4) NOT NULL,
                                `yield_percentage` DECIMAL(5,2) NOT NULL,
-                               `residents_per_unit` DECIMAL(10,4) DEFAULT NULL,
+                               `residents_per_unit` INT DEFAULT NULL,
                                `livability_points` INT NOT NULL,
                                `color_hex` VARCHAR(7) NOT NULL,
                                `is_volumetric` BOOLEAN NOT NULL DEFAULT TRUE,
