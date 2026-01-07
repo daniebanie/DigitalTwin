@@ -25,11 +25,6 @@ public class MapMapper implements Mapper<MapDTO, Map> {
         MapDTO dto = new MapDTO();
         dto.setId(map.getId());
         dto.setName(map.getName());
-/*        List<Long> blockIds = map.getBlocks()
-                .stream()
-                .map(Block::getId)
-                .toList();
-        dto.setBlockIds(blockIds);*/
         dto.setBlocks(blockMapper.toDTO(map.getBlocks()));
         dto.setLivability(map.getLivability());
         dto.setCost(map.getCost());
@@ -44,10 +39,6 @@ public class MapMapper implements Mapper<MapDTO, Map> {
 
     @Override
     public Map toEntity(MapDTO mapDTO) {
-/*        List<Block> blocks = new ArrayList<>();
-        for(Long id: mapDTO.getBlockIds()){
-            blocks.add(blockRepository.findById(id).orElse(null));
-        };*/
         return new Map(
                 mapDTO.getName(),
                 //blocks,

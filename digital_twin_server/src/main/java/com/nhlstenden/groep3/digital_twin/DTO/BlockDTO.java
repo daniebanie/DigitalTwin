@@ -13,8 +13,7 @@ public class BlockDTO {
 
     private Long mapId;
 
-/*    //Dit moet nog werkend gemaakt worden
-    private Polygon geometry;*/
+    private String coords;
 
     private float height;
 
@@ -28,22 +27,20 @@ public class BlockDTO {
 
     private float calculated_residents;
 
-    private String description;
 
     public BlockDTO(){}
 
-    public BlockDTO(Long id, BlockType blockType, Long mapId/*, Polygon geometry*/, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
+    public BlockDTO(Long id, BlockType blockType, Long mapId, String coords, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
         this.id = id;
         this.blockType = blockType;
         this.mapId = mapId;
-        //this.geometry = geometry;
+        this.coords = coords;
         this.height = height;
         this.area = area;
         this.volume = volume;
         this.calculated_cost = calculated_cost;
         this.calculated_yield = calculated_yield;
         this.calculated_residents = calculated_residents;
-        this.description = description;
     }
 
     public Long getId() {
@@ -70,13 +67,13 @@ public class BlockDTO {
         this.mapId = mapId;
     }
 
-/*    public Polygon getGeometry() {
-        return geometry;
+    public String getCoords() {
+        return coords;
     }
 
-    public void setGeometry(Polygon geometry) {
-        this.geometry = geometry;
-    }*/
+    public void setCoords(String coords) {
+        this.coords = coords;
+    }
 
     public float getHeight() {
         return height;
@@ -124,13 +121,5 @@ public class BlockDTO {
 
     public void setCalculated_residents(float calculated_residents) {
         this.calculated_residents = calculated_residents;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }
