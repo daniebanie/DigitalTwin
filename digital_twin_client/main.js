@@ -881,6 +881,8 @@ function setupInputActions() {
     handler.setInputAction(function (event) {
         terminateShape();
 
+
+
         //TODO: this should update server
 
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);

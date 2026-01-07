@@ -40,7 +40,7 @@ public class Block {
     private float calculated_yield;
 
     @Column(nullable = false)
-    private float calculated_residents;
+    private int calculated_residents;
 
     @Column(nullable = false)
     private String description;
@@ -48,7 +48,7 @@ public class Block {
 
     public Block() {}
 
-    public Block(BlockType blockType, Map map, /*Polygon geometry,*/ float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents, String description) {
+    public Block(BlockType blockType, Map map, /*Polygon geometry,*/ float height, float area, float volume, float calculated_cost, float calculated_yield, int calculated_residents, String description) {
         this.blockType = blockType;
         this.map = map;
         //this.geometry = geometry;
@@ -133,11 +133,11 @@ public class Block {
         this.calculated_yield = calculated_yield;
     }
 
-    public float getCalculated_residents() {
+    public int getCalculated_residents() {
         return calculated_residents;
     }
 
-    public void setCalculated_residents(float calculated_residents) {
+    public void setCalculated_residents(int calculated_residents) {
         this.calculated_residents = calculated_residents;
     }
 

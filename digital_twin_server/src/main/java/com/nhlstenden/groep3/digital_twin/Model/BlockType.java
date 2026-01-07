@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+//Residents should probably be changed into something like spots or something and some type of value should be added that represents if
+//those spots are residential, parking or workplaces
+
 @Entity
 @Table(name = "block_types")
 public class BlockType {
@@ -32,7 +35,7 @@ public class BlockType {
     private BigDecimal yieldPercentage;
 
     @Column(name = "residents_per_unit", precision = 10, scale = 4)
-    private BigDecimal residentsPerUnit;
+    private int residentsPerUnit;
 
     @Column(name = "livability_points", nullable = false)
     private Integer livabilityPoints;
@@ -117,10 +120,10 @@ public class BlockType {
         this.yieldPercentage = yieldPercentage;
     }
 
-    public BigDecimal getResidentsPerUnit() {
+    public int getResidentsPerUnit() {
         return residentsPerUnit;
     }
-    public void setResidentsPerUnit(BigDecimal residentsPerUnit) {
+    public void setResidentsPerUnit(int residentsPerUnit) {
         this.residentsPerUnit = residentsPerUnit;
     }
 
