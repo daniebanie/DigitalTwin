@@ -14,7 +14,6 @@ public class MapDTO {
 
     private List<BlockDTO> blocks = new ArrayList<>();
 
-    //private List<Long> blockIds = new ArrayList<>();
 
     private int livability = 0;
 
@@ -33,20 +32,6 @@ public class MapDTO {
     private int workplacePercentage = 0;
 
     public MapDTO() {}
-
-/*    public MapDTO(Long id, String name, List<Long> blockIds, int livability, int cost, int residents, int workplaces, int parkingSpots, int yield, int greenPercentage, int workplacePercentage) {
-        this.id = id;
-        this.name = name;
-        this.blockIds = blockIds;
-        this.livability = livability;
-        this.cost = cost;
-        this.residents = residents;
-        this.workplaces = workplaces;
-        this.parkingSpots = parkingSpots;
-        this.yield = yield;
-        this.greenPercentage = greenPercentage;
-        this.workplacePercentage = workplacePercentage;
-    }*/
 
     public MapDTO(Long id, String name, List<BlockDTO> blocks, int livability, int cost, int residents, int workplaces, int parkingSpots, int yield, int greenPercentage, int workplacePercentage) {
         this.id = id;
@@ -77,14 +62,6 @@ public class MapDTO {
     public void setName(String name) {
         this.name = name;
     }
-
-/*    public List<Long> getBlockIds() {
-        return blockIds;
-    }
-
-    public void setBlockIds(List<Long> blockIds) {
-        this.blockIds = blockIds;
-    }*/
 
     public List<BlockDTO> getBlocks() {
         return blocks;

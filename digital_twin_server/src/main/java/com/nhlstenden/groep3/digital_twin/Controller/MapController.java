@@ -72,21 +72,6 @@ public class MapController {
             block.setId((long) i);
             block.setBlockType(blockTypeRepository.findByBlockCode("A").orElse(null));
             block.setMap(currentMap);
-/*
-        GeometryFactory factory = new GeometryFactory();
-
-        Coordinate[] coords = new Coordinate[] {
-            new Coordinate(0, 0),
-            new Coordinate(10, 0),
-            new Coordinate(10, 10),
-            new Coordinate(0, 10),
-            new Coordinate(0, 0)
-        };
-
-        Polygon polygon = factory.createPolygon(coords);
-
-        block.setGeometry(polygon);*/
-
             block.setArea(20);
             block.setVolume(30);
             block.setCalculated_cost(40);
@@ -102,18 +87,10 @@ public class MapController {
         }
         return ResponseEntity.ok(mapMapper.toDTO(currentMap));
 
-/*        System.out.println(name);
-        Map map = mapRepository.findByName(name).orElse(null);
-        System.out.println(map.getGreenPercentage());
-        return ResponseEntity.ok(mapRepository.findByName(name).orElse(null));*/
     }
 
     public void addBlockToMap(Block block){
         currentMap.addBlock(block);
-    }
-
-    public Long getCurrentMapId() {
-        return currentMap.getId();
     }
 }
 

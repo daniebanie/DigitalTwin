@@ -28,7 +28,6 @@ public class BlockDTO {
     private float calculated_residents;
 
 
-
     public BlockDTO(){}
 
     public BlockDTO(Long id, BlockType blockType, Long mapId, String coords, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
