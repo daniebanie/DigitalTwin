@@ -46,7 +46,7 @@ public class Block {
 
     public Block() {}
 
-    public Block(BlockType blockType, Map map, Polygon geometry, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
+    public Block(BlockType blockType, Map map, Polygon geometry, float height, float area, float volume, float calculated_cost, float calculated_yield, int calculated_residents) {
         this.blockType = blockType;
         this.map = map;
         this.geometry = geometry;

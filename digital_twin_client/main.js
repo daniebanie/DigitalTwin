@@ -1089,6 +1089,8 @@ async function SendPolygon(points, type, entity){
         }catch(error){
         console.log(error.message)
     }
+    getInfo();
+
 }
 
 //TODO: this can probably be removed
@@ -1117,6 +1119,7 @@ async function get (url){
         }
         const content = await response.json();
         console.log(content);
+        return content;
     } catch(error){
         console.error(error.message)
     }
@@ -1187,6 +1190,7 @@ async function loadMap(){
                    })
                 });
 
+            getInfo()
 
             // console.log(block.coords, typeof block.coords)
             // const points = [];
@@ -1208,6 +1212,11 @@ async function loadMap(){
         console.error(error.message)
     }
 
+}
+
+function getInfo(){
+    const response = get("http://localhost:8080/info/get")
+    console.log(response)
 }
 
 //Websocket setup

@@ -30,7 +30,7 @@ public class BlockDTO {
 
     public BlockDTO(){}
 
-    public BlockDTO(Long id, BlockType blockType, Long mapId, Polygon geometry, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
+    public BlockDTO(Long id, BlockType blockType, Long mapId, Polygon geometry, float height, float area, float volume, float calculated_cost, float calculated_yield, int calculated_residents) {
         this.id = id;
         this.blockType = blockType;
         this.mapId = mapId;

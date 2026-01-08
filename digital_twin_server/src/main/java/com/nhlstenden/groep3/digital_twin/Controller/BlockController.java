@@ -5,10 +5,9 @@ import com.nhlstenden.groep3.digital_twin.Model.BlockType;
 import com.nhlstenden.groep3.digital_twin.Repository.BlockRepository;
 import com.nhlstenden.groep3.digital_twin.Repository.BlockTypeRepository;
 import com.nhlstenden.groep3.digital_twin.Repository.MapRepository;
+import com.nhlstenden.groep3.digital_twin.Services.InformationService;
 import com.nhlstenden.groep3.digital_twin.Services.PolygonService;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tools.jackson.databind.JsonNode;
+
+import java.awt.*;
 
 
 @RestController
@@ -26,14 +27,15 @@ public class BlockController {
     private final MapRepository mapRepository;
     private final BlockRepository blockRepository;
     private final PolygonService polygonService;
+    private final InformationService informationService;
 
-    public BlockController(BlockTypeRepository blockTypeRepository, MapRepository mapRepository, BlockRepository blockRepository, PolygonService polygonService) {
+    public BlockController(BlockTypeRepository blockTypeRepository, MapRepository mapRepository, BlockRepository blockRepository, PolygonService polygonService, InformationService informationService) {
         this.blockTypeRepository = blockTypeRepository;
         this.mapRepository = mapRepository;
         this.blockRepository = blockRepository;
         this.polygonService = polygonService;
+        this.informationService = informationService;
     }
-
 
     @PostMapping("/send")
     public ResponseEntity<String> processBlock(@RequestBody JsonNode json){
@@ -46,21 +48,30 @@ public class BlockController {
         block.setGeometry(blockPoly);
         block.setHeight(json.get("height").asInt());
         block.setArea((float) calculateArea(blockPoly));
+        System.out.println(block.getArea());
+        System.out.println(block.getBlockType().getUnit());
+
         block.setVolume(block.getHeight() !=0 ? block.getArea() * block.getHeight() : block.getArea());
 
         if (block.getBlockType().getUnit() == BlockType.Unit.m2){
             block.setCalculated_cost(block.getArea() * block.getBlockType().getCostPerUnit());
+            block.setCalculated_residents((int) (block.getArea() * block.getBlockType().getResidentsPerUnit()));
         } else if (block.getBlockType().getUnit() == BlockType.Unit.m3) {
             block.setCalculated_cost(block.getArea() * block.getBlockType().getCostPerUnit());
-            block.setCalculated_residents(block.getArea() * block.getBlockType().getResidentsPerUnit());
+            block.setCalculated_residents((int) (block.getArea() * block.getBlockType().getResidentsPerUnit()));
+            System.out.println(block.getCalculated_residents());
         }
 
         block.setCalculated_yield(block.getCalculated_cost() * (block.getBlockType().getYieldPercentage() / 100));
 
+        informationService.updateValuesFromBlock(block);
+
+        System.out.println(block.getCalculated_cost());
+        System.out.println(informationService.getCurrentInformation().getCurrentCost());
+
         blockRepository.save(block);
 
-        //Maybe return block id for later editing?
-        return ResponseEntity.ok("{\"test\" : \"oke\"}");
+        return ResponseEntity.ok("{\"id\" : \""+ block.getId() + "\"}");
     }
 
 

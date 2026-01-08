@@ -29,7 +29,7 @@ public class BlockType {
     private Unit unit;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, name = "resident_type")
+    @Column(name = "resident_type")
     private ResidentType residentType;
 
     @Column(name = "cost_per_unit", nullable = false)
@@ -49,6 +49,9 @@ public class BlockType {
 
     @Column(name = "is_volumetric", nullable = false)
     private Boolean isVolumetric;
+
+    @Column(name = "is_green", nullable = false)
+    private Boolean isGreen;
 
     @Column(name = "icon_svg", columnDefinition = "TEXT")
     private String iconSvg;
@@ -173,5 +176,12 @@ public class BlockType {
     public ResidentType getResidentType(){return residentType;}
     public void setResidentType(ResidentType residentType){ this.residentType = residentType; }
 
+    public Boolean getGreen() {
+        return isGreen;
+    }
+
+    public void setGreen(Boolean green) {
+        isGreen = green;
+    }
 }
 

@@ -3,13 +3,11 @@ package com.nhlstenden.groep3.digital_twin.Controller;
 //import com.nhlstenden.groep3.digital_twin.Dto.MapDTO;
 import com.nhlstenden.groep3.digital_twin.DTO.MapDTO;
 import com.nhlstenden.groep3.digital_twin.Mapper.MapMapper;
-import com.nhlstenden.groep3.digital_twin.Model.Block;
-import com.nhlstenden.groep3.digital_twin.Model.BlockType;
-import com.nhlstenden.groep3.digital_twin.Model.Map;
-import com.nhlstenden.groep3.digital_twin.Model.Message;
+import com.nhlstenden.groep3.digital_twin.Model.*;
 import com.nhlstenden.groep3.digital_twin.Repository.BlockRepository;
 import com.nhlstenden.groep3.digital_twin.Repository.BlockTypeRepository;
 import com.nhlstenden.groep3.digital_twin.Repository.MapRepository;
+import com.nhlstenden.groep3.digital_twin.Services.InformationService;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import org.locationtech.jts.geom.Coordinate;
@@ -29,19 +27,20 @@ public class MapController {
 
     private final MapMapper mapMapper;
     private final MapRepository mapRepository;
+    private final InformationService informationService;
 
-
-    public MapController(MapRepository mapRepository, MapMapper mapMapper) {
-        this.mapRepository = mapRepository;
+    public MapController(MapMapper mapMapper, MapRepository mapRepository, InformationService informationService) {
         this.mapMapper = mapMapper;
+        this.mapRepository = mapRepository;
+        this.informationService = informationService;
     }
-
 
     @PostMapping("/create")
     public ResponseEntity<String> createMap(@RequestBody String name) {
         System.out.println("Creating Map");
         Map map = new Map();
         map.setName(name);
+        informationService.resetCurrentInformation();
         mapRepository.save(map);
         System.out.println(map.getName());
         System.out.println(map.getId());
@@ -58,8 +57,11 @@ public class MapController {
 
     @PostMapping("/load")
     public ResponseEntity<MapDTO> loadMap(@RequestBody String name){
-        return ResponseEntity.ok(mapMapper.toDTO(mapRepository.findByName(name).orElseThrow()));
+        Map map = mapRepository.findByName(name).orElseThrow();
+        for (Block block : map.getBlocks()){
+            informationService.updateValuesFromBlock(block);
+        }
+        return ResponseEntity.ok(mapMapper.toDTO(map));
     }
-
 }
 
