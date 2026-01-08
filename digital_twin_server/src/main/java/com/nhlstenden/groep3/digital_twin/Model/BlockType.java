@@ -28,17 +28,21 @@ public class BlockType {
     @Column(nullable = false)
     private Unit unit;
 
-    @Column(name = "cost_per_unit", nullable = false, precision = 15, scale = 4)
-    private BigDecimal costPerUnit;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "resident_type")
+    private ResidentType residentType;
 
-    @Column(name = "yield_percentage", nullable = false, precision = 5, scale = 2)
-    private BigDecimal yieldPercentage;
+    @Column(name = "cost_per_unit", nullable = false)
+    private float costPerUnit;
 
-    @Column(name = "residents_per_unit", precision = 10, scale = 4)
-    private int residentsPerUnit;
+    @Column(name = "yield_percentage", nullable = false)
+    private float yieldPercentage;
+
+    @Column(name = "residents_per_unit")
+    private float residentsPerUnit;
 
     @Column(name = "livability_points", nullable = false)
-    private Integer livabilityPoints;
+    private int livabilityPoints;
 
     @Column(name = "color_hex", nullable = false, length = 7)
     private String colorHex;
@@ -57,6 +61,10 @@ public class BlockType {
 
     public enum Unit {
         m2, m3
+    }
+
+    public enum ResidentType {
+        residential, workplace, parkingSpot
     }
 
     @PrePersist
@@ -106,31 +114,31 @@ public class BlockType {
         this.unit = unit;
     }
 
-    public BigDecimal getCostPerUnit() {
+    public float getCostPerUnit() {
         return costPerUnit;
     }
-    public void setCostPerUnit(BigDecimal costPerUnit) {
+    public void setCostPerUnit(float costPerUnit) {
         this.costPerUnit = costPerUnit;
     }
 
-    public BigDecimal getYieldPercentage() {
+    public float getYieldPercentage() {
         return yieldPercentage;
     }
-    public void setYieldPercentage(BigDecimal yieldPercentage) {
+    public void setYieldPercentage(float yieldPercentage) {
         this.yieldPercentage = yieldPercentage;
     }
 
-    public int getResidentsPerUnit() {
+    public float getResidentsPerUnit() {
         return residentsPerUnit;
     }
-    public void setResidentsPerUnit(int residentsPerUnit) {
+    public void setResidentsPerUnit(float residentsPerUnit) {
         this.residentsPerUnit = residentsPerUnit;
     }
 
-    public Integer getLivabilityPoints() {
+    public int getLivabilityPoints() {
         return livabilityPoints;
     }
-    public void setLivabilityPoints(Integer livabilityPoints) {
+    public void setLivabilityPoints(int livabilityPoints) {
         this.livabilityPoints = livabilityPoints;
     }
 
@@ -161,5 +169,9 @@ public class BlockType {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    public ResidentType getResidentType(){return residentType;}
+    public void setResidentType(ResidentType residentType){ this.residentType = residentType; }
+
 }
 

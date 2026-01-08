@@ -2,6 +2,7 @@ package com.nhlstenden.groep3.digital_twin.Model;
 
 import jakarta.persistence.*;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 
@@ -20,12 +21,8 @@ public class Block {
     @JoinColumn(name = "map_id", nullable = false)
     private Map map;
 
-/*    //Dit moet nog werkend gemaakt worden
-    @Column(nullable = false)
-    private Polygon geometry;*/
-
-    @Column(nullable = false)
-    private String coords;
+    @Column(nullable = false, columnDefinition = "geometry")
+    private Polygon geometry;
 
     @Column(nullable = false)
     private float height;
@@ -49,10 +46,10 @@ public class Block {
 
     public Block() {}
 
-    public Block(BlockType blockType, Map map, String coords, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
+    public Block(BlockType blockType, Map map, Polygon geometry, float height, float area, float volume, float calculated_cost, float calculated_yield, float calculated_residents) {
         this.blockType = blockType;
         this.map = map;
-        this.coords = coords;
+        this.geometry = geometry;
         this.height = height;
         this.area = area;
         this.volume = volume;
@@ -85,12 +82,12 @@ public class Block {
         this.map = map;
     }
 
-    public String getCoords() {
-        return coords;
+    public Polygon getGeometry() {
+        return geometry;
     }
 
-    public void setCoords(String coords) {
-        this.coords = coords;
+    public void setGeometry(Polygon geometry) {
+        this.geometry = geometry;
     }
 
     public float getHeight() {
