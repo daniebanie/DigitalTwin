@@ -204,3 +204,12 @@ FROM block_types
 ORDER BY block_code;
 
 SELECT COUNT(*) AS 'Aantal bouwblokken' FROM block_types;
+
+DROP TABLE IF EXISTS `ai_reviews`;
+CREATE TABLE IF NOT EXISTS `ai_reviews` (
+                                       `ai_review_id` INT NOT NULL AUTO_INCREMENT,
+                                       `review_content` TEXT NOT NULL,
+                                       `image_path` VARCHAR(255) NOT NULL,
+                                       `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                       PRIMARY KEY (`ai_review_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
