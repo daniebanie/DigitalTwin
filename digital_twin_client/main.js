@@ -318,23 +318,51 @@ function createStatsPanel() {
         {
             id: 'total-cost',
             label: 'Kosten',
+            goal: '100000',
             icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M600-120q-118 0-210-67T260-360H120v-80h122q-3-24-2.5-44.5T242-520H120v-80h140q38-106 130-173t210-67q69 0 130.5 24.5T840-748l-57 56q-37-32-83.5-50T600-760q-85 0-152 44.5T347-600h253v80H323q-4 27-3 47.5t3 32.5h277v80H347q34 71 101 115.5T600-200q53 0 99.5-18t83.5-50l57 56q-48 43-109.5 67.5T600-120Z"/></svg>`
         },
         {
             id: 'total-yield',
             label: 'Opbrengst',
+            goal: '100000',
             icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M336-120q-91 0-153.5-62.5T120-336q0-38 13-74t37-65l142-171-97-194h530l-97 194 142 171q24 29 37 65t13 74q0 91-63 153.5T624-120H336Zm144-200q-33 0-56.5-23.5T400-400q0-33 23.5-56.5T480-480q33 0 56.5 23.5T560-400q0 33-23.5 56.5T480-320Zm-95-360h190l40-80H345l40 80Zm-49 480h288q57 0 96.5-39.5T760-336q0-24-8.5-46.5T728-423L581-600H380L232-424q-15 18-23.5 41t-8.5 47q0 57 39.5 96.5T336-200Z"/></svg>`
         },
         {
             id: 'total-residents',
             label: 'Bewoners',
+            goal: '3000',
             icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M360-80v-529q-91-24-145.5-100.5T160-880h80q0 83 53.5 141.5T430-680h100q30 0 56 11t47 32l181 181-56 56-158-158v478h-80v-240h-80v240h-80Zm120-640q-33 0-56.5-23.5T400-800q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 33-23.5 56.5T480-720Z"/></svg>`
         },
         {
             id: 'total-livability',
             label: 'Leefbaarheid score',
+            goal: '100',
             icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>`
-        }
+        },
+        {
+            id: 'total-workplaces',
+            label: 'Werkplekken',
+            goal: '500'
+            //icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>`
+        },
+        {
+            id: 'green-percentage',
+            label: 'Groen percentage',
+            goal: '20'
+            //icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>`
+        },
+        {
+            id: 'workplace-percentage',
+            label: 'Percentage bedrijfsgebouwen',
+            goal: '20'
+            //icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>`
+        },
+        {
+            id: 'total-parkingspots',
+            label: 'Parkeerplekken',
+            goal: '450'
+            //icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>`
+        },
     ];
 
     stats.forEach(stat => {
@@ -342,11 +370,17 @@ function createStatsPanel() {
         statItem.className = 'stat-item d-flex justify-content-between align-items-center p-3 rounded-3';
 
         statItem.innerHTML = `
-            <div class="d-flex align-items-center gap-2">
-                <span class="stat-icon">${stat.icon}</span>
-                <span class="stat-label text-secondary fw-medium small">${stat.label}</span>
+            <div class="d-flex flex-column">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="stat-icon">${stat.icon}</span>
+                    <span class="stat-label text-secondary fw-medium small">${stat.label}</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="stat-value h5 mb-0 fw-bold mt-2" id="${stat.id}">0</div>
+                    <span class="h5 mb-0 fw-bold mt-2">/</span>
+                    <div class="h5 mb-0 fw-bold mt-2" id="${stat.id}-goal">${stat.goal}</div>
+                </div>
             </div>
-            <div class="stat-value h5 mb-0 fw-bold" id="${stat.id}">&euro;0</div>
         `;
 
         statsGrid.appendChild(statItem);
@@ -894,11 +928,6 @@ function setupInputActions() {
 
     handler.setInputAction(function (event) {
         terminateShape();
-
-
-
-        //TODO: this should update server
-
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 }
 
@@ -1089,6 +1118,10 @@ async function SendPolygon(points, type, entity){
         });
         const content = await response.json();
         console.log(response)
+
+        updateInformationPanel(content);
+
+
         if (!response.ok){
             throw new Error('Response status:' + response.status);
         }
@@ -1099,7 +1132,6 @@ async function SendPolygon(points, type, entity){
 
 }
 
-//TODO: this can probably be removed
 function post (url, data) {
     try {
         const response =     fetch(url, {
@@ -1116,7 +1148,6 @@ function post (url, data) {
 
 }
 
-//TODO: this can probably be removed
 async function get (url){
     try {
         const response = await fetch(url);
@@ -1148,6 +1179,8 @@ async function createMap(){
         const content = await response.json();
         console.log(content)
         mapId = content.id;
+        resetInformationPanel();
+        updateGoals();
         if (!response.ok){
             throw new Error('Response status:' + response.status);
         }
@@ -1162,7 +1195,6 @@ function saveMap(){
     post("http://localhost:8080/map/save", mapId)
 }
 
-//TODO: This should update all of the variables that are given and build all the blocks
 async function loadMap(){
     let name = prompt("Please enter the name of the map you want to load");
     try {
@@ -1174,6 +1206,7 @@ async function loadMap(){
         const content = await response.json();
         console.log(content);
         mapId = content.id;
+
 
         const featureCollection = {
             type: "FeatureCollection",
@@ -1192,50 +1225,80 @@ async function loadMap(){
         viewer.dataSources.removeAll();
 
 
-            Cesium.GeoJsonDataSource.load(featureCollection)
-                .then(dataSource => {
-                   viewer.dataSources.add(dataSource);
+        Cesium.GeoJsonDataSource.load(featureCollection)
+            .then(dataSource => {
+                viewer.dataSources.add(dataSource);
 
-                   dataSource.entities.values.forEach(entity =>{
-                       entity.polygon.extrudedHeight = entity.properties.height.getValue();
-                       //TODO: have this match blocktype
-                       console.log(entity.properties.blockCode)
-                       entity.polygon.material = buildingBlocks[entity.properties.blockCode].color;
-                       entity.polygon.outline = false;
-                   })
-                });
+                dataSource.entities.values.forEach(entity => {
+                    entity.polygon.extrudedHeight = entity.properties.height.getValue();
 
-            getInfo()
+                    console.log(entity.properties.blockCode)
 
-            // console.log(block.coords, typeof block.coords)
-            // const points = [];
-            // block.coords.forEach(coord => {
-            //     points.push(Cesium.Cartesian3.fromDegrees(coord.longitude, coord.latitude))
-            // });
-            // console.log(points);
-            // viewer.entities.add({
-            //     polygon: {
-            //         hierarchy: points,
-            //         extrudedHeight: block.height,
-            //         material: selectedBlockColor,  // Gebruikt kleur van geselecteerd BlockType
-            //     },
-            // });
-        if (!response.ok){
+                    entity.polygon.material = buildingBlocks[entity.properties.blockCode].color;
+                    entity.polygon.outline = false;
+                })
+            });
+
+        getInfo()
+
+        // console.log(block.coords, typeof block.coords)
+        // const points = [];
+        // block.coords.forEach(coord => {
+        //     points.push(Cesium.Cartesian3.fromDegrees(coord.longitude, coord.latitude))
+        // });
+        // console.log(points);
+        // viewer.entities.add({
+        //     polygon: {
+        //         hierarchy: points,
+        //         extrudedHeight: block.height,
+        //         material: selectedBlockColor,  // Gebruikt kleur van geselecteerd BlockType
+        //     },
+        // });
+        if (!response.ok) {
             throw new Error('Response status:' + response.status);
         }
-    }catch(error){
+    } catch (error) {
         console.error(error.message)
     }
 
 }
 
-function getInfo(){
-    const response = get("http://localhost:8080/info/get")
-    console.log(response)
+async function getInfo(){
+    const response = await get("http://localhost:8080/info/get")
+    updateInformationPanel(response);
 }
 
 function setHeight(){
     selectedHeight = document.getElementById("heightInput").value;
+}
+
+
+
+function updateInformationPanel(content){
+    document.getElementById("total-cost").textContent = content.currentCost;
+    document.getElementById("total-yield").textContent = content.currentYield;
+    document.getElementById("total-residents").textContent = content.currentResidents;
+    document.getElementById("total-livability").textContent = content.currentLivability;
+    document.getElementById("total-workplaces").textContent = content.currentWorkplaces;
+    document.getElementById("green-percentage").textContent = content.currentGreenPercentage;
+    document.getElementById("workplace-percentage").textContent = content.currentWorkplacePercentage;
+    document.getElementById("total-parkingspots").textContent = content.currentParkingSpots;
+}
+
+function resetInformationPanel(content){
+    document.getElementById("total-cost").textContent = "0";
+    document.getElementById("total-yield").textContent = "0";
+    document.getElementById("total-residents").textContent = "0";
+    document.getElementById("total-livability").textContent = "0";
+    document.getElementById("total-workplaces").textContent = "0";
+    document.getElementById("green-percentage").textContent = "0";
+    document.getElementById("workplace-percentage").textContent = "0";
+    document.getElementById("total-parkingspots").textContent = "0";
+}
+
+//TODO: Implement updating goals
+function updateGoals(){
+
 }
 
 //

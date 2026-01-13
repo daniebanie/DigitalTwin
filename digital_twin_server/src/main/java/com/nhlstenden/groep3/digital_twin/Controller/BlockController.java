@@ -2,6 +2,7 @@ package com.nhlstenden.groep3.digital_twin.Controller;
 
 import com.nhlstenden.groep3.digital_twin.Model.Block;
 import com.nhlstenden.groep3.digital_twin.Model.BlockType;
+import com.nhlstenden.groep3.digital_twin.Model.Information;
 import com.nhlstenden.groep3.digital_twin.Repository.BlockRepository;
 import com.nhlstenden.groep3.digital_twin.Repository.BlockTypeRepository;
 import com.nhlstenden.groep3.digital_twin.Repository.MapRepository;
@@ -38,7 +39,7 @@ public class BlockController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<String> processBlock(@RequestBody JsonNode json){
+    public ResponseEntity<Information> processBlock(@RequestBody JsonNode json){
         Block block = new Block();
         System.out.println(json.get("coordinates"));
         block.setBlockType(blockTypeRepository.findByBlockCode(json.get("blockCode").asString()).orElseThrow());
@@ -71,7 +72,7 @@ public class BlockController {
 
         blockRepository.save(block);
 
-        return ResponseEntity.ok("{\"id\" : \""+ block.getId() + "\"}");
+        return ResponseEntity.ok(informationService.getCurrentInformation());
     }
 
 
