@@ -104,6 +104,7 @@
 
 let mapName;
 let mapId;
+let selectedHeight;
 let buildingBlocks = {};
 let currentBuildingBlock = null;
 let selectedBlockColor = Cesium.Color.GRAY.withAlpha(0.5);
@@ -733,7 +734,22 @@ function setup() {
     //     [520, 175] //midden-links-onder
     // ], Cesium.Color.WHITE);
 
-    const redPolygon = viewer.entities.add({
+    addSpoordokPoly();
+
+    // createModel("Cesium_Man.glb", latlonFromXY(220, 70), 0);
+    //
+    // createModel("strange_building.glb", latlonFromXY(240, 70), 0);
+
+    setupInputActions();
+
+    createBuildingUI();
+    createBuildingUI2();
+    console.log('UI should be created now');
+
+}
+
+function addSpoordokPoly(){
+    return viewer.entities.add({
         name: "Spoordok",
         polygon: {
             hierarchy: Cesium.Cartesian3.fromDegreesArray([
@@ -748,17 +764,6 @@ function setup() {
             material: Cesium.Color.LIGHTGRAY,
         },
     });
-
-    // createModel("Cesium_Man.glb", latlonFromXY(220, 70), 0);
-    //
-    // createModel("strange_building.glb", latlonFromXY(240, 70), 0);
-
-    setupInputActions();
-
-    createBuildingUI();
-    createBuildingUI2();
-    console.log('UI should be created now');
-
 }
 
 function createPoint(worldPosition) {
@@ -799,6 +804,7 @@ function drawShape(positionData) {
         shape = viewer.entities.add({
             polygon: {
                 hierarchy: positionData,
+                extrudedHeight: selectedHeight,
                 material: selectedBlockColor,  // Gebruikt kleur van geselecteerd BlockType
             },
         });
@@ -1136,6 +1142,9 @@ async function createMap(){
             headers: {'Content-Type': 'text/plain'},
             body: mapName
         });
+        viewer.entities.removeAll();
+        addSpoordokPoly()
+        viewer.dataSources.removeAll();
         const content = await response.json();
         console.log(content)
         mapId = content.id;
@@ -1172,11 +1181,16 @@ async function loadMap(){
                 type: "Feature",
                 properties: {
                     id: block.id,
-                    height: block.height
+                    height: block.height,
+                    blockCode: block.blockType.blockCode
                 },
                 geometry: block.geometry
             }))
         };
+        viewer.entities.removeAll();
+        addSpoordokPoly()
+        viewer.dataSources.removeAll();
+
 
             Cesium.GeoJsonDataSource.load(featureCollection)
                 .then(dataSource => {
@@ -1185,7 +1199,8 @@ async function loadMap(){
                    dataSource.entities.values.forEach(entity =>{
                        entity.polygon.extrudedHeight = entity.properties.height.getValue();
                        //TODO: have this match blocktype
-                       entity.polygon.material = Cesium.Color.RED;
+                       console.log(entity.properties.blockCode)
+                       entity.polygon.material = buildingBlocks[entity.properties.blockCode].color;
                        entity.polygon.outline = false;
                    })
                 });
@@ -1218,6 +1233,13 @@ function getInfo(){
     const response = get("http://localhost:8080/info/get")
     console.log(response)
 }
+
+function setHeight(){
+    selectedHeight = document.getElementById("heightInput").value;
+}
+
+//
+
 
 //Websocket setup
 
