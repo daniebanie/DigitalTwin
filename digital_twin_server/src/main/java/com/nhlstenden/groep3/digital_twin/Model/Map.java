@@ -21,28 +21,28 @@ public class Map {
     private List<Block> blocks = new ArrayList<>();
 
     @Column(nullable = false)
-    private int livability = 0;
+    private int livability = 100;
 
     @Column(nullable = false)
-    private int cost = 0;
+    private int cost = 1000000;
 
     @Column(nullable = false)
-    private int residents = 0;
+    private int residents = 3000;
 
     @Column(nullable = false)
-    private int workplaces = 0;
+    private int workplaces = 500;
 
     @Column(name = "parking_spots", nullable = false)
-    private int parkingSpots = 0;
+    private int parkingSpots = 4500;
 
     @Column(nullable = false)
-    private int yield = 0;
+    private int yield = 100000;
 
     @Column(name = "green_percentage", nullable = false)
-    private int greenPercentage = 0;
+    private int greenPercentage = 20;
 
     @Column(name = "workplace_percentage", nullable = false)
-    private int workplacePercentage = 0;
+    private int workplacePercentage = 20;
 
 /*    @OneToOne
     @JoinColumn(name = "verdicts")

@@ -33,13 +33,13 @@ public class BlockType {
     private ResidentType residentType;
 
     @Column(name = "cost_per_unit", nullable = false)
-    private float costPerUnit;
+    private double costPerUnit;
 
     @Column(name = "yield_percentage", nullable = false)
-    private float yieldPercentage;
+    private double yieldPercentage;
 
     @Column(name = "residents_per_unit")
-    private float residentsPerUnit;
+    private double residentsPerUnit;
 
     @Column(name = "livability_points", nullable = false)
     private int livabilityPoints;
@@ -117,24 +117,24 @@ public class BlockType {
         this.unit = unit;
     }
 
-    public float getCostPerUnit() {
+    public double getCostPerUnit() {
         return costPerUnit;
     }
-    public void setCostPerUnit(float costPerUnit) {
+    public void setCostPerUnit(double costPerUnit) {
         this.costPerUnit = costPerUnit;
     }
 
-    public float getYieldPercentage() {
+    public double getYieldPercentage() {
         return yieldPercentage;
     }
-    public void setYieldPercentage(float yieldPercentage) {
+    public void setYieldPercentage(double yieldPercentage) {
         this.yieldPercentage = yieldPercentage;
     }
 
-    public float getResidentsPerUnit() {
+    public double getResidentsPerUnit() {
         return residentsPerUnit;
     }
-    public void setResidentsPerUnit(float residentsPerUnit) {
+    public void setResidentsPerUnit(double residentsPerUnit) {
         this.residentsPerUnit = residentsPerUnit;
     }
 

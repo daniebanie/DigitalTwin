@@ -14,12 +14,12 @@ public class BlockLoadDTO {
 
         private JsonNode geometry;
 
-        private float height;
+        private double height;
 
         public BlockLoadDTO() {
         }
 
-        public BlockLoadDTO(Long id, BlockType blockType, Long mapId, JsonNode geometry, float height) {
+        public BlockLoadDTO(Long id, BlockType blockType, Long mapId, JsonNode geometry, double height) {
             this.id = id;
             this.blockType = blockType;
             this.mapId = mapId;
@@ -60,11 +60,11 @@ public class BlockLoadDTO {
             this.geometry = geometry;
         }
 
-        public float getHeight() {
+        public double getHeight() {
             return height;
         }
 
-        public void setHeight(float height) {
+        public void setHeight(double height) {
             this.height = height;
         }
 

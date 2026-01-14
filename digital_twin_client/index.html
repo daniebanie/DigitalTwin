@@ -14,11 +14,61 @@
     <body style="margin: 0px; padding: 0px;">
     <div id="header" style="height: 2rem">
         <span>Input building height</span>
-        <input type="number" id="heightInput">
+        <input type="number" min="0" id="heightInput">
         <button id="setHeight" onclick='setHeight()'>Set</button>
         <button id="createButton" onclick="createMap()">Create a new map</button>
-        <button id="saveButton" onclick="saveMap()">Save map</button>
+<!--        <button id="saveButton" onclick="saveMap()">Save map</button>-->
         <button id="loadButton" onclick="loadMap()">Load map</button>
+        <button id="goalsButton" onclick="openModal()">Set goals</button>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h2>Set goals for the current map</h2>
+
+                <div class="goal-row">
+                    <label for="costInput">Kosten:</label>
+                    <input type="number" min="0" id="costInput" placeholder="100000">
+                </div>
+
+                <div class="goal-row">
+                    <label for="yieldInput">Opbrengst:</label>
+                    <input type="number" min="0" id="yieldInput" placeholder="100000">
+                </div>
+
+                <div class="goal-row">
+                    <label for="residentsInput">Inwoners:</label>
+                    <input type="number" min="0" id="residentsInput" placeholder="3000">
+                </div>
+
+                <div class="goal-row">
+                    <label for="livabilityInput">Leefbaarheid score:</label>
+                    <input type="number" min="0" id="livabilityInput" placeholder="100">
+                </div>
+
+                <div class="goal-row">
+                    <label for="workplacesInput">Werkplekken:</label>
+                    <input type="number" min="0" id="workplacesInput" placeholder="500">
+                </div>
+
+                <div class="goal-row">
+                    <label for="greenPercentageInput">Minimum groen percentage:</label>
+                    <input type="number" min="0" id="greenPercentageInput" placeholder="20">
+                </div>
+
+                <div class="goal-row">
+                    <label for="workplacePercentageInput">Maximum percentage bedrijfsgebouwen:</label>
+                    <input type="number" min="0" id="workplacePercentageInput" placeholder="20">
+                </div>
+
+                <div class="goal-row">
+                    <label for="parkingspotsInput">Parkeerplekken:</label>
+                    <input type="number" min="0" id="parkingspotsInput" placeholder="4500">
+                </div>
+
+                <button style="margin-bottom: 1rem; margin-top: 2rem" onclick="submitForm()">Submit</button>
+                <button style="margin-bottom: 1rem" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
     </div>
         <div id="cesiumContainer" style="margin: 0px; padding: 0px;"></div>
     </body>

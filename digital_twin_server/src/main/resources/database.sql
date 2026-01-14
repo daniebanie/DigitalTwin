@@ -7,12 +7,13 @@ CREATE TABLE `block_types` (
                                `description` TEXT,
                                `unit` ENUM('m2', 'm3') NOT NULL,
                                `resident_type` ENUM('residential', 'workplace', 'parkingSpot'),
-                               `cost_per_unit` DECIMAL(15,4) NOT NULL,
-                               `yield_percentage` DECIMAL(5,2) NOT NULL,
-                               `residents_per_unit` FLOAT DEFAULT NULL,
+                               `cost_per_unit` DOUBLE NOT NULL,
+                               `yield_percentage` DOUBLE NOT NULL,
+                               `residents_per_unit` DOUBLE DEFAULT NULL,
                                `livability_points` INT NOT NULL,
                                `color_hex` VARCHAR(7) NOT NULL,
                                `is_volumetric` BOOLEAN NOT NULL DEFAULT TRUE,
+                               `is_green` BOOLEAN NOT NULL DEFAULT FALSE,
                                `icon_svg` TEXT,
                                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -36,8 +37,8 @@ VALUES
         4,
         '#F4A460',
         TRUE,
-     False,
-     'residential',
+        FALSE,
+        'residential',
         '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>'
     ),
 
@@ -53,7 +54,7 @@ VALUES
         6,
         '#FF7F50',
         TRUE,
-     FALSE,
+        FALSE,
         'residential',
         '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3zm0 2.84L18 11v8h-2v-6h-8v6H6v-8l6-5.16z"/></svg>'
     ),
@@ -88,7 +89,7 @@ VALUES
         '#A9A9A9',
         TRUE,
         FALSE,
-     'workplace',
+        'workplace',
         '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>'
     ),
 
@@ -105,7 +106,7 @@ VALUES
         '#32CD32',
         TRUE,
         TRUE,
-     null,
+        null,
         '<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 -960 960 960" fill="currentColor"><path d="M180-520q-26 0-43-17t-17-43q0-26 17-43t43-17q26 0 43 17t17 43q0 26-17 43t-43 17ZM120-80v-200h-40v-160q0-17 11.5-28.5T120-480h120q17 0 28.5 11.5T280-440v160h-40v120h320v-200h-70q-71 0-120.5-49.5T320-530q0-53 28.5-94.5T422-686q11-65 60.5-109.5T600-840q68 0 117.5 44.5T778-686q45 20 73.5 61.5T880-530q0 71-49.5 120.5T710-360h-70v200h200v80H120Zm370-360h220q38 0 64-26t26-64q0-27-14.5-49T746-612l-42-18-6-44q-6-37-33.5-61.5T600-760q-37 0-64.5 24.5T502-674l-6 44-42 18q-25 11-39.5 33T400-530q0 38 26 64t64 26Zm110-160Z"/></svg>'
     ),
 
@@ -122,7 +123,7 @@ VALUES
         '#696969',
         FALSE,
         FALSE,
-     null,
+        null,
         '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M720-40v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm0-400v-360h80v360h-80ZM160-160v-640h80v640h-80Zm280-480v-160h80v160h-80Zm0 240v-160h80v160h-80Zm0 240v-160h80v160h-80Z"/></svg>'
     ),
 
@@ -139,7 +140,7 @@ VALUES
         '#D3D3D3',
         FALSE,
         FALSE,
-     'parkingSpot',
+        'parkingSpot',
         '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3H6v18h4v-6h3c3.31 0 6-2.69 6-6s-2.69-6-6-6zm.2 8H10V7h3.2c1.1 0 2 .9 2 2s-.9 2-2 2z"/></svg>'
     ),
 
@@ -179,12 +180,11 @@ CREATE TABLE `blocks` (
                           `type_id` INT NOT NULL,
                           `map_id` INT NOT NULL,
                           `geometry` GEOMETRY NOT NULL,
-#                           `coords` TEXT NOT NULL,
-                          `height` DECIMAL(10,4) DEFAULT NULL,
-                          `area_m2` DECIMAL(15,4) DEFAULT NULL,
-                          `volume_m3` DECIMAL(15,4) DEFAULT NULL,
-                          `calculated_cost` DECIMAL(15,4) DEFAULT NULL,
-                          `calculated_yield` DECIMAL(15,4) DEFAULT NULL,
+                          `height` DOUBLE DEFAULT NULL,
+                          `area_m2` DOUBLE DEFAULT NULL,
+                          `volume_m3` DOUBLE DEFAULT NULL,
+                          `calculated_cost` DOUBLE DEFAULT NULL,
+                          `calculated_yield` DOUBLE DEFAULT NULL,
                           `calculated_residents` INT DEFAULT NULL,
                           `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           PRIMARY KEY (`id`),

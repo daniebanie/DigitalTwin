@@ -18,13 +18,9 @@ import java.util.Objects;
 public class BlockMapper implements Mapper<BlockDTO, Block> {
 
     private final MapRepository mapRepository;
-    private final PolygonService polygonService;
-    private final GeoJsonWriter writer = new GeoJsonWriter();
-    ObjectMapper mapper = new ObjectMapper();
 
     public BlockMapper(MapRepository mapRepository, PolygonService polygonService) {
         this.mapRepository = mapRepository;
-        this.polygonService = polygonService;
     }
 
     @Override
@@ -34,7 +30,6 @@ public class BlockMapper implements Mapper<BlockDTO, Block> {
         dto.setBlockType(block.getBlockType());
         dto.setMapId(block.getMap().getId());
         dto.setGeometry(block.getGeometry());
-//        dto.setCoords(block.getCoords());
         dto.setHeight(block.getHeight());
         dto.setArea(block.getArea());
         dto.setVolume(block.getVolume());
@@ -50,7 +45,6 @@ public class BlockMapper implements Mapper<BlockDTO, Block> {
                 blockDTO.getBlockType(),
                 mapRepository.findById(blockDTO.getMapId()).orElseThrow(),
                 blockDTO.getGeometry(),
-//                blockDTO.getCoords(),
                 blockDTO.getHeight(),
                 blockDTO.getArea(),
                 blockDTO.getVolume(),

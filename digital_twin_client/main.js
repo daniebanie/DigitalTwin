@@ -1,114 +1,9 @@
-/**
- * Oude hardcoded block data
-
- */
-// const buildingBlocks = {
-//     A: {
-//         name: "Vrijstaand huis",
-//         unit: "per m³",
-//         costPerUnit: 500,
-//         yieldPercentage: 12,
-//         residentsPerUnit: 0.005,
-//         sustainabilityScore: 4,
-//         color: Cesium.Color.SANDYBROWN,
-//         colorHex: "#F4A460",
-//         isVolumetric: true,
-//         icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`
-//     },
-//     B: {
-//         name: "Rijtjeswoning",
-//         unit: "per m³",
-//         costPerUnit: 400,
-//         yieldPercentage: 8,
-//         residentsPerUnit: 0.01,
-//         sustainabilityScore: 6,
-//         color: Cesium.Color.CORAL,
-//         colorHex: "#FF7F50",
-//         isVolumetric: true,
-//         icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3zm0 2.84L18 11v8h-2v-6h-8v6H6v-8l6-5.16z"/></svg>`
-//     },
-//     C: {
-//         name: "Appartement",
-//         unit: "per m³",
-//         costPerUnit: 300,
-//         yieldPercentage: 12,
-//         residentsPerUnit: 0.006,
-//         sustainabilityScore: 5,
-//         color: Cesium.Color.LIGHTBLUE,
-//         colorHex: "#ADD8E6",
-//         isVolumetric: true,
-//         icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z"/></svg>`
-//     },
-//     D: {
-//         name: "Bedrijfsgebouw",
-//         unit: "per m³",
-//         costPerUnit: 200,
-//         yieldPercentage: 15,
-//         residentsPerUnit: 0.018,
-//         sustainabilityScore: 2,
-//         color: Cesium.Color.DARKGRAY,
-//         colorHex: "#A9A9A9",
-//         isVolumetric: true,
-//         icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>`
-//     },
-//     E: {
-//         name: "Park/groen",
-//         unit: "per m²",
-//         costPerUnit: 150,
-//         yieldPercentage: 0,
-//         residentsPerUnit: 0,
-//         sustainabilityScore: 10,
-//         color: Cesium.Color.LIMEGREEN,
-//         colorHex: "#32CD32",
-//         isVolumetric: false,
-//         icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 -960 960 960" fill="currentColor"><path d="M180-520q-26 0-43-17t-17-43q0-26 17-43t43-17q26 0 43 17t17 43q0 26-17 43t-43 17ZM120-80v-200h-40v-160q0-17 11.5-28.5T120-480h120q17 0 28.5 11.5T280-440v160h-40v120h320v-200h-70q-71 0-120.5-49.5T320-530q0-53 28.5-94.5T422-686q11-65 60.5-109.5T600-840q68 0 117.5 44.5T778-686q45 20 73.5 61.5T880-530q0 71-49.5 120.5T710-360h-70v200h200v80H120Zm370-360h220q38 0 64-26t26-64q0-27-14.5-49T746-612l-42-18-6-44q-6-37-33.5-61.5T600-760q-37 0-64.5 24.5T502-674l-6 44-42 18q-25 11-39.5 33T400-530q0 38 26 64t64 26Zm110-160Z"/></svg>`
-//     },
-//     F: {
-//         name: "Wegen",
-//         unit: "per m²",
-//         costPerUnit: 100,
-//         yieldPercentage: 5,
-//         residentsPerUnit: 0,
-//         sustainabilityScore: 8,
-//         color: Cesium.Color.DIMGRAY,
-//         colorHex: "#696969",
-//         isVolumetric: false,
-//         icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M720-40v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm0-400v-360h80v360h-80ZM160-160v-640h80v640h-80Zm280-480v-160h80v160h-80Zm0 240v-160h80v160h-80Zm0 240v-160h80v160h-80Z"/></svg>`
-//     },
-//     G: {
-//         name: "Parkeerplaatsen",
-//         unit: "per m²",
-//         costPerUnit: 100,
-//         yieldPercentage: 10,
-//         residentsPerUnit: 0,
-//         sustainabilityScore: 6,
-//         color: Cesium.Color.LIGHTGRAY,
-//         colorHex: "#D3D3D3",
-//         isVolumetric: false,
-//         icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3H6v18h4v-6h3c3.31 0 6-2.69 6-6s-2.69-6-6-6zm.2 8H10V7h3.2c1.1 0 2 .9 2 2s-.9 2-2 2z"/></svg>`
-//     },
-//    H : {
-//         name: "Parkeerplaatsen overdekt",
-//         unit: "per m²",
-//         costPerUnit: 1500,
-//         yieldPercentage: 15,
-//         residentsPerUnit: 0,
-//         sustainabilityScore: 10,
-//         color: Cesium.Color.SLATEGRAY,
-//         colorHex: "#708090",
-//         isVolumetric: false,
-//         icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M160-80q-33 0-56.5-23.5T80-160v-640q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v640q0 33-23.5 56.5T800-80H160Zm0-80h640v-640H160v640Zm200-240q-17 0-28.5-11.5T320-440q0-17 11.5-28.5T360-480q17 0 28.5 11.5T400-440q0 17-11.5 28.5T360-400Zm240 0q-17 0-28.5-11.5T560-440q0-17 11.5-28.5T600-480q17 0 28.5 11.5T640-440q0 17-11.5 28.5T600-400ZM200-516v264q0 14 9 23t23 9h16q14 0 23-9t9-23v-48h400v48q0 14 9 23t23 9h16q14 0 23-9t9-23v-264l-66-192q-5-14-16.5-23t-25.5-9H308q-14 0-25.5 9T266-708l-66 192Zm106-64 28-80h292l28 80H306ZM160-800v640-640Zm120 420v-120h400v120H280Z"/></svg>`
-//     }
-// };
-
-
 let mapName;
 let mapId;
 let selectedHeight;
 let buildingBlocks = {};
 let currentBuildingBlock = null;
 let selectedBlockColor = Cesium.Color.GRAY.withAlpha(0.5);
-let placedBuildings = [];
 
 
 /**
@@ -258,6 +153,7 @@ function createBuildingUIContainer(Position) {
 
     return container;
 }
+
 function createAIUIContainer(Position) {
     const container = document.createElement('div');
     container.id = 'building-ui-container';
@@ -360,7 +256,7 @@ function createStatsPanel() {
         {
             id: 'total-parkingspots',
             label: 'Parkeerplekken',
-            goal: '450'
+            goal: '4500'
             //icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280h80v-200h-80v200Zm320 0h80v-400h-80v400Zm-160 0h80v-120h-80v120Zm0-200h80v-80h-80v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>`
         },
     ];
@@ -601,7 +497,6 @@ function setAIResult(text) {
 }
 
 
-
 function createResultsArea() {
     const panel = document.createElement('div');
     panel.id = 'results-area-panel';
@@ -654,7 +549,6 @@ function createResultsPanel() {
     });
 
 
-
     panel.appendChild(header);
     panel.appendChild(grid);
 
@@ -684,8 +578,7 @@ var measure;
 var viewer;
 
 function setup() {
-    //TODO: Remove if websocket isn't needed
-    //connect()
+
 
     loadBuildingBlocks().then(success => {
         if (!success) {
@@ -737,43 +630,10 @@ function setup() {
     //Improves tile quality
     viewer.scene.globe.maximumScreenSpaceError = 1;
 
-    // console.log(viewer.scene.globe.maximumScreenSpaceError);
-
-    // const condo1 = createBox(200, 300, 50, 40, 70, 0, "building_tex.jpg");
-    // measure = createBox(0, 0, 3, 3, 30, 0, Cesium.Color.RED);
-
-    // var carX = 230;
-    // var carY = 78;
-    //
-    // const car = createBox(carX, carY, 5, 2, 1.5, 0, Cesium.Color.BLUE);
-    //
-    // function moveCar() {
-    //     carX++;
-    //     carY += 0.35;
-    //     moveEntity(car, carX, carY);
-    //     setTimeout(() => {
-    //         moveCar();
-    //     }, 150);
-    // }
-
     viewer.imageryLayers.removeAll();
     viewer.imageryLayers.addImageryProvider(osm);
 
-    // moveCar();
-
-    // createPolygonFromXYs([
-    //     [250, 72], //linksonder-onder
-    //     [230, 85], //linksonder-boven
-    //     [510, 185], //midden-links-boven
-    //     [520, 175] //midden-links-onder
-    // ], Cesium.Color.WHITE);
-
     addSpoordokPoly();
-
-    // createModel("Cesium_Man.glb", latlonFromXY(220, 70), 0);
-    //
-    // createModel("strange_building.glb", latlonFromXY(240, 70), 0);
-
     setupInputActions();
 
     createBuildingUI();
@@ -782,7 +642,7 @@ function setup() {
 
 }
 
-function addSpoordokPoly(){
+function addSpoordokPoly() {
     return viewer.entities.add({
         name: "Spoordok",
         polygon: {
@@ -931,126 +791,6 @@ function setupInputActions() {
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
 }
 
-// x = verplaatsing in meters noord (+) / zuid (-)
-// y = verplaatsing in meters oost (+) / west (-)
-// top_right_lat = referentie-latitude (graden)
-// top_left_lon = referentie-longitude (graden)
-
-const top_right_lat = 5.77465380114684;
-const top_left_lon = 53.194528716741345;
-
-function latlonFromXY(xMeters, yMeters) {
-    // gemiddelde meters per graad latitude ~111320
-    const metersPerDegLat = 111320.0;
-
-    // bereken nieuwe latitude (in graden)
-    const newLat = top_right_lat + (xMeters / metersPerDegLat);
-
-    // meters per graad longitude = ~111320 * cos(latitude_in_radians)
-    const latRad = newLat * Math.PI / 180.0;
-    const metersPerDegLon = 111320.0 * Math.cos(latRad);
-
-    // voorkom deling door 0 vlak bij polen
-    const newLon = top_left_lon + (yMeters / (metersPerDegLon || 1e-9));
-
-    return { lat: newLat, lon: newLon };
-}
-
-var _box = 1;
-
-//Color kan ook een pad zijn naar een afbeelding
-//Let wel op dat afbeeldingen niet via UV-mapping gaan, en dat de afbeelding
-//dus op elk vlak herhaald zal worden. Dit ziet er niet super uit.
-//De oplossing is om een eigen model te maken met textures. Dit kan vrij
-//simpel via Blender. Zie de volgende tutorial: https://www.youtube.com/watch?v=mURA2g1rOSc
-function createBox(x, y, width, depth, height, rotation, color) {
-    const cords = latlonFromXY(x, y);
-    return createBoxLatLon(cords, width, depth, height, rotation, color);
-}
-
-function createBoxLatLon(cords, width, depth, height, rotation, color) {
-    return viewer.entities.add({
-        name: "Box_" + _box++,
-        position: Cesium.Cartesian3.fromDegrees(cords.lat, cords.lon, height / 2.0),
-        box: {
-            dimensions: new Cesium.Cartesian3(width, depth, height),
-            material: color
-        }
-    });
-}
-
-function createBoxXYZ(position, width, depth, height, rotation, color) {
-    return viewer.entities.add({
-        name: "Box_" + _box++,
-        position: position,
-        box: {
-            dimensions: new Cesium.Cartesian3(width, depth, height),
-            material: color,
-            heightReference: Cesium.HeightReference.CLAMP_TO_GROUND //IMPORTANT
-        }
-    });
-}
-
-function moveEntity(entity, x, y) {
-    const cords = latlonFromXY(x, y);
-    entity.position = Cesium.Cartesian3.fromDegrees(cords.lat, cords.lon, entity.box.dimensions._value.z);
-}
-
-var _polygon = 1;
-
-function createPolygonFromXYs(xyArray, color) {
-    var degreeArray = [];
-    xyArray.forEach(element => {
-        const cords = latlonFromXY(element[0], element[1]);
-        degreeArray.push(cords.lat);
-        degreeArray.push(cords.lon);
-    });
-
-    const redPolygon = viewer.entities.add({
-        name: "Polygon_" + _polygon++,
-        polygon: {
-            hierarchy: Cesium.Cartesian3.fromDegreesArray(degreeArray),
-            material: color,
-        },
-    });
-}
-
-//Werkt alleen met glTF modellen!
-//Als je OBJ-modellen wilt laden, moet je ze eerst naar glTF converten. Dit kan met Blender,
-//maar ook via de volgende tool van Cesium: https://github.com/CesiumGS/obj2gltf
-//!Let op bij gebruik van Blender! 3D-modellen die als .blend bestand worden opgeslagen kunnen
-//embedded Python-code bevatten. Pas op dat dit niet tijdens het openen automatisch uitgevoerd
-//wordt, want dit is een bekende attack vector voor exploits, etc.
-function createModel(url, position, height) {
-
-    const full_position = Cesium.Cartesian3.fromDegrees(
-        position.lat,
-        position.lon,
-        height
-    );
-
-    const heading = Cesium.Math.toRadians(135);
-    const pitch = 0;
-    const roll = 0;
-    const hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-    const orientation = Cesium.Transforms.headingPitchRollQuaternion(
-        full_position,
-        hpr,
-    );
-
-    const entity = viewer.entities.add({
-        name: url,
-        position: full_position,
-        orientation: orientation,
-        model: {
-            uri: url,
-            minimumPixelSize: 128,
-            maximumScale: 1,
-        },
-    });
-    viewer.trackedEntity = entity;
-}
-
 // Function to convert Cartesian coordinates to latitude and longitude
 function cartesianToLatLon(cartesianPosition) {
     const cartographic = Cesium.Cartographic.fromCartesian(cartesianPosition);
@@ -1058,31 +798,7 @@ function cartesianToLatLon(cartesianPosition) {
     const lon = cartographic.longitude;
     const lat = cartographic.latitude;
 
-    return { lat, lon };
-}
-
-// Define grid size
-const gridSize = 1.1; // Adjust this to your desired grid size
-
-// Function to snap coordinates to the grid
-function snapToGrid(position) {
-    const snappedX = Math.round(position.x / gridSize) * gridSize;
-    const snappedZ = Math.round(position.z / gridSize) * gridSize;
-
-    return new Cesium.Cartesian3(snappedX, position.y, snappedZ);
-}
-
-function handleMouseClick(event) {
-    const mousePosition = new Cesium.Cartesian2(event.clientX, event.clientY);
-    //const ray = viewer.camera.getPickRay(mousePosition);
-    const hitPosition = viewer.scene.pickPosition(mousePosition);
-
-    // Check if the ray intersects the globe
-    if (hitPosition) {
-        var snappedPosition = snapToGrid(hitPosition);
-
-        createBoxXYZ(snappedPosition, 1, 1, 1, 0, Cesium.Color.RED);
-    }
+    return {lat, lon};
 }
 
 function create3DObject(basePolygon, height) {
@@ -1094,10 +810,10 @@ function create3DObject(basePolygon, height) {
     basePolygon.polygon.extrudedHeight *= 1.5;
 }
 
-async function SendPolygon(points, type, entity){
+async function SendPolygon(points, type, entity) {
     const coordinates = points.map(point => {
         const coords = cartesianToLatLon(point);
-        return{
+        return {
             latitude: Cesium.Math.toDegrees(coords.lat),
             longitude: Cesium.Math.toDegrees(coords.lon)
         };
@@ -1120,51 +836,49 @@ async function SendPolygon(points, type, entity){
         console.log(response)
 
         updateInformationPanel(content);
-
-
-        if (!response.ok){
+        if (!response.ok) {
             throw new Error('Response status:' + response.status);
         }
-        }catch(error){
+    } catch (error) {
         console.log(error.message)
     }
     getInfo();
 
 }
 
-function post (url, data) {
+async function post(url, data) {
     try {
-        const response =     fetch(url, {
+        const response = await fetch(url, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
-        if (!response.ok){
+        if (!response.ok) {
             throw new Error('Response status:' + response.status);
         }
-    }catch(error){
+    } catch (error) {
         console.error(error.message)
     }
 
 }
 
-async function get (url){
+async function get(url) {
     try {
         const response = await fetch(url);
-        if (!response.ok){
+        if (!response.ok) {
             throw new Error('Response status:' + response.status);
         }
         const content = await response.json();
         console.log(content);
         return content;
-    } catch(error){
+    } catch (error) {
         console.error(error.message)
     }
 
 }
 
 
-async function createMap(){
+async function createMap() {
     mapName = prompt("Please enter a name for your map");
 
     try {
@@ -1180,22 +894,22 @@ async function createMap(){
         console.log(content)
         mapId = content.id;
         resetInformationPanel();
-        updateGoals();
-        if (!response.ok){
+        resetGoals();
+        if (!response.ok) {
             throw new Error('Response status:' + response.status);
         }
-    }catch(error){
+    } catch (error) {
         console.error(error.message)
     }
 }
 
 
-//TODO: this can probably be removed
+/*//TODO: this can probably be removed
 function saveMap(){
     post("http://localhost:8080/map/save", mapId)
-}
+}*/
 
-async function loadMap(){
+async function loadMap() {
     let name = prompt("Please enter the name of the map you want to load");
     try {
         const response = await fetch("http://localhost:8080/map/load", {
@@ -1240,20 +954,8 @@ async function loadMap(){
             });
 
         getInfo()
+        updateGoals(content)
 
-        // console.log(block.coords, typeof block.coords)
-        // const points = [];
-        // block.coords.forEach(coord => {
-        //     points.push(Cesium.Cartesian3.fromDegrees(coord.longitude, coord.latitude))
-        // });
-        // console.log(points);
-        // viewer.entities.add({
-        //     polygon: {
-        //         hierarchy: points,
-        //         extrudedHeight: block.height,
-        //         material: selectedBlockColor,  // Gebruikt kleur van geselecteerd BlockType
-        //     },
-        // });
         if (!response.ok) {
             throw new Error('Response status:' + response.status);
         }
@@ -1263,29 +965,28 @@ async function loadMap(){
 
 }
 
-async function getInfo(){
-    const response = await get("http://localhost:8080/info/get")
+async function getInfo() {
+    const response = await get("http://localhost:8080/info/get");
     updateInformationPanel(response);
 }
 
-function setHeight(){
+function setHeight() {
     selectedHeight = document.getElementById("heightInput").value;
 }
 
 
-
-function updateInformationPanel(content){
-    document.getElementById("total-cost").textContent = content.currentCost;
-    document.getElementById("total-yield").textContent = content.currentYield;
+function updateInformationPanel(content) {
+    document.getElementById("total-cost").textContent = Number(content.currentCost).toFixed(2);
+    document.getElementById("total-yield").textContent = Number(content.currentYield).toFixed(2);
     document.getElementById("total-residents").textContent = content.currentResidents;
     document.getElementById("total-livability").textContent = content.currentLivability;
     document.getElementById("total-workplaces").textContent = content.currentWorkplaces;
-    document.getElementById("green-percentage").textContent = content.currentGreenPercentage;
-    document.getElementById("workplace-percentage").textContent = content.currentWorkplacePercentage;
-    document.getElementById("total-parkingspots").textContent = content.currentParkingSpots;
+    document.getElementById("green-percentage").textContent = Number(content.currentGreenPercentage).toFixed(2);
+    document.getElementById("workplace-percentage").textContent = Number(content.currentWorkplacePercentage).toFixed(2);
+    document.getElementById("total-parkingspots").textContent = Number(content.currentParkingSpots).toFixed(2);
 }
 
-function resetInformationPanel(content){
+function resetInformationPanel() {
     document.getElementById("total-cost").textContent = "0";
     document.getElementById("total-yield").textContent = "0";
     document.getElementById("total-residents").textContent = "0";
@@ -1296,53 +997,53 @@ function resetInformationPanel(content){
     document.getElementById("total-parkingspots").textContent = "0";
 }
 
-//TODO: Implement updating goals
-function updateGoals(){
-
+function updateGoals(content) {
+    document.getElementById("total-cost-goal").textContent = content.cost;
+    document.getElementById("total-yield-goal").textContent = content.yield;
+    document.getElementById("total-residents-goal").textContent = content.residents;
+    document.getElementById("total-livability-goal").textContent = content.livability;
+    document.getElementById("total-workplaces-goal").textContent = content.workplaces;
+    document.getElementById("green-percentage-goal").textContent = content.greenPercentage;
+    document.getElementById("workplace-percentage-goal").textContent = content.workplacePercentage;
+    document.getElementById("total-parkingspots-goal").textContent = content.parkingSpots;
 }
 
-//
-
-
-//Websocket setup
-
-/*
-const stompClient = new StompJs.Client({
-    brokerURL: 'ws://localhost:8080/websocket'
-})
-
-stompClient.onConnect = (frame) => {
-    console.log('Connected: ' + frame)
-    stompClient.subscribe('/topic/messages', (message) => {
-        console.log(JSON.stringify(JSON.parse(message.body), null, 2))
-    })
+function resetGoals() {
+    document.getElementById("total-cost-goal").textContent = "100000";
+    document.getElementById("total-yield-goal").textContent = "100000";
+    document.getElementById("total-residents-goal").textContent = "3000";
+    document.getElementById("total-livability-goal").textContent = "100";
+    document.getElementById("total-workplaces-goal").textContent = "500";
+    document.getElementById("green-percentage-goal").textContent = "20";
+    document.getElementById("workplace-percentage-goal").textContent = "20";
+    document.getElementById("total-parkingspots-goal").textContent = "4500";
 }
 
-stompClient.webSocketError = (error) => {
-    console.error("websocket error", error)
-};
 
-stompClient.stompError = (frame) => {
-    console.error('Broker error: ' + frame.headers['message'])
-    console.error('details: ' + frame.body)
-};
-
-function connect(){
-    stompClient.activate()
+function openModal() {
+    document.getElementById("modal").style.display = "block";
 }
 
-function disconnect(){
-    stompClient.deactivate()
-    console.log('Disconnected')
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
 }
 
-function sendMessage(title, content){
-    console.log('broadcasting message')
-    stompClient.publish({
-        destination: '/messages/broadcast',
-        body: JSON.stringify({
-            'title': title,
-            'content': content
-        })
-    })
-}*/
+async function submitForm() {
+    if (mapId != null) {
+        const data = {
+            mapId: mapId,
+            cost: document.getElementById("costInput").value,
+            yield: document.getElementById("yieldInput").value,
+            residents: document.getElementById("residentsInput").value,
+            livability: document.getElementById("livabilityInput").value,
+            workplaces: document.getElementById("workplacesInput").value,
+            greenPercentage: document.getElementById("greenPercentageInput").value,
+            workplacePercentage: document.getElementById("workplacePercentageInput").value,
+            parkingSpots: document.getElementById("parkingspotsInput").value
+        }
+        post("http://localhost:8080/map/setGoals", data);
+        updateGoals(data);
+        closeModal();
+    }
+}
+

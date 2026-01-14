@@ -48,7 +48,7 @@ public class BlockController {
         Polygon blockPoly = polygonService.toPolygon(json.get("coordinates"));
         block.setGeometry(blockPoly);
         block.setHeight(json.get("height").asInt());
-        block.setArea((float) calculateArea(blockPoly));
+        block.setArea(calculateArea(blockPoly));
         System.out.println(block.getArea());
         System.out.println(block.getBlockType().getUnit());
 
@@ -56,10 +56,10 @@ public class BlockController {
 
         if (block.getBlockType().getUnit() == BlockType.Unit.m2){
             block.setCalculated_cost(block.getArea() * block.getBlockType().getCostPerUnit());
-            block.setCalculated_residents((int) (block.getArea() * block.getBlockType().getResidentsPerUnit()));
+            block.setCalculated_residents((int) Math.round(block.getArea() * block.getBlockType().getResidentsPerUnit()));
         } else if (block.getBlockType().getUnit() == BlockType.Unit.m3) {
             block.setCalculated_cost(block.getArea() * block.getBlockType().getCostPerUnit());
-            block.setCalculated_residents((int) (block.getArea() * block.getBlockType().getResidentsPerUnit()));
+            block.setCalculated_residents((int) Math.round(block.getArea() * block.getBlockType().getResidentsPerUnit()));
             System.out.println(block.getCalculated_residents());
         }
 

@@ -25,19 +25,19 @@ public class Block {
     private Polygon geometry;
 
     @Column(nullable = false)
-    private float height;
+    private double height;
 
     @Column(nullable = false, name = "area_m2")
-    private float area;
+    private double area;
 
     @Column(nullable = false, name = "volume_m3")
-    private float volume;
+    private double volume;
 
     @Column(nullable = false)
-    private float calculated_cost;
+    private double calculated_cost;
 
     @Column(nullable = false)
-    private float calculated_yield;
+    private double calculated_yield;
 
     @Column(nullable = false)
     private int calculated_residents;
@@ -46,7 +46,7 @@ public class Block {
 
     public Block() {}
 
-    public Block(BlockType blockType, Map map, Polygon geometry, float height, float area, float volume, float calculated_cost, float calculated_yield, int calculated_residents) {
+    public Block(BlockType blockType, Map map, Polygon geometry, double height, double area, double volume, double calculated_cost, double calculated_yield, int calculated_residents) {
         this.blockType = blockType;
         this.map = map;
         this.geometry = geometry;
@@ -90,43 +90,43 @@ public class Block {
         this.geometry = geometry;
     }
 
-    public float getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
-    public float getArea() {
+    public double getArea() {
         return area;
     }
 
-    public void setArea(float area) {
+    public void setArea(double area) {
         this.area = area;
     }
 
-    public float getVolume() {
+    public double getVolume() {
         return volume;
     }
 
-    public void setVolume(float volume) {
+    public void setVolume(double volume) {
         this.volume = volume;
     }
 
-    public float getCalculated_cost() {
+    public double getCalculated_cost() {
         return calculated_cost;
     }
 
-    public void setCalculated_cost(float calculated_cost) {
+    public void setCalculated_cost(double calculated_cost) {
         this.calculated_cost = calculated_cost;
     }
 
-    public float getCalculated_yield() {
+    public double getCalculated_yield() {
         return calculated_yield;
     }
 
-    public void setCalculated_yield(float calculated_yield) {
+    public void setCalculated_yield(double calculated_yield) {
         this.calculated_yield = calculated_yield;
     }
 

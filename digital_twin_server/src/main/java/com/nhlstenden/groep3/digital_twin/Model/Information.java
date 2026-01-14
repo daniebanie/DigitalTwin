@@ -2,17 +2,17 @@ package com.nhlstenden.groep3.digital_twin.Model;
 
 public class Information {
     private int currentLivability = 0;
-    private float currentCost = 0;
-    private float currentYield = 0;
+    private double currentCost = 0;
+    private double currentYield = 0;
     private int currentWorkplaces = 0;
     private int currentResidents = 0;
     private int currentParkingSpots = 0;
-    private float currentTotalVolume = 0;
-    private float currentTotalArea = 0;
-    private float currentGreenPercentage = 0;
-    private float currentWorkplacePercentage = 0;
+    private double currentTotalVolume = 0;
+    private double currentTotalArea = 0;
+    private double currentGreenPercentage = 0;
+    private double currentWorkplacePercentage = 0;
 
-    public Information(int currentLivability, float currentCost, float currentYield, int currentWorkplaces, int currentResidents, int currentParkingSpots, float currentTotalVolume, float currentTotalArea, float currentGreenPercentage, float currentWorkplacePercentage) {
+    public Information(int currentLivability, double currentCost, double currentYield, int currentWorkplaces, int currentResidents, int currentParkingSpots, double currentTotalVolume, double currentTotalArea, double currentGreenPercentage, double currentWorkplacePercentage) {
         this.currentLivability = currentLivability;
         this.currentCost = currentCost;
         this.currentYield = currentYield;
@@ -37,19 +37,19 @@ public class Information {
         this.currentLivability = currentLivability;
     }
 
-    public float getCurrentCost() {
+    public double getCurrentCost() {
         return currentCost;
     }
 
-    public void setCurrentCost(float currentCost) {
+    public void setCurrentCost(double currentCost) {
         this.currentCost = currentCost;
     }
 
-    public float getCurrentYield() {
+    public double getCurrentYield() {
         return currentYield;
     }
 
-    public void setCurrentYield(float currentYield) {
+    public void setCurrentYield(double currentYield) {
         this.currentYield = currentYield;
     }
 
@@ -77,35 +77,35 @@ public class Information {
         this.currentParkingSpots = currentParkingSpots;
     }
 
-    public float getCurrentTotalVolume() {
+    public double getCurrentTotalVolume() {
         return currentTotalVolume;
     }
 
-    public void setCurrentTotalVolume(float currentTotalVolume) {
+    public void setCurrentTotalVolume(double currentTotalVolume) {
         this.currentTotalVolume = currentTotalVolume;
     }
 
-    public float getCurrentTotalArea() {
+    public double getCurrentTotalArea() {
         return currentTotalArea;
     }
 
-    public void setCurrentTotalArea(float currentTotalArea) {
+    public void setCurrentTotalArea(double currentTotalArea) {
         this.currentTotalArea = currentTotalArea;
     }
 
-    public float getCurrentGreenPercentage() {
+    public double getCurrentGreenPercentage() {
         return currentGreenPercentage;
     }
 
-    public void setCurrentGreenPercentage(float currentGreenPercentage) {
+    public void setCurrentGreenPercentage(double currentGreenPercentage) {
         this.currentGreenPercentage = currentGreenPercentage;
     }
 
-    public float getCurrentWorkplacePercentage() {
+    public double getCurrentWorkplacePercentage() {
         return currentWorkplacePercentage;
     }
 
-    public void setCurrentWorkplacePercentage(float currentWorkplacePercentage) {
+    public void setCurrentWorkplacePercentage(double currentWorkplacePercentage) {
         this.currentWorkplacePercentage = currentWorkplacePercentage;
     }
 }

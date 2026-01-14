@@ -15,6 +15,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.Repository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,21 +48,39 @@ public class MapController {
         return ResponseEntity.ok("{\"id\" : \"" + map.getId().toString() + "\"}");
     }
 
-    //TODO: can probably be removed
-    @PostMapping("/save")
-    public void saveMap(@RequestBody Long mapId) {
-        System.out.println("Saving Map");
-        Map map = mapRepository.findById(mapId).orElseThrow();
-        System.out.println(map.getBlocks());
-    }
+//    //TODO: can probably be removed
+//    @PostMapping("/save")
+//    public void saveMap(@RequestBody Long mapId) {
+//        System.out.println("Saving Map");
+//        Map map = mapRepository.findById(mapId).orElseThrow();
+//        System.out.println(map.getBlocks());
+//    }
 
     @PostMapping("/load")
     public ResponseEntity<MapDTO> loadMap(@RequestBody String name){
         Map map = mapRepository.findByName(name).orElseThrow();
+        informationService.resetCurrentInformation();
         for (Block block : map.getBlocks()){
             informationService.updateValuesFromBlock(block);
         }
         return ResponseEntity.ok(mapMapper.toDTO(map));
+    }
+
+    @PostMapping("/setGoals")
+    public ResponseEntity<Void> setGoals(@RequestBody Goals goal){
+        Map map = mapRepository.findById(goal.getMapId()).orElseThrow();
+        map.setCost(goal.getCost());
+        map.setYield(goal.getYield());
+        map.setResidents(goal.getResidents());
+        map.setLivability(goal.getLivability());
+        map.setWorkplaces(goal.getWorkplaces());
+        map.setGreenPercentage(goal.getGreenPercentage());
+        map.setWorkplacePercentage(goal.getWorkplacePercentage());
+        map.setParkingSpots(goal.getParkingSpots());
+
+        mapRepository.save(map);
+
+        return ResponseEntity.ok().build();
     }
 }
 

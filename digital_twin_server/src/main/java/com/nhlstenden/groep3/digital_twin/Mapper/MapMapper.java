@@ -15,18 +15,8 @@ import java.util.List;
 
 @Component
 public class MapMapper{
-
-    private final BlockRepository blockRepository;
-    private final BlockMapper blockMapper;
-
     GeoJsonWriter writer = new GeoJsonWriter();
     ObjectMapper mapper = new ObjectMapper();
-
-
-    public MapMapper(BlockRepository blockRepository, BlockMapper blockMapper) {
-        this.blockRepository = blockRepository;
-        this.blockMapper = blockMapper;
-    }
 
     public MapDTO toDTO(Map map) {
         MapDTO dto = new MapDTO();

@@ -1,6 +1,7 @@
 package com.nhlstenden.groep3.digital_twin.Model;
 
 public class Goals {
+    long mapId;
     int livability;
     int cost;
     int residents;
@@ -10,12 +11,16 @@ public class Goals {
     int greenPercentage;
     int workplacePercentage;
 
-    public Goals(int livability, int cost, int residents, int workplaces, int yield) {
+    public Goals(long mapId, int livability, int cost, int residents, int workplaces, int parkingSpots, int yield, int greenPercentage, int workplacePercentage) {
+        this.mapId = mapId;
         this.livability = livability;
         this.cost = cost;
         this.residents = residents;
         this.workplaces = workplaces;
+        this.parkingSpots = parkingSpots;
         this.yield = yield;
+        this.greenPercentage = greenPercentage;
+        this.workplacePercentage = workplacePercentage;
     }
 
     public int getLivability() {
@@ -56,5 +61,37 @@ public class Goals {
 
     public void setYield(int yield) {
         this.yield = yield;
+    }
+
+    public long getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(long mapId) {
+        this.mapId = mapId;
+    }
+
+    public int getParkingSpots() {
+        return parkingSpots;
+    }
+
+    public void setParkingSpots(int parkingSpots) {
+        this.parkingSpots = parkingSpots;
+    }
+
+    public int getGreenPercentage() {
+        return greenPercentage;
+    }
+
+    public void setGreenPercentage(int greenPercentage) {
+        this.greenPercentage = greenPercentage;
+    }
+
+    public int getWorkplacePercentage() {
+        return workplacePercentage;
+    }
+
+    public void setWorkplacePercentage(int workplacePercentage) {
+        this.workplacePercentage = workplacePercentage;
     }
 }
