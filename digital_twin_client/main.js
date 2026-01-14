@@ -100,6 +100,7 @@
 //         icon: `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor"><path d="M160-80q-33 0-56.5-23.5T80-160v-640q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v640q0 33-23.5 56.5T800-80H160Zm0-80h640v-640H160v640Zm200-240q-17 0-28.5-11.5T320-440q0-17 11.5-28.5T360-480q17 0 28.5 11.5T400-440q0 17-11.5 28.5T360-400Zm240 0q-17 0-28.5-11.5T560-440q0-17 11.5-28.5T600-480q17 0 28.5 11.5T640-440q0 17-11.5 28.5T600-400ZM200-516v264q0 14 9 23t23 9h16q14 0 23-9t9-23v-48h400v48q0 14 9 23t23 9h16q14 0 23-9t9-23v-264l-66-192q-5-14-16.5-23t-25.5-9H308q-14 0-25.5 9T266-708l-66 192Zm106-64 28-80h292l28 80H306ZM160-800v640-640Zm120 420v-120h400v120H280Z"/></svg>`
 //     }
 // };
+const API_BASE_URL = "http://localhost:8080";
 
 let buildingBlocks = {};
 let currentBuildingBlock = null;
@@ -574,12 +575,11 @@ function createResultsArea() {
     text.textContent = 'Resultaten komen hier';
 
     panel.appendChild(text);
-
-    panel.appendChild(createResultsPanel())
+    panel.appendChild(renderResultsPanel())
     return panel;
 }
 
-function createResultsPanel() {
+function renderResultsPanel() {
     const panel = document.createElement('div');
     panel.id = 'test';
 
@@ -595,13 +595,16 @@ function createResultsPanel() {
 
         const col = document.createElement('div');
         col.id = 'result-block';
-        col.className = 'col-6 text-center';
+        col.className = 'col-12 text-center';
 
         const name = document.createElement('div');
         name.textContent = result.name + " / " + result.uploadedOn;
 
         const img = document.createElement('img');
-        img.src = result.route; // <-- FIX PATH
+        img.src = result.route.startsWith("/uploads")
+            ? API_BASE_URL + result.route
+            : result.route;
+
         img.alt = 'result';
         img.style.width = '100%';
 
@@ -615,30 +618,75 @@ function createResultsPanel() {
         grid.appendChild(col);
     });
 
-
-
     panel.appendChild(header);
     panel.appendChild(grid);
 
     return panel;
 }
 
+function refreshResultsPanel() {
+    const existing = document.getElementById('test');
+    const resultsArea = document.getElementById('results-area-panel');
+
+    if (existing) {
+        existing.remove();
+    }
+
+    const panel = renderResultsPanel();
+    resultsArea.appendChild(panel);
+}
+
 
 const resultBlocks = {
-    1: {
-        name: "imageno1",
-        route: `Cesium-1.135/Screenshots/Schermafbeelding2025-11-27221716.png`,
-        uploadedOn: "10-12-2025",
-        result: "Dit is een mooi minecraft huis"
-
-    },
-    2: {
-        name: "imageno1",
-        route: `Cesium-1.135/Screenshots/Schermafbeelding2025-11-27221716.png`,
-        uploadedOn: "10-12-2025",
-        result: "Dit is een mooi minecraft huis"
-    }
+    // Dit was bedoelt voor testing maar er zouden hier hardcoded ai-resultaten gemaakt kunnen worden.
 };
+
+async function loadAiResults() {
+    try {
+        const response = await fetch("http://localhost:8080/ai-reviews");
+
+        if (!response.ok) {
+            console.warn("AI reviews fetch failed");
+            return false;
+        }
+
+        const data = await response.json();
+
+
+        if (!Array.isArray(data) || data.length === 0) {
+            console.log("No AI reviews yet");
+            return false;
+        }
+
+        let nextKey = Object.keys(resultBlocks).length + 1;
+
+        data.forEach(review => {
+            resultBlocks[nextKey] = {
+                name: `AI Review ${review.id}`,
+                route: review.imagePath,
+                uploadedOn: new Date(review.createdAt).toLocaleDateString(),
+                result: review.reviewContent
+            };
+            nextKey++;
+        });
+
+        refreshResultsPanel();
+        return true;
+
+    } catch (error) {
+        console.error("Error loading AI reviews:", error);
+        return false;
+    }
+}
+
+function scheduleAiResultsRetry() {
+    console.log("Retry AI results over 5 seconden...");
+    setTimeout(async () => {
+        const success = await loadAiResults();
+        if (!success) scheduleAiResultsRetry();
+    }, 5000);
+}
+
 
 window.onload = setup;
 
@@ -1067,7 +1115,7 @@ function post (url, data) {
         body: JSON.stringify(data)
     })
 }
-
+scheduleAiResultsRetry();
 
 function createMap(){
     let name = prompt("Please enter a name for your map");
