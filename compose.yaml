@@ -16,6 +16,8 @@ services:
       - '8080:8080'
     networks:
       - digitaltwin
+    volumes:
+      - uploads-data:/uploads
 
   mariadb:
     image: mariadb
@@ -50,3 +52,4 @@ networks:
 volumes:
   db-data:
   ollama-data:
+  uploads-data:
