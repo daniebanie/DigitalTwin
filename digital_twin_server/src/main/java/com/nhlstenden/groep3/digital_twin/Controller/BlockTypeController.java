@@ -1,9 +1,6 @@
 package com.nhlstenden.groep3.digital_twin.Controller;
 
-import com.nhlstenden.groep3.digital_twin.Model.Block;
 import com.nhlstenden.groep3.digital_twin.Model.BlockType;
-import com.nhlstenden.groep3.digital_twin.Model.Map;
-import com.nhlstenden.groep3.digital_twin.Model.Message;
 import com.nhlstenden.groep3.digital_twin.Services.BlockTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,18 +1,42 @@
-package com.nhlstenden.groep3.digital_twin.Model;
+package com.nhlstenden.groep3.digital_twin.DTO;
 
-public class Goals {
-    long mapId;
-    int livability;
-    int cost;
-    int residents;
-    int workplaces;
-    int parkingSpots;
-    int yield;
-    int greenPercentage;
-    int workplacePercentage;
+import com.nhlstenden.groep3.digital_twin.Model.Block;
+import jakarta.persistence.*;
 
-    public Goals(long mapId, int livability, int cost, int residents, int workplaces, int parkingSpots, int yield, int greenPercentage, int workplacePercentage) {
-        this.mapId = mapId;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MapDTO {
+
+    private Long id;
+
+    private String name = "default";
+
+    private List<BlockLoadDTO> blocks = new ArrayList<>();
+
+
+    private int livability = 0;
+
+    private int cost = 0;
+
+    private int residents = 0;
+
+    private int workplaces = 0;
+
+    private int parkingSpots = 0;
+
+    private int yield = 0;
+
+    private int greenPercentage = 0;
+
+    private int workplacePercentage = 0;
+
+    public MapDTO() {}
+
+    public MapDTO(Long id, String name, List<BlockLoadDTO> blocks, int livability, int cost, int residents, int workplaces, int parkingSpots, int yield, int greenPercentage, int workplacePercentage) {
+        this.id = id;
+        this.name = name;
+        this.blocks = blocks;
         this.livability = livability;
         this.cost = cost;
         this.residents = residents;
@@ -21,6 +45,30 @@ public class Goals {
         this.yield = yield;
         this.greenPercentage = greenPercentage;
         this.workplacePercentage = workplacePercentage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<BlockLoadDTO> getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(List<BlockLoadDTO> blocks) {
+        this.blocks = blocks;
     }
 
     public int getLivability() {
@@ -55,28 +103,20 @@ public class Goals {
         this.workplaces = workplaces;
     }
 
-    public int getYield() {
-        return yield;
-    }
-
-    public void setYield(int yield) {
-        this.yield = yield;
-    }
-
-    public long getMapId() {
-        return mapId;
-    }
-
-    public void setMapId(long mapId) {
-        this.mapId = mapId;
-    }
-
     public int getParkingSpots() {
         return parkingSpots;
     }
 
     public void setParkingSpots(int parkingSpots) {
         this.parkingSpots = parkingSpots;
+    }
+
+    public int getYield() {
+        return yield;
+    }
+
+    public void setYield(int yield) {
+        this.yield = yield;
     }
 
     public int getGreenPercentage() {

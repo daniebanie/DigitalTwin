@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+//Residents should probably be changed into something like spots or something and some type of value should be added that represents if
+//those spots are residential, parking or workplaces
+
 @Entity
 @Table(name = "block_types")
 public class BlockType {
@@ -25,23 +28,30 @@ public class BlockType {
     @Column(nullable = false)
     private Unit unit;
 
-    @Column(name = "cost_per_unit", nullable = false, precision = 15, scale = 4)
-    private BigDecimal costPerUnit;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "resident_type")
+    private ResidentType residentType;
 
-    @Column(name = "yield_percentage", nullable = false, precision = 5, scale = 2)
-    private BigDecimal yieldPercentage;
+    @Column(name = "cost_per_unit", nullable = false)
+    private double costPerUnit;
 
-    @Column(name = "residents_per_unit", precision = 10, scale = 4)
-    private BigDecimal residentsPerUnit;
+    @Column(name = "yield_percentage", nullable = false)
+    private double yieldPercentage;
+
+    @Column(name = "residents_per_unit")
+    private double residentsPerUnit;
 
     @Column(name = "livability_points", nullable = false)
-    private Integer livabilityPoints;
+    private int livabilityPoints;
 
     @Column(name = "color_hex", nullable = false, length = 7)
     private String colorHex;
 
     @Column(name = "is_volumetric", nullable = false)
     private Boolean isVolumetric;
+
+    @Column(name = "is_green", nullable = false)
+    private Boolean isGreen;
 
     @Column(name = "icon_svg", columnDefinition = "TEXT")
     private String iconSvg;
@@ -54,6 +64,10 @@ public class BlockType {
 
     public enum Unit {
         m2, m3
+    }
+
+    public enum ResidentType {
+        residential, workplace, parkingSpot
     }
 
     @PrePersist
@@ -103,31 +117,31 @@ public class BlockType {
         this.unit = unit;
     }
 
-    public BigDecimal getCostPerUnit() {
+    public double getCostPerUnit() {
         return costPerUnit;
     }
-    public void setCostPerUnit(BigDecimal costPerUnit) {
+    public void setCostPerUnit(double costPerUnit) {
         this.costPerUnit = costPerUnit;
     }
 
-    public BigDecimal getYieldPercentage() {
+    public double getYieldPercentage() {
         return yieldPercentage;
     }
-    public void setYieldPercentage(BigDecimal yieldPercentage) {
+    public void setYieldPercentage(double yieldPercentage) {
         this.yieldPercentage = yieldPercentage;
     }
 
-    public BigDecimal getResidentsPerUnit() {
+    public double getResidentsPerUnit() {
         return residentsPerUnit;
     }
-    public void setResidentsPerUnit(BigDecimal residentsPerUnit) {
+    public void setResidentsPerUnit(double residentsPerUnit) {
         this.residentsPerUnit = residentsPerUnit;
     }
 
-    public Integer getLivabilityPoints() {
+    public int getLivabilityPoints() {
         return livabilityPoints;
     }
-    public void setLivabilityPoints(Integer livabilityPoints) {
+    public void setLivabilityPoints(int livabilityPoints) {
         this.livabilityPoints = livabilityPoints;
     }
 
@@ -157,6 +171,17 @@ public class BlockType {
     }
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public ResidentType getResidentType(){return residentType;}
+    public void setResidentType(ResidentType residentType){ this.residentType = residentType; }
+
+    public Boolean getGreen() {
+        return isGreen;
+    }
+
+    public void setGreen(Boolean green) {
+        isGreen = green;
     }
 }
 
