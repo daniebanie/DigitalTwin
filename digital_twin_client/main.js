@@ -1,6 +1,8 @@
 let mapName;
 let mapId;
 let selectedHeight;
+const API_BASE_URL = "http://localhost:8080";
+
 let buildingBlocks = {};
 let currentBuildingBlock = null;
 let selectedBlockColor = Cesium.Color.GRAY.withAlpha(0.5);
@@ -507,12 +509,11 @@ function createResultsArea() {
     text.textContent = 'Resultaten komen hier';
 
     panel.appendChild(text);
-
-    panel.appendChild(createResultsPanel())
+    panel.appendChild(renderResultsPanel())
     return panel;
 }
 
-function createResultsPanel() {
+function renderResultsPanel() {
     const panel = document.createElement('div');
     panel.id = 'test';
 
@@ -528,13 +529,16 @@ function createResultsPanel() {
 
         const col = document.createElement('div');
         col.id = 'result-block';
-        col.className = 'col-6 text-center';
+        col.className = 'col-12 text-center';
 
         const name = document.createElement('div');
         name.textContent = result.name + " / " + result.uploadedOn;
 
         const img = document.createElement('img');
-        img.src = result.route; // <-- FIX PATH
+        img.src = result.route.startsWith("/uploads")
+            ? API_BASE_URL + result.route
+            : result.route;
+
         img.alt = 'result';
         img.style.width = '100%';
 
@@ -555,22 +559,69 @@ function createResultsPanel() {
     return panel;
 }
 
+function refreshResultsPanel() {
+    const existing = document.getElementById('test');
+    const resultsArea = document.getElementById('results-area-panel');
+
+    if (existing) {
+        existing.remove();
+    }
+
+    const panel = renderResultsPanel();
+    resultsArea.appendChild(panel);
+}
+
 
 const resultBlocks = {
-    1: {
-        name: "imageno1",
-        route: `Cesium-1.135/Screenshots/Schermafbeelding2025-11-27221716.png`,
-        uploadedOn: "10-12-2025",
-        result: "Dit is een mooi minecraft huis"
-
-    },
-    2: {
-        name: "imageno1",
-        route: `Cesium-1.135/Screenshots/Schermafbeelding2025-11-27221716.png`,
-        uploadedOn: "10-12-2025",
-        result: "Dit is een mooi minecraft huis"
-    }
+    // Dit was bedoelt voor testing maar er zouden hier hardcoded ai-resultaten gemaakt kunnen worden.
 };
+
+async function loadAiResults() {
+    try {
+        const response = await fetch("http://localhost:8080/ai-reviews");
+
+        if (!response.ok) {
+            console.warn("AI reviews fetch failed");
+            return false;
+        }
+
+        const data = await response.json();
+
+
+        if (!Array.isArray(data) || data.length === 0) {
+            console.log("No AI reviews yet");
+            return false;
+        }
+
+        let nextKey = Object.keys(resultBlocks).length + 1;
+
+        data.forEach(review => {
+            resultBlocks[nextKey] = {
+                name: `AI Review ${review.id}`,
+                route: review.imagePath,
+                uploadedOn: new Date(review.createdAt).toLocaleDateString(),
+                result: review.reviewContent
+            };
+            nextKey++;
+        });
+
+        refreshResultsPanel();
+        return true;
+
+    } catch (error) {
+        console.error("Error loading AI reviews:", error);
+        return false;
+    }
+}
+
+function scheduleAiResultsRetry() {
+    console.log("Retry AI results over 5 seconden...");
+    setTimeout(async () => {
+        const success = await loadAiResults();
+        if (!success) scheduleAiResultsRetry();
+    }, 5000);
+}
+
 
 window.onload = setup;
 
@@ -973,7 +1024,7 @@ async function getInfo() {
 function setHeight() {
     selectedHeight = document.getElementById("heightInput").value;
 }
-
+scheduleAiResultsRetry();
 
 function updateInformationPanel(content) {
     document.getElementById("total-cost").textContent = Number(content.currentCost).toFixed(2);
